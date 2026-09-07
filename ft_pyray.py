@@ -14,6 +14,7 @@ class FtPyray:
 
         while not pr.window_should_close():
             pr.begin_drawing()
+            self.ft_draw_rectangle((50,50), 100, 100, pr.WHITE)
             pr.clear_background(pr.BLACK)
             pr.end_drawing()
 
@@ -27,9 +28,15 @@ class FtPyray:
         for y in range(max(y_end - y_start, 0)):
             pr.draw_pixel(x, y + y_start, color)
 
-    # def ft_draw_rectangle(self, start_coord: tuple(int, int), length_h : int, length_v: int):
-        # x_start, y_start = start_coord
-        # self.ft_draw_line_h(y_start, x_start, x_start + length_h)
-        # self.ft_draw_line_v()
+    def ft_draw_rectangle(
+        self,
+        start_coord: tuple(int, int),
+        length_h : int,
+        length_v: int,
+        color: pr.color
+    ):
+        x_start, y_start = start_coord
+        self.ft_draw_line_h(y_start, x_start, x_start + length_h, color)
+        self.ft_draw_line_v(x_start, y_start, y_start + length_v, color)
 
 t = FtPyray()
