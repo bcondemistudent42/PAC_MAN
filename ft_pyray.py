@@ -3,7 +3,10 @@ import pyray as pr
 
 class FtPyray:
     def __init__(self):
-        pr.init_window(800, 450 , "PAC_MAN")
+        pass
+
+    def start_game(self):
+        pr.init_window(800, 450 , "PACMAN")
 
         my_monitor = pr.get_current_monitor()
         monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
@@ -14,7 +17,7 @@ class FtPyray:
 
         while not pr.window_should_close():
             pr.begin_drawing()
-            self.ft_draw_rectangle((50,50), 10, 50, pr.WHITE)
+            self.ft_draw_rectangle((50,50), 100, 500, pr.WHITE)
             pr.clear_background(pr.BLACK)
             pr.end_drawing()
 
@@ -43,3 +46,4 @@ class FtPyray:
         self.ft_draw_line_v(x_start + length_h, y_start, y_start + length_v, color)
 
 t = FtPyray()
+t.start_game()
