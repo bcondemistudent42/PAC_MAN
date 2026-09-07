@@ -1,5 +1,7 @@
 from pyray import *
 
+class 
+
 
 def ft_draw_line_h(y: int, x_start: int, x_end: int, color: Pyray.color):
     for x in range(max(x_end - x_start, 0)):
@@ -25,8 +27,6 @@ def init_railyb():
 
         begin_drawing()
         clear_background(BLACK)
-        # for j in range(2000):
-            # ft_draw_line_h(j, 0, 100, WHITE)
         end_drawing()
 
     close_window()
