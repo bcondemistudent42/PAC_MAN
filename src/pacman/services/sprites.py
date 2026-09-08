@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 import numpy as np
 from PIL import Image
+import pyray as pr
+import io
 
 
 @dataclass
@@ -18,24 +20,29 @@ class SpriteService:
         map: dict[str, SpriteSheetPos]
     ) -> None:
         self.spritesheet = spritesheet
-        self.map = map
+        self.config_map = map
         self.img = Image.open(spritesheet).convert("RGBA")
         self.img_array = np.array(self.img)
+        self.map = {}
 
-    def extract_sprite(self, sprite: str) -> None:
-        pos = self.map.get(sprite)
-        if not pos:
-            return
+    def init_sprites(self) -> None:
+        for sprite, pos in self.config_map.items():
+            sprite_raw = self.img_array[
+                pos.y:pos.y + pos.height,
+                pos.x:pos.x + pos.width
+            ]
 
-        sprite_raw = self.img_array[
-            pos.y:pos.y + pos.height,
-            pos.x:pos.x + pos.width
-        ]
+            result = Image.fromarray(sprite_raw)
+            bytes_arr = io.BytesIO()
+            result.save(bytes_arr, format="PNG")
+            raw_img = bytes_arr.getvalue()
 
-        result = Image.fromarray(sprite_raw)
-        result.save(f"result/{sprite}.png")
+            self.map[sprite] = (
+                pr.load_image_from_memory("png", raw_img, len(raw_img))
+            )
 
-        #result.show()
+    def get_sprite(self, sprite: str) -> pr.Image:
+        return self.map[sprite]
 
 
 if __name__ == "__main__":
