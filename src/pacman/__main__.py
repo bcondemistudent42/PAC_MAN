@@ -1,12 +1,36 @@
-from pacman.engine.ecs import Position, Velocity, Entity
-from pacman.engine.systems.systems import MovementSystem
+from pacman.engine.ecs import Entity, Position, Sprite, Velocity
+from pacman.engine.systems.systems import MovementSystem, SpriteSystem
 
 pacman = Entity("pacman")
 pacman.add_component(Position(0, 0))
 pacman.add_component(Velocity(1, 0))
+pacman.add_component(Sprite("manpac.png"))
 
 mvt_system = MovementSystem()
 mvt_system.subscribe(pacman)
 mvt_system.run()
 
+
+import pyray as pr
+
+sp_sys = SpriteSystem()
+sp_sys.subscribe(pacman)
+
+pr.init_window(800, 450 , "PACMAN")
+my_monitor = pr.get_current_monitor()
+monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
+monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
+pr.set_window_size(monitor_w, monitor_h)
+pr.set_target_fps(60)
+
+while not pr.window_should_close():
+    pr.begin_drawing()
+    pr.clear_background(pr.BLACK)
+    sp_sys.run()
+    mvt_system.run()
+    pacman.add_component(Velocity(1, 0))
+    pr.end_drawing()
+pr.close_window()
+
 # feat docs chore fix refactor 
+

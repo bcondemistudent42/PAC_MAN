@@ -16,7 +16,7 @@ class Position(Component):
     def __init__(self, x: int, y: int) -> None:
         self.x = x
         self.y = y
-    
+
     def __str__(self):
         return f"({self.x}, {self.y})"
 
@@ -33,4 +33,6 @@ class Size(Component):
     def __init__(self, size: int):
         self.size = size
 
-# TODO: Sprite
+class Sprite(Component):
+    def __init__(self, img_path: str):
+        self.img_path = img_path
