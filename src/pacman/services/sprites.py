@@ -41,9 +41,12 @@ class SpriteService:
                 pr.load_image_from_memory("png", raw_img, len(raw_img))
             )
 
+    def exit_sprites(self) -> None:
+        for _, texture in self.map.items():
+            pr.unload_image(texture)
+
     def get_sprite(self, sprite: str) -> pr.Image:
         return self.map[sprite]
-
 
 if __name__ == "__main__":
     config = {
