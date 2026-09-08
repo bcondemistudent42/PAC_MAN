@@ -6,12 +6,11 @@ def main():
     pacman = Entity("pacman")
     pacman.add_component(Position(0, 0))
     pacman.add_component(Velocity(1, 0))
-    pacman.add_component(Sprite("sprites/manpac.png"))
+    pacman.add_component(Sprite("sprites/pacman.png"))
 
     mvt_system = MovementSystem()
     mvt_system.subscribe(pacman)
-    mvt_system.run()
-
+    mvt_system.run() 
 
     import pyray as pr
 
