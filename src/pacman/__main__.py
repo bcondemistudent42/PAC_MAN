@@ -1,5 +1,6 @@
-from pacman.engine.game_engine import GameEngine
 from pacman.engine.ecs import Map
+from pacman.engine.game_engine import GameEngine
+
 
 def main():
 
