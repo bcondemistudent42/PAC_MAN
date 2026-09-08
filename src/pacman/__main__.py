@@ -6,7 +6,7 @@ def main():
     pacman = Entity("pacman")
     pacman.add_component(Position(0, 0))
     pacman.add_component(Velocity(1, 0))
-    pacman.add_component(Sprite("sprites/pacman.png"))
+    pacman.add_component(Sprite("sprites/ghost_sprites/blue/blue_right.png"))
 
     mvt_system = MovementSystem()
     mvt_system.subscribe(pacman)
