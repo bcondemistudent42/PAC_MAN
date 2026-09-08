@@ -1,11 +1,11 @@
-from pacman.engine.ecs import Component, Entity, Position, Velocity, Sprite
+from abc import ABC, abstractmethod
 
-
-# tosee if good fault of bcondemi if not
 import pyray as pr
 pr.set_trace_log_level(pr.LOG_NONE)
+from pacman.engine.ecs import Component, Entity, Position, Sprite, Velocity
 
-class System:
+
+class System(ABC):
     def __init__(self, components: list[type[Component]]):
         self.subscribers: list[Entity] = []
         self.required_components: list[type[Component]] = []
@@ -17,6 +17,9 @@ class System:
 
         self.subscribers.append(entity)
 
+    @abstractmethod
+    def run():
+        ...
 
 class MovementSystem(System):
     def __init__(self):
@@ -43,18 +46,17 @@ class SpriteSystem(System):
     def __init__(self):
         super().__init__([Position, Sprite])
 
-    # can name it just display
     def run(self):
         for each_subscribed in self.subscribers:
-            img = pr.load_texture(each_subscribed.components[Sprite].img_path)
-
-            if img.id == 0:
-                raise FileNotFoundError(
-                    f"Missing file: {each_subscribed.components[Sprite].img_path}"
-                )
+            img = each_subscribed.components[Sprite].img
+            print(img)
 
             x = each_subscribed.components[Position].x
             y = each_subscribed.components[Position].y
 
             pr.draw_texture(img, x, y, pr.WHITE)
 
+
+# class ColisionSystem(System):
+#     def __init__(self):
+#         super().__init__([Position, Colision])

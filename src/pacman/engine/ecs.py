@@ -33,6 +33,21 @@ class Size(Component):
     def __init__(self, size: int):
         self.size = size
 
+# bcondemi feats
+
 class Sprite(Component):
     def __init__(self, img_path: str):
-        self.img_path = img_path
+        self.img = pr.load_texture(img_path)
+
+        if self.img == 0:
+            raise FileNotFoundError(
+                f"Missing file: {img_path}"
+            )
+
+# class Colision(Component):
+#     def __init__(self, is_colliding: bool):
+#         self.is_colliding = is_colliding
+
+class Map(Component):
+    def __init__(self, map: list[list[int]]):
+        self.map = map
