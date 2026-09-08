@@ -1,10 +1,9 @@
-import random
 
-import mazegenerator as mg
 import pyray as pr
 
-from pacman.engine.ecs import Entity, Map
+from pacman.engine.ecs import Entity
 from pacman.engine.systems.systems import System
+from pacman.make_pacman_setup import PacmanSetup
 
 
 class GameEngine:
@@ -17,11 +16,12 @@ class GameEngine:
         monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
         pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
+        # to clean in a function pr
 
-        # to create all the maze with entities
-        self.make_entities_lvl()
-        # make_10_entities_lvl() -> lst and first of them have seed 42
-        # the others have random seeds
+        self.entities.extend(
+            PacmanSetup.make_entities_lvl()
+        )
+        # to think later review with anselme
 
         # to create all the pacman and ghosts enities
         # to call sprite manager of anselme
@@ -44,39 +44,10 @@ class GameEngine:
         self.entities.append(entity)
 
     def run(self):
+        # here the game really starts
         while not pr.window_should_close():
             pr.begin_drawing()
 
             pr.clear_background(pr.BLACK)
 
             pr.end_drawing()
-
-    def make_entities_lvl(self) -> None:
-
-        self.entities.append(
-            self.create_level(True)
-        )
-
-        for i in range(10):
-            self.entities.append(
-                self.create_level()
-            )
-            # to see how to handle sprite for the map later
-
-    @staticmethod
-    def create_level(first_level: bool= False):
-        my_maze = mg.MazeGenerator()
-        if first_level:
-            my_maze.generate(seed=42)
-        else:
-            my_maze.generate(seed=random.randint(0, 10000))
-
-        level_entity = Entity("level_0")
-        map_component = Map(my_maze.maze)
-        level_entity.add_component(map_component)
-        return level_entity
-
-
-
-        # context manager
-        # ici que le jeu se lance vrm

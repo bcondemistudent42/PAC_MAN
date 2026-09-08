@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import pyray as pr
+
 pr.set_trace_log_level(pr.LOG_NONE)
 from pacman.engine.ecs import Component, Entity, Position, Sprite, Velocity
 

@@ -6,8 +6,8 @@ def main():
 
     with GameEngine("world") as world:
         print("testing")
-        print(world.entities)
-        # print(world.entities[2].components[Map].map)
+        # print(world.entities)
+        print(world.entities[2].components[Map].map)
     print("After")
 
     # feat docs chore fix refactor 
