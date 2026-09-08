@@ -3,6 +3,7 @@ from pacman.engine.ecs import Component, Entity, Position, Velocity, Sprite
 
 # tosee if good fault of bcondemi if not
 import pyray as pr
+pr.set_trace_log_level(pr.LOG_NONE)
 
 class System:
     def __init__(self, components: list[type[Component]]):
@@ -37,6 +38,7 @@ class MovementSystem(System):
 
             print(f"Nouvelle position: {actu_position}") 
 
+
 class SpriteSystem(System):
     def __init__(self):
         super().__init__([Position, Sprite])
@@ -45,6 +47,11 @@ class SpriteSystem(System):
     def run(self):
         for each_subscribed in self.subscribers:
             img = pr.load_texture(each_subscribed.components[Sprite].img_path)
+
+            if img.id == 0:
+                raise FileNotFoundError(
+                    f"Missing file: {each_subscribed.components[Sprite].img_path}"
+                )
 
             x = each_subscribed.components[Position].x
             y = each_subscribed.components[Position].y
