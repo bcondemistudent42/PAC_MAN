@@ -18,9 +18,12 @@ class GameEngine:
         pr.set_target_fps(60)
         # to clean in a function pr
 
-        self.entities.extend(
-            PacmanSetup.make_entities_lvl()
-        )
+        # self.entities.extend(
+        #     PacmanSetup.make_entities_lvl()
+        # )
+        # self.entities.append(
+        #     PacmanSetup.create_pacman_entities()
+        # )
         # to think later review with anselme
 
         # to create all the pacman and ghosts enities
@@ -49,5 +52,8 @@ class GameEngine:
             pr.begin_drawing()
 
             pr.clear_background(pr.BLACK)
+
+            for system in self.systems:
+                system.run()
 
             pr.end_drawing()
