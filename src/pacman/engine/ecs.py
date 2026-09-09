@@ -1,8 +1,13 @@
 import pyray as pr
+from typing import TypeVar, cast
 
 
 class Component:
     pass
+
+
+T = TypeVar("T", bound=Component)
+
 
 class Entity:
     def __init__(self, id: str):
@@ -11,6 +16,9 @@ class Entity:
 
     def add_component(self, component: Component):
         self.components[type(component)] = component
+
+    def get_component(self, component: type[T]) -> T:
+        return cast(T, self.components[component])
 
 class Position(Component):
     def __init__(self, x: int, y: int) -> None:
@@ -39,9 +47,18 @@ class Sprite(Component):
     def __init__(self, sprite_name: str):
         self.sprite_name = sprite_name
 
-# class Colision(Component):
-#     def __init__(self, is_colliding: bool):
-#         self.is_colliding = is_colliding
+class Collision(Component):
+    def __init__(self, tag: str):
+        self.tag = tag
+
+class Hitbox(Component):
+    def __init__(
+        self,
+        width: int,
+        height: int
+    ):
+        self.width = width
+        self.height = height
 
 class Map(Component):
     def __init__(self, map: list[list[int]]):

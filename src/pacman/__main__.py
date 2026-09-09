@@ -1,8 +1,10 @@
+from pacman.engine.ecs import Map
 from pacman.engine.game_engine import GameEngine
 
 
 def main():
     with GameEngine("world") as world:
+        # print(world.entities[0].components[Map].map)
         world.run()
 
 if __name__ == "__main__":

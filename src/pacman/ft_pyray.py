@@ -2,21 +2,21 @@ import pyray as pr
 import math
 
 class FtPyray:
-    def __init__(self):
-        pass
+    def __init__(self, maze):
+        self.maze = maze
 
     def start_game(self):
         pr.init_window(800, 450 , "PACMAN")
 
         my_monitor = pr.get_current_monitor()
         monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
-        monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
+        monitor_h = int(pr.get_monitor_height(my_monitor) / 10) * 8
 
         pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
 
-        rect_in_w = (monitor_w * 3) // 4
-        rect_in_h = (monitor_h * 3) // 4
+        rect_in_w = (monitor_w * 6) // 10
+        rect_in_h =( monitor_h * 9) // 10
         x_in = (monitor_w - rect_in_w) // 2
         y_in = (monitor_h - rect_in_h) // 2
 
@@ -30,9 +30,6 @@ class FtPyray:
 
         while not pr.window_should_close():
             pr.begin_drawing()
-
-            # self.ft_draw_rectangle((x_in, y_in), rect_in_w, rect_in_h, pr.BLUE)
-            # self.ft_draw_rectangle((x_out, y_out), rect_out_w, rect_out_h, pr.BLUE)
 
             pr.clear_background(pr.BLACK)
             self.ft_draw_rounded_rectangle(
@@ -67,7 +64,6 @@ class FtPyray:
         self.ft_draw_line_h(y_start + length_v, x_start, x_start + length_h, color)
         self.ft_draw_line_v(x_start + length_h, y_start, y_start + length_v, color)
 
-# to see how the code works just testing now
     def ft_draw_arc(
         self,
         center_x: int,
@@ -111,6 +107,7 @@ class FtPyray:
             x + length_h, y + radius, y + length_v - radius, color
         )
 
+        # top right corner
         self.ft_draw_arc(
             x + radius, y + radius, radius, 180, 270, color
         )
@@ -123,5 +120,8 @@ class FtPyray:
         self.ft_draw_arc(
             x + radius, y + length_v - radius, radius, 90, 180, color
         )
-t = FtPyray()
+
+
+maze = [[9, 1, 5, 3, 9, 3, 9, 5, 5, 5, 5, 5, 5, 1, 3], [8, 0, 3, 8, 0, 4, 2, 9, 1, 1, 1, 3, 9, 4, 2], [10, 8, 4, 4, 2, 9, 2, 12, 0, 2, 8, 2, 12, 5, 2], [10, 12, 1, 5, 0, 6, 12, 3, 8, 2, 10, 12, 1, 3, 10], [12, 1, 4, 1, 6, 9, 1, 2, 12, 4, 4, 1, 2, 10, 10], [9, 2, 9, 6, 15, 10, 8, 2,15, 15, 15, 10, 10, 8, 2], [10, 10, 8, 3, 15, 12, 6, 8, 5, 7, 15, 8, 2, 8, 6], [10, 8, 2, 10, 15, 15, 15, 10, 15, 15, 15, 10, 8, 4, 3], [10, 8, 4, 2, 9, 3, 15, 10, 15, 13, 5, 2, 12, 5, 2], [8, 4, 3, 10, 10, 10, 15, 10, 15, 15, 15, 8, 1, 5, 2], [8, 3, 12, 4, 4, 4, 1, 0, 5, 1,3, 12, 4, 5, 2], [8, 6, 9, 5, 1, 5, 2, 8, 1, 2, 10, 9, 5, 3, 10], [8, 3, 8, 3, 12, 1, 2, 8,2, 10, 8, 4, 1, 2, 10], [10, 8, 6, 12, 1, 4, 6, 12, 0, 2, 8, 3, 10, 10, 10], [12, 4, 5, 5, 4, 5, 5, 5, 6, 12, 4, 6, 12, 4, 6]]
+t = FtPyray(maze)
 t.start_game()
