@@ -46,3 +46,7 @@ class Sprite(Component):
 class Map(Component):
     def __init__(self, map: list[list[int]]):
         self.map = map
+
+class Display(Component):
+    def __init__(self, flag: bool = True):
+        self.flag = flag
