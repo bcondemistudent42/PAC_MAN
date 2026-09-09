@@ -15,13 +15,11 @@ class GameEngine:
         monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
         pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
-        # to clean in a function pr
+        # to clean in a function pr to see how to do ask anselme
 
         from pacman.pacman_game import PacmanGame
         setup = PacmanGame(self)
         setup.make_full_setup()
-        # TODO:
-        # Create all the ghosts entities
 
         return self
 

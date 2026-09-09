@@ -33,13 +33,7 @@ class PacmanGame:
     def make_full_setup(self):
         self.system_init()
         self.make_entities_lvl()
-
-        # to regroup into big function create each entities
-        self.create_pacman()
-        self.create_inky()
-        self.create_clyde()
-        self.create_blinky()
-        self.create_pinky()
+        self.create_movable_entities()
 
     def make_entities_lvl(self) -> None:
 
@@ -63,6 +57,10 @@ class PacmanGame:
         level_entity.add_component(map_component)
         return level_entity
 
+    def create_movable_entities(self):
+        self.create_pacman()
+        self.create_ghosts()
+
     def create_pacman(self):
 
         # to spawn at the center of the map
@@ -79,6 +77,13 @@ class PacmanGame:
         self.system[MovementSystem].subscribe(pac_man)
 
         self.engine.add_entities(pac_man)
+
+    def create_ghosts(self):
+        self.create_inky()
+        self.create_clyde()
+        self.create_blinky()
+        self.create_pinky()
+
 
     def create_inky(self):
 
@@ -97,8 +102,6 @@ class PacmanGame:
 
         self.engine.add_entities(inky)
 
-
-
     def create_clyde(self):
 
         # to spawn at the bottom right corner
@@ -116,7 +119,6 @@ class PacmanGame:
 
         self.engine.add_entities(clyde)
 
-
     def create_blinky(self):
 
         # to spawn at the bottom left corner
@@ -133,7 +135,6 @@ class PacmanGame:
         self.system[MovementSystem].subscribe(blinky)
 
         self.engine.add_entities(blinky)
-
 
     def create_pinky(self):
 
