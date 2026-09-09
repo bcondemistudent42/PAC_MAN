@@ -17,8 +17,8 @@ class GameEngine:
         pr.set_target_fps(60)
         # to clean in a function pr
 
-        from pacman.make_pacman_setup import PacmanSetup
-        setup = PacmanSetup(self)
+        from pacman.pacman_game import PacmanGame
+        setup = PacmanGame(self)
         setup.make_full_setup()
         # TODO:
         # Create all the ghosts entities

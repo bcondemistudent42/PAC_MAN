@@ -8,11 +8,14 @@ from pacman.engine.systems.systems import MovementSystem, SpriteSystem
 from pacman.services.sprites import SpriteService, config
 
 
-class PacmanSetup:
+class PacmanGame:
 
     def __init__(self, engine: GameEngine):
         self.engine = engine
         self.system = {} #system name class: system instance
+
+    def start_game(self):
+        self.engine.run()
 
     def system_init(self):
         sprite_sheet = "sprites/spritesheet.png"
