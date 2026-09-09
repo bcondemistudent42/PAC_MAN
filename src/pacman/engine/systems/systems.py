@@ -4,6 +4,7 @@ import pyray as pr
 
 pr.set_trace_log_level(pr.LOG_NONE)
 from pacman.engine.ecs import Component, Entity, Position, Sprite, Velocity
+from pacman.services.sprites import SpriteService
 
 
 class System(ABC):
@@ -23,8 +24,9 @@ class System(ABC):
         ...
 
 class MovementSystem(System):
-    def __init__(self):
+    def __init__(self, ressources: dict):
         super().__init__([Position, Velocity])
+        self.ressources = ressources
 
     @staticmethod
     def add_movement(Position, Velocity):
@@ -44,13 +46,17 @@ class MovementSystem(System):
 
 
 class SpriteSystem(System):
-    def __init__(self):
+    def __init__(self, ressources: dict):
         super().__init__([Position, Sprite])
+        self.ressources = ressources
+        self.sprite_service = self.ressources[SpriteService]
 
     def run(self):
         for each_subscribed in self.subscribers:
-            img = each_subscribed.components[Sprite].img
-            print(img)
+            print("Painting")
+            img = self.sprite_service.get_sprite(
+                each_subscribed.components[Sprite].sprite_name
+            )
 
             x = each_subscribed.components[Position].x
             y = each_subscribed.components[Position].y

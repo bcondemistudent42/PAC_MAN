@@ -36,13 +36,8 @@ class Size(Component):
 # bcondemi feats
 
 class Sprite(Component):
-    def __init__(self, img_path: str):
-        self.img = pr.load_texture(img_path)
-
-        if self.img == 0:
-            raise FileNotFoundError(
-                f"Missing file: {img_path}"
-            )
+    def __init__(self, sprite_name: str):
+        self.sprite_name = sprite_name
 
 # class Colision(Component):
 #     def __init__(self, is_colliding: bool):
