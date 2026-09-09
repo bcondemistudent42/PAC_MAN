@@ -34,7 +34,7 @@ class GameEngine:
         self.entities: list[Entity] = []
         self.systems: list[System] = []
 
-    def add_system(self, system: System):
+    def add_system(self, system: list[System] | System):
         if isinstance(system, System):
             self.systems.append(system)
         elif type(system) == list:

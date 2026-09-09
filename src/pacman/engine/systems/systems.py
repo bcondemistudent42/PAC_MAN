@@ -24,7 +24,7 @@ class System(ABC):
         ...
 
 class MovementSystem(System):
-    def __init__(self, ressources: dict):
+    def __init__(self, ressources: dict | None):
         super().__init__([Position, Velocity])
         self.ressources = ressources
 
@@ -46,7 +46,7 @@ class MovementSystem(System):
 
 
 class SpriteSystem(System):
-    def __init__(self, ressources: dict):
+    def __init__(self, ressources: dict | None):
         super().__init__([Position, Sprite])
         self.ressources = ressources
         self.sprite_service = self.ressources[SpriteService]
