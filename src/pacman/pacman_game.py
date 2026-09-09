@@ -2,14 +2,15 @@ import random
 
 import mazegenerator as mg
 
-from pacman.engine.ecs import Entity, Map, Position, Sprite, Velocity
+from pacman.engine.ecs import Collision, Entity, Hitbox, Map, Position, Sprite, Velocity
 from pacman.engine.game_engine import GameEngine
-from pacman.engine.systems.systems import MovementSystem, SpriteSystem
+from pacman.engine.systems.systems import CollisionSystem, MovementSystem, SpriteSystem
 from pacman.services.sprites import SpriteService, config
 
 
-class PacmanGame:
+collision_system = CollisionSystem(None)
 
+class PacmanGame:
     def __init__(self, engine: GameEngine):
         self.engine = engine
         self.system = {} #system name class: system instance
@@ -22,13 +23,14 @@ class PacmanGame:
         sprite_service = SpriteService(sprite_sheet, config)
         sprite_service.init_sprites()
         movement_system = MovementSystem(None)
+        #collision_system = CollisionSystem(None)
         sprite_system = SpriteSystem({SpriteService: sprite_service})
 
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
+        self.system[CollisionSystem] = collision_system
 
-        self.engine.add_system([movement_system, sprite_system])
-
+        self.engine.add_system([movement_system, sprite_system, collision_system])
 
     def make_full_setup(self):
         self.system_init()
@@ -64,17 +66,19 @@ class PacmanGame:
     def create_pacman(self):
 
         # to spawn at the center of the map
-        p = Position(100, 100)
-        v = Velocity(1, 0)
+        p = Position(150, 10)
+        v = Velocity(-1, 0)
         spr = Sprite("pacman-right-1")
+        hitbox = Hitbox(10, 10)
+        col = Collision("pacman")
+
 
         pac_man = Entity("pac_man")
         pac_man.add_component(p)
         pac_man.add_component(v)
         pac_man.add_component(spr)
-
-        self.system[SpriteSystem].subscribe(pac_man)
-        self.system[MovementSystem].subscribe(pac_man)
+        pac_man.add_component(hitbox)
+        pac_man.add_component(col)
 
         self.engine.add_entities(pac_man)
 
@@ -91,14 +95,16 @@ class PacmanGame:
         p = Position(10, 10)
         v = Velocity(1, 0)
         spr = Sprite("inky-right-1")
+        hitbox = Hitbox(10, 10)
+        col = Collision("ghost")
+
 
         inky = Entity("inky")
         inky.add_component(p)
         inky.add_component(v)
         inky.add_component(spr)
-
-        self.system[SpriteSystem].subscribe(inky)
-        self.system[MovementSystem].subscribe(inky)
+        inky.add_component(hitbox)
+        inky.add_component(col)
 
         self.engine.add_entities(inky)
 
@@ -114,9 +120,6 @@ class PacmanGame:
         clyde.add_component(v)
         clyde.add_component(spr)
 
-        self.system[SpriteSystem].subscribe(clyde)
-        self.system[MovementSystem].subscribe(clyde)
-
         self.engine.add_entities(clyde)
 
     def create_blinky(self):
@@ -130,9 +133,6 @@ class PacmanGame:
         blinky.add_component(p)
         blinky.add_component(v)
         blinky.add_component(spr)
-
-        self.system[SpriteSystem].subscribe(blinky)
-        self.system[MovementSystem].subscribe(blinky)
 
         self.engine.add_entities(blinky)
 
@@ -148,7 +148,11 @@ class PacmanGame:
         pinky.add_component(v)
         pinky.add_component(spr)
 
-        self.system[SpriteSystem].subscribe(pinky)
-        self.system[MovementSystem].subscribe(pinky)
-
         self.engine.add_entities(pinky)
+
+    @collision_system.router("pacman", "ghost")
+    def handle_pacman_ghost_collision(
+        first: Entity,
+        second: Entity
+    ) -> None:
+        print("Collision entre Pacman et un Ghost")

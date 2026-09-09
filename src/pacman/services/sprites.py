@@ -128,7 +128,5 @@ class SpriteService:
 
 
 if __name__ == "__main__":
-    
-
     manager = SpriteService("spritesheet.png", config)
     manager.init_sprites()
