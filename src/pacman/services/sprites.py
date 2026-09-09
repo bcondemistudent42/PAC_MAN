@@ -131,10 +131,4 @@ if __name__ == "__main__":
     
 
     manager = SpriteService("spritesheet.png", config)
-<<<<<<< HEAD
     manager.init_sprites()
-=======
-
-    for sprite in config:
-        manager.extract_sprite(sprite)
->>>>>>> 15db69a1d61def9b8bfe43088a3d55d40961dab4
