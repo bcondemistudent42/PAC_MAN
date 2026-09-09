@@ -3,7 +3,6 @@ import pyray as pr
 
 from pacman.engine.ecs import Entity
 from pacman.engine.systems.systems import System
-from pacman.make_pacman_setup import PacmanSetup
 
 
 class GameEngine:
@@ -18,16 +17,11 @@ class GameEngine:
         pr.set_target_fps(60)
         # to clean in a function pr
 
-        # self.entities.extend(
-        #     PacmanSetup.make_entities_lvl()
-        # )
-        # self.entities.append(
-        #     PacmanSetup.create_pacman_entities()
-        # )
-        # to think later review with anselme
-
-        # to create all the pacman and ghosts enities
-        # to call sprite manager of anselme
+        from pacman.make_pacman_setup import PacmanSetup
+        setup = PacmanSetup(self)
+        setup.make_full_setup()
+        # TODO:
+        # Create all the ghosts entities
 
         return self
 
@@ -41,10 +35,21 @@ class GameEngine:
         self.systems: list[System] = []
 
     def add_system(self, system: System):
-        self.systems.append(system)
+        if isinstance(system, System):
+            self.systems.append(system)
+        elif type(system) == list:
+            self.systems.extend(system)
+        else:
+            print(f"{system}, {type(system)}")
+            raise ValueError("Cannot add this in system to adapt add system")
 
     def add_entities(self, entity: Entity):
-        self.entities.append(entity)
+        if type(entity) == Entity:
+            self.entities.append(entity)
+        elif type(entity) == list:
+            self.entities.extend(entity)
+        else:
+            raise ValueError("Cannot add this in entities to adapt add entities")
 
     def run(self):
         # here the game really starts
