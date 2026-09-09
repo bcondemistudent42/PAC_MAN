@@ -120,16 +120,15 @@ class SpriteService:
             pr.unload_image(img)
 
     def exit_sprites(self) -> None:
-        for _, texture in self.map.items():
-            pr.unload_image(texture)
+        for _, image in self.map.items():
+            pr.unload_image(image)
 
     def get_sprite(self, sprite: str) -> pr.Image:
         return self.map[sprite]
+
 
 if __name__ == "__main__":
     
 
     manager = SpriteService("spritesheet.png", config)
-
-    for sprite in config:
-        manager.extract_sprite(sprite)
+    manager.init_sprites()
