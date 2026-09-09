@@ -12,8 +12,23 @@ class PacmanSetup:
 
     def __init__(self, engine: GameEngine):
         self.engine = engine
+        self.system = {} #system name class: system instance
+
+    def system_init(self):
+        sprite_sheet = "sprites/spritesheet.png"
+        sprite_service = SpriteService(sprite_sheet, config)
+        sprite_service.init_sprites()
+        movement_system = MovementSystem(None)
+        sprite_system = SpriteSystem({SpriteService: sprite_service})
+
+        self.system[SpriteSystem] = sprite_system
+        self.system[MovementSystem] = movement_system
+
+        self.engine.add_system([movement_system, sprite_system])
+
 
     def make_full_setup(self):
+        self.system_init()
         self.make_entities_lvl()
         self.create_pacman_entity()
 
@@ -41,10 +56,7 @@ class PacmanSetup:
 
     def create_pacman_entity(self):
 
-        sprite_service = SpriteService("sprites/spritesheet.png", config)
-        sprite_service.init_sprites()
-        sprite_system = SpriteSystem({SpriteService: sprite_service})
-        movement_system = MovementSystem(None)
+        # to see if can do 
         # to do properly somewhere else
 
         p = Position(10, 10)
@@ -55,14 +67,10 @@ class PacmanSetup:
         pac_man.add_component(p)
         pac_man.add_component(v)
         pac_man.add_component(spr)
-        sprite_system.subscribe(pac_man)
-        movement_system.subscribe(pac_man)
 
-        self.engine.add_system(sprite_system)
-        self.engine.add_system(movement_system)
+        self.system[SpriteSystem].subscribe(pac_man)
+        self.system[MovementSystem].subscribe(pac_man)
 
-        self.engine.add_entities(
-            pac_man
-        )
+        self.engine.add_entities(pac_man)
 
     # def create_ghosts_entity():
