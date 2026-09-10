@@ -88,13 +88,13 @@ class MovementSystem(System):
         for subscriber in self.subscribers:
             actu_position = subscriber.components[Position]
             velo = subscriber.components[Velocity]
-    
-            #print(f"Position actuelle {actu_position}")
 
             actu_position.x += velo.x
             actu_position.y += velo.y
 
-            #print(f"Nouvelle position: {actu_position}") 
+            if actu_position.x > 270:
+                from pacman.death_entities import make_death, DeathSprites
+                make_death(subscriber, DeathSprites.PACMAN.value)
 
 
 class SpriteSystem(System):
@@ -105,15 +105,30 @@ class SpriteSystem(System):
 
     def run(self):
         for each_subscribed in self.subscribers:
-            for each_sprite in each_subscribed.components[Sprites].sprites_animation:
 
-                x = each_subscribed.components[Position].x
-                y = each_subscribed.components[Position].y
+            components =  each_subscribed.components
 
-                pr.draw_texture(
-                    self.ressources[SpriteService].map[each_sprite],
-                    x, y,
-                    pr.WHITE)
+            components[Sprites].frame += pr.get_frame_time()
+
+            if components[Sprites].frame >= components[Sprites].cooldown:
+                if (
+                    components[Sprites].sprite_index < 
+                    len(components[Sprites].sprites_animation) - 1
+                ):
+                    components[Sprites].sprite_index += 1
+                components[Sprites].frame = 0
+
+            index = components[Sprites].sprite_index
+            x = components[Position].x
+            y = components[Position].y
+
+            pr.draw_texture(
+                self.ressources[SpriteService].get_sprite(
+                    components[Sprites].sprites_animation[index]
+                ),
+                x, y,
+                pr.WHITE
+            )
 
 
 class KeySystem(System):
@@ -127,7 +142,3 @@ class KeySystem(System):
 
             if pr.is_key_pressed(key.key):
                 key.hook()
-
-# class ColisionSystem(System):
-#     def __init__(self):
-#         super().__init__([Position, Colision])

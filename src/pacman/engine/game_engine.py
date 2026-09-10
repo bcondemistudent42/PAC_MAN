@@ -59,7 +59,9 @@ class GameEngine:
 
     def run(self):
         # here the game really starts
+        i = 0
         while not pr.window_should_close():
+            i += 1
             pr.begin_drawing()
 
             pr.clear_background(pr.BLACK)
