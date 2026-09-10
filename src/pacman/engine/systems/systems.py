@@ -76,7 +76,7 @@ class CollisionSystem(System):
 
 
 class MovementSystem(System):
-    def __init__(self, ressources: dict | None):
+    def __init__(self, ressources: dict):
         super().__init__([Position, Velocity])
         self.ressources = ressources
 
@@ -86,8 +86,8 @@ class MovementSystem(System):
 
     def run(self):
         for subscriber in self.subscribers:
-            actu_position = subscriber.components[Position]
-            velo = subscriber.components[Velocity]
+            actu_position = subscriber.get_component(Position)
+            velo = subscriber.get_component(Velocity)
 
             actu_position.x += velo.x
             actu_position.y += velo.y
@@ -98,38 +98,38 @@ class MovementSystem(System):
 
 
 class SpriteSystem(System):
-    def __init__(self, ressources: dict | None):
+    def __init__(self, ressources: dict):
         super().__init__([Position, Sprites])
         self.ressources = ressources
         self.sprite_service = self.ressources[SpriteService]
 
     def run(self):
         for each_subscribed in self.subscribers:
+            sprite_component = each_subscribed.get_component(Sprites)
+            position_component = each_subscribed.get_component(Position)
 
-            components =  each_subscribed.components
+            sprite_component.frame += pr.get_frame_time()
 
-            components[Sprites].frame += pr.get_frame_time()
-
-            if components[Sprites].frame >= components[Sprites].cooldown:
+            if sprite_component.frame >= sprite_component.cooldown:
                 if (
-                    components[Sprites].sprite_index < 
-                    len(components[Sprites].sprites_animation) - 1
+                    sprite_component.sprite_index < 
+                    len(sprite_component.sprites_animation) - 1
                 ):
-                    components[Sprites].sprite_index += 1
-                components[Sprites].frame = 0
+                    sprite_component.sprite_index += 1
+                sprite_component.frame = 0
 
-            index = components[Sprites].sprite_index
-            x = components[Position].x
-            y = components[Position].y
-
-            pr.draw_texture(
+            index = sprite_component.sprite_index
+            x = position_component.x
+            y = position_component.y
+            pr.draw_texture_ex(
                 self.ressources[SpriteService].get_sprite(
-                    components[Sprites].sprites_animation[index]
+                    sprite_component.sprites_animation[index]
                 ),
-                x, y,
+                pr.Vector2(x, y),
+                0.0,
+                5.0,
                 pr.WHITE
             )
-
 
 class KeySystem(System):
     def __init__(self, ressources: dict | None):

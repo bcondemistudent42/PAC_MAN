@@ -7,11 +7,11 @@ from pacman.engine.systems.systems import System
 
 class GameEngine:
     def __enter__(self):
-        pr.init_window(800, 450 , "PACMAN")
-        my_monitor = pr.get_current_monitor()
-        monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
-        monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
-        pr.set_window_size(monitor_w, monitor_h)
+        pr.init_window(1200, 800, "PACMAN DEBUG")
+        # my_monitor = pr.get_current_monitor()
+        # monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
+        # monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
+        # pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
         # to clean in a function pr to see how to do ask anselme
 
