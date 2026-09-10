@@ -1,6 +1,8 @@
+import pyray as pr
 from pacman.engine.ecs import Map
 from pacman.engine.game_engine import GameEngine
 
+pr.set_trace_log_level(pr.LOG_NONE)
 
 def main():
     with GameEngine("world") as world:

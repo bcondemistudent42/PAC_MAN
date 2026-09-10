@@ -1,12 +1,18 @@
 from abc import ABC, abstractmethod
-
 import pyray as pr
-
-pr.set_trace_log_level(pr.LOG_NONE)
 import itertools
 from collections.abc import Callable
 
-from pacman.engine.ecs import Collision, Component, Entity, Hitbox, Position, Velocity, Sprites
+from pacman.engine.ecs import (
+    Collision,
+    Component,
+    Entity,
+    Hitbox,
+    Position,
+    Velocity,
+    Sprites,
+    KeyHook
+)
 from pacman.services.sprites import SpriteService
 
 
@@ -63,8 +69,10 @@ class CollisionSystem(System):
                 f_pos.y + f_hit.height >= s_pos.y and
                 f_pos.y <= s_pos.y + s_hit.height
             ):
-                if (f_col.tag, s_col.tag) in self.router_map or (s_col.tag, f_col.tag) in self.router_map:
+                if (f_col.tag, s_col.tag) in self.router_map:
                     self.router_map[(f_col.tag, s_col.tag)](first, second)
+                elif (s_col.tag, f_col.tag) in self.router_map:
+                    self.router_map[(s_col.tag, f_col.tag)](first, second)
 
 
 class MovementSystem(System):
@@ -107,6 +115,18 @@ class SpriteSystem(System):
                     x, y,
                     pr.WHITE)
 
+
+class KeySystem(System):
+    def __init__(self, ressources: dict | None):
+        super().__init__([KeyHook])
+        self.ressources = ressources
+
+    def run(self) -> None:
+        for subscriber in self.subscribers:
+            key = subscriber.get_component(KeyHook)
+
+            if pr.is_key_pressed(key.key):
+                key.hook()
 
 # class ColisionSystem(System):
 #     def __init__(self):

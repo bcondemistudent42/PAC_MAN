@@ -1,4 +1,4 @@
-from typing import TypeVar, cast
+from typing import TypeVar, cast, Callable
 
 import pyray as pr
 
@@ -70,3 +70,8 @@ class Display(Component):
 class Sprites(Component):
     def __init__(self, sprites_animiation: list[str]):
         self.sprites_animation = sprites_animiation
+
+class KeyHook(Component):
+    def __init__(self, key: pr.KeyboardKey, hook: Callable) -> None:
+        self.key = key
+        self.hook = hook
