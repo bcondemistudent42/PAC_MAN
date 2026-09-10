@@ -4,9 +4,12 @@ from pacman.engine.ecs import Entity, Sprites, Velocity
 
 
 def make_death(entity: Entity, death_sprites: list[str]):
-    entity.components[Velocity].x = 0
-    entity.components[Velocity].y = 0
-    entity.components[Sprites].sprites_animation = death_sprites
+    velocity_component = entity.get_component(Velocity)
+    sprite_component = entity.get_component(Sprites)
+    
+    velocity_component.x = 0
+    velocity_component.y = 0
+    sprite_component.sprites_animation = death_sprites
     # to see which respawn to put
 
 
