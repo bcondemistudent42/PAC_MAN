@@ -68,5 +68,8 @@ class Display(Component):
         self.flag = flag
 
 class Sprites(Component):
-    def __init__(self, sprites_animiation: list[str]):
-        self.sprites_animation = sprites_animiation
+    def __init__(self, sprites_animation: list[str]):
+        self.sprites_animation = sprites_animation
+        self.sprite_index = 0
+        self.frame = 0
+        self.cooldown = 0.1

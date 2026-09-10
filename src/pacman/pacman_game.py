@@ -60,13 +60,13 @@ class PacmanGame:
 
     def create_movable_entities(self):
         self.create_pacman()
-        self.create_ghosts()
+        # self.create_ghosts()
 
     def create_pacman(self):
 
         # to spawn at the center of the map
-        p = Position(150, 10)
-        v = Velocity(-1, 0)
+        p = Position(0, 10)
+        v = Velocity(1, 0)
         spr = Sprites(["pacman-right-1"])
         hitbox = Hitbox(10, 10)
         col = Collision("pacman")
