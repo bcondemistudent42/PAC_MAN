@@ -36,7 +36,7 @@ class GameEngine:
             self.systems.extend(system)
         else:
             print(f"{system}, {type(system)}")
-            raise ValueError("Cannot add this in system to adapt add system")
+            raise TypeError("Cannot add this in system to adapt add system")
 
     def add_entities(self, entity: Entity | list[Entity]) -> None:
         if isinstance(entity, Entity):
@@ -45,7 +45,7 @@ class GameEngine:
             for e in entity:
                 self.add_single_entity(e)
         else:
-            raise ValueError("Cannot add this in entities to adapt add entities")
+            raise TypeError("Cannot add this in entities to adapt add entities")
 
     def add_single_entity(self, entity: Entity) -> None:
         self.entities.append(entity)

@@ -7,7 +7,6 @@ from pacman.engine.game_engine import GameEngine
 from pacman.engine.systems.systems import CollisionSystem, MovementSystem, SpriteSystem
 from pacman.services.sprites import SpriteService, config
 
-
 collision_system = CollisionSystem(None)
 
 class PacmanGame:

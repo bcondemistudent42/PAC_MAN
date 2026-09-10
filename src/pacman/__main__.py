@@ -15,3 +15,4 @@ if __name__ == "__main__":
 
 
     # feat docs chore fix refactor 
+    # to scale all the images
