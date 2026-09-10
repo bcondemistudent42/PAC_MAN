@@ -121,6 +121,7 @@ class SpriteSystem(System):
             index = sprite_component.sprite_index
             x = position_component.x
             y = position_component.y
+
             pr.draw_texture_ex(
                 self.ressources[SpriteService].get_sprite(
                     sprite_component.sprites_animation[index]
