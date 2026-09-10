@@ -30,8 +30,9 @@ class FtPyray:
         x_out = x_in - margin
         y_out = y_in - margin
 
+# to put the actual last sprite of the entities in a list and then extend it 
+# with the death sprites to follow animiation
         img_to_display = [
-            "pacman-right-1",
             "pacman-dead-1",
             "pacman-dead-2",
             "pacman-dead-3",

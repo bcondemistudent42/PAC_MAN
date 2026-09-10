@@ -67,3 +67,8 @@ class Map(Component):
 class Display(Component):
     def __init__(self, flag: bool = True):
         self.flag = flag
+
+class DeathAnimation(Component):
+    def __init__(self, sprites_animiation: list[str], flag: bool = False):
+        self.flag = flag
+        self.sprites_animation = sprites_animiation
