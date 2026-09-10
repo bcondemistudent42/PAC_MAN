@@ -65,7 +65,7 @@ class PacmanGame:
     def create_pacman(self):
 
         # to spawn at the center of the map
-        p = Position(0, 10)
+        p = Position(150, 10)
         v = Velocity(1, 0)
         spr = Sprites(["pacman-right-1"])
         hitbox = Hitbox(10, 10)

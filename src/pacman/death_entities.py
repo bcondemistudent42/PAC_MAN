@@ -7,6 +7,7 @@ def make_death(entity: Entity, death_sprites: list[str]):
     entity.components[Velocity].x = 0
     entity.components[Velocity].y = 0
     entity.components[Sprites].sprites_animation = death_sprites
+    # to see which respawn to put
 
 
 class DeathSprites(Enum):
