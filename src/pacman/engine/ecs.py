@@ -76,7 +76,7 @@ class Sprites(Component):
 
 
 class KeyHook(Component):
-    def __init__(self, key: pr.KeyboardKey, hook: Callable) -> None:
-        self.key = key
-        self.hook = hook
+    def __init__(self, keys: dict[pr.KeyboardKey, Callable]) -> None:
+        self.keys = keys
+
     

@@ -2,10 +2,11 @@ import random
 
 import mazegenerator as mg
 
-from pacman.engine.ecs import Collision, Entity, Hitbox, Map, Position, Sprites, Velocity
+from pacman.engine.ecs import Collision, Entity, Hitbox, Map, Position, Sprites, Velocity, KeyHook
 from pacman.engine.game_engine import GameEngine
-from pacman.engine.systems.systems import CollisionSystem, MovementSystem, SpriteSystem
+from pacman.engine.systems.systems import CollisionSystem, MovementSystem, SpriteSystem, KeySystem
 from pacman.services.sprites import SpriteService, config
+import pyray as pr
 
 collision_system = CollisionSystem(None)
 
@@ -24,12 +25,14 @@ class PacmanGame:
         movement_system = MovementSystem(None)
         #collision_system = CollisionSystem(None)
         sprite_system = SpriteSystem({SpriteService: sprite_service})
+        keys_system = KeySystem(None)
 
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
         self.system[CollisionSystem] = collision_system
+        self.system[KeySystem] = keys_system
 
-        self.engine.add_system([movement_system, sprite_system, collision_system])
+        self.engine.add_system([movement_system, sprite_system, collision_system, keys_system])
 
     def make_full_setup(self):
         self.system_init()
@@ -71,6 +74,19 @@ class PacmanGame:
         hitbox = Hitbox(10, 10)
         col = Collision("pacman")
 
+        def on_left_key() -> None:
+            print("Left key pressed")
+            v.x = -1
+
+        def on_right_key() -> None:
+            print("Right key pressed")
+            v.x = 1
+
+        keys = KeyHook(keys={
+            pr.KEY_LEFT: on_left_key,
+            pr.KEY_RIGHT: on_right_key,
+        })
+
 
         pac_man = Entity("pac_man")
         pac_man.add_component(p)
@@ -78,6 +94,8 @@ class PacmanGame:
         pac_man.add_component(spr)
         pac_man.add_component(hitbox)
         pac_man.add_component(col)
+        pac_man.add_component(keys)
+
 
         self.engine.add_entities(pac_man)
 

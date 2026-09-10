@@ -138,7 +138,8 @@ class KeySystem(System):
 
     def run(self) -> None:
         for subscriber in self.subscribers:
-            key = subscriber.get_component(KeyHook)
+            key_hook = subscriber.get_component(KeyHook)
 
-            if pr.is_key_pressed(key.key):
-                key.hook()
+            for key, on_press in key_hook.keys.items():
+                if pr.is_key_pressed(key):
+                    on_press() 
