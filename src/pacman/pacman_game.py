@@ -76,15 +76,29 @@ class PacmanGame:
 
         def on_left_key() -> None:
             print("Left key pressed")
-            v.x = -1
+            v.x = -5
+            v.y = 0
 
         def on_right_key() -> None:
             print("Right key pressed")
-            v.x = 1
+            v.x = 5
+            v.y = 0
+
+        def on_up_key() -> None:
+            print("Top key pressed")
+            v.y = -5
+            v.x = 0
+
+        def on_down_key() -> None:
+            print("Bot key pressed")
+            v.y = 5
+            v.x = 0
 
         keys = KeyHook(keys={
             pr.KEY_LEFT: on_left_key,
             pr.KEY_RIGHT: on_right_key,
+            pr.KEY_UP: on_up_key,
+            pr.KEY_DOWN: on_down_key,
         })
 
 
