@@ -1,5 +1,6 @@
-import pyray as pr
 from typing import TypeVar, cast
+
+import pyray as pr
 
 
 class Component:
@@ -41,11 +42,9 @@ class Size(Component):
     def __init__(self, size: int):
         self.size = size
 
-# bcondemi feats
-
-class Sprite(Component):
-    def __init__(self, sprite_name: str):
-        self.sprite_name = sprite_name
+# class Sprite(Component):
+#     def __init__(self, sprite_name: str):
+#         self.sprite_name = sprite_name
 
 class Collision(Component):
     def __init__(self, tag: str):
@@ -68,7 +67,6 @@ class Display(Component):
     def __init__(self, flag: bool = True):
         self.flag = flag
 
-class DeathAnimation(Component):
-    def __init__(self, sprites_animiation: list[str], flag: bool = False):
-        self.flag = flag
+class Sprites(Component):
+    def __init__(self, sprites_animiation: list[str]):
         self.sprites_animation = sprites_animiation

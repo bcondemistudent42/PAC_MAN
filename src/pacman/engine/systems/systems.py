@@ -3,10 +3,11 @@ from abc import ABC, abstractmethod
 import pyray as pr
 
 pr.set_trace_log_level(pr.LOG_NONE)
-from pacman.engine.ecs import Collision, Component, Entity, Hitbox, Position, Sprite, Velocity
-from pacman.services.sprites import SpriteService
-from typing import Callable, TypeVar
 import itertools
+from collections.abc import Callable
+
+from pacman.engine.ecs import Collision, Component, Entity, Hitbox, Position, Velocity, Sprites
+from pacman.services.sprites import SpriteService
 
 
 class System(ABC):
@@ -62,9 +63,7 @@ class CollisionSystem(System):
                 f_pos.y + f_hit.height >= s_pos.y and
                 f_pos.y <= s_pos.y + s_hit.height
             ):
-                if (f_col.tag, s_col.tag) in self.router_map:
-                    self.router_map[(f_col.tag, s_col.tag)](first, second)
-                elif (s_col.tag, f_col.tag) in self.router_map:
+                if (f_col.tag, s_col.tag) in self.router_map or (s_col.tag, f_col.tag) in self.router_map:
                     self.router_map[(f_col.tag, s_col.tag)](first, second)
 
 
@@ -92,20 +91,21 @@ class MovementSystem(System):
 
 class SpriteSystem(System):
     def __init__(self, ressources: dict | None):
-        super().__init__([Position, Sprite])
+        super().__init__([Position, Sprites])
         self.ressources = ressources
         self.sprite_service = self.ressources[SpriteService]
 
     def run(self):
         for each_subscribed in self.subscribers:
-            img = self.sprite_service.get_sprite(
-                each_subscribed.components[Sprite].sprite_name
-            )
+            for each_sprite in each_subscribed.components[Sprites].sprites_animation:
 
-            x = each_subscribed.components[Position].x
-            y = each_subscribed.components[Position].y
+                x = each_subscribed.components[Position].x
+                y = each_subscribed.components[Position].y
 
-            pr.draw_texture(img, x, y, pr.WHITE)
+                pr.draw_texture(
+                    self.ressources[SpriteService].map[each_sprite],
+                    x, y,
+                    pr.WHITE)
 
 
 # class ColisionSystem(System):

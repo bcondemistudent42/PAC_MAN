@@ -2,7 +2,7 @@ import random
 
 import mazegenerator as mg
 
-from pacman.engine.ecs import Collision, Entity, Hitbox, Map, Position, Sprite, Velocity
+from pacman.engine.ecs import Collision, Entity, Hitbox, Map, Position, Sprites, Velocity
 from pacman.engine.game_engine import GameEngine
 from pacman.engine.systems.systems import CollisionSystem, MovementSystem, SpriteSystem
 from pacman.services.sprites import SpriteService, config
@@ -67,7 +67,7 @@ class PacmanGame:
         # to spawn at the center of the map
         p = Position(150, 10)
         v = Velocity(-1, 0)
-        spr = Sprite("pacman-right-1")
+        spr = Sprites(["pacman-right-1"])
         hitbox = Hitbox(10, 10)
         col = Collision("pacman")
 
@@ -93,7 +93,7 @@ class PacmanGame:
         # to spaw at the left top corner
         p = Position(10, 10)
         v = Velocity(1, 0)
-        spr = Sprite("inky-right-1")
+        spr = Sprites(["inky-right-1"])
         hitbox = Hitbox(10, 10)
         col = Collision("ghost")
 
@@ -112,7 +112,7 @@ class PacmanGame:
         # to spawn at the bottom right corner
         p = Position(190, 190)
         v = Velocity(1, 0)
-        spr = Sprite("clyde-right-1")
+        spr = Sprites(["clyde-right-1"])
 
         clyde = Entity("clyde")
         clyde.add_component(p)
@@ -126,7 +126,7 @@ class PacmanGame:
         # to spawn at the bottom left corner
         p = Position(10, 190)
         v = Velocity(1, 0)
-        spr = Sprite("blinky-right-1")
+        spr = Sprites(["blinky-right-1"])
 
         blinky = Entity("blinky")
         blinky.add_component(p)
@@ -140,7 +140,7 @@ class PacmanGame:
         # to spaw at the bottom left corner
         p = Position(190, 10)
         v = Velocity(1, 0)
-        spr = Sprite("pinky-right-1")
+        spr = Sprites(["pinky-right-1"])
 
         pinky = Entity("pinky")
         pinky.add_component(p)
