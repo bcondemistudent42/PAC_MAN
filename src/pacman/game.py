@@ -3,6 +3,7 @@ import random
 import mazegenerator as mg
 import pyray as pr
 
+from pacman.death import DeathSprites
 from pacman.engine.components import Entity
 from pacman.engine.components.defaults import (
     Collision,
@@ -76,7 +77,7 @@ class PacmanGame:
 
     def create_movable_entities(self):
         self.create_pacman()
-        # self.create_ghosts()
+        self.create_ghosts()
 
     def create_pacman(self):
 
@@ -84,7 +85,7 @@ class PacmanGame:
         p = Position(150, 100)
         v = Velocity(5, 0)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
-        hitbox = Hitbox(10, 10)
+        hitbox = Hitbox(65, 65)
 
         def on_left_key() -> None:
             print("Left key pressed")
@@ -119,9 +120,11 @@ class PacmanGame:
             spr.sprites = ["pacman-bottom-1", "pacman-bottom-2", "pacman-bottom-3"]
 
         def handle_pacman_ghost_collision() -> None:
-            print("Collision entre Pacman et un Ghost")
+            spr.sprites = DeathSprites().PACMAN
+            v.x = 0
+            v.y = 0
 
-        col = Collision("pacman", {"ghost": handle_pacman_ghost_collision()})
+        col = Collision("pacman", {"ghost": handle_pacman_ghost_collision})
 
         keys = KeyHook(
             keys={
@@ -152,58 +155,69 @@ class PacmanGame:
 
         # to spaw at the left top corner
         p = Position(10, 180)
-        v = Velocity(1, 0)
-        spr = Sprites(["inky-right-1"])
-        hitbox = Hitbox(10, 10)
-        col = Collision("ghost")
+        v = Velocity(3, 0)
+        spr = Sprites(["inky-right-1"], 0.1)
+        hitbox = Hitbox(65, 65)
+        col = Collision("ghost", {})
 
         inky = Entity("inky")
         inky.add_component(p)
-        inky.add_component(v)
-        inky.add_component(spr)
-        inky.add_component(hitbox)
         inky.add_component(col)
+        inky.add_component(spr)
+        inky.add_component(v)
+        inky.add_component(hitbox)
 
         self.engine.add_entities(inky)
 
     def create_clyde(self):
 
         # to spawn at the bottom right corner
-        p = Position(190, 190)
-        v = Velocity(1, 0)
-        spr = Sprites(["clyde-right-1"])
+        p = Position(590, 590)
+        # v = Velocity(1, 0)
+        spr = Sprites(["clyde-right-1"], 0.1)
+        hitbox = Hitbox(65, 65)
+
+        col = Collision("ghost", {})
 
         clyde = Entity("clyde")
         clyde.add_component(p)
-        clyde.add_component(v)
+        clyde.add_component(col)
         clyde.add_component(spr)
-
+        clyde.add_component(hitbox)
         self.engine.add_entities(clyde)
 
     def create_blinky(self):
 
         # to spawn at the bottom left corner
-        p = Position(10, 190)
-        v = Velocity(1, 0)
-        spr = Sprites(["blinky-right-1"])
+        p = Position(1000, 190)
+        # v = Velocity(1, 0)
+        col = Collision("ghost", {})
+        spr = Sprites(["blinky-right-1"], 0.1)
+        hitbox = Hitbox(65, 65)
 
         blinky = Entity("blinky")
         blinky.add_component(p)
-        blinky.add_component(v)
+        blinky.add_component(col)
         blinky.add_component(spr)
+        blinky.add_component(hitbox)
 
         self.engine.add_entities(blinky)
 
     def create_pinky(self):
 
         # to spaw at the bottom left corner
-        p = Position(190, 150)
-        v = Velocity(1, 0)
-        spr = Sprites(["pinky-right-1"])
+        p = Position(290, 1050)
+        # v = Velocity(1, 0)
+        col = Collision("ghost", {})
+        hitbox = Hitbox(65, 65)
+
+        spr = Sprites(["pinky-right-1"], 0.1)
 
         pinky = Entity("pinky")
         pinky.add_component(p)
-        pinky.add_component(v)
+        pinky.add_component(col)
+        pinky.add_component(hitbox)
+
         pinky.add_component(spr)
 
         self.engine.add_entities(pinky)
