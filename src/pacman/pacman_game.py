@@ -70,7 +70,7 @@ class PacmanGame:
         # to spawn at the center of the map
         p = Position(150, 100)
         v = Velocity(1, 0)
-        spr = Sprites(["pacman-right-1"])
+        spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"])
         hitbox = Hitbox(10, 10)
         col = Collision("pacman")
 

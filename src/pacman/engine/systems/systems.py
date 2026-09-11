@@ -110,12 +110,16 @@ class SpriteSystem(System):
 
             sprite_component.frame += pr.get_frame_time()
 
+            print(f"{sprite_component.frame} >= {sprite_component.cooldown}")
+            print(f"{sprite_component.frame >= sprite_component.cooldown}")
             if sprite_component.frame >= sprite_component.cooldown:
                 if (
-                    sprite_component.sprite_index < 
+                    sprite_component.sprite_index <
                     len(sprite_component.sprites_animation) - 1
                 ):
                     sprite_component.sprite_index += 1
+                else:
+                    sprite_component.sprite_index = 0
                 sprite_component.frame = 0
 
             index = sprite_component.sprite_index
