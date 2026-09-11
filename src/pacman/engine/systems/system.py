@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import pyray as pr
 import itertools
 from collections.abc import Callable
-from pacman.engine.ecs import Component, Entity
+from pacman.engine.components import Component, Entity
 from pacman.services.sprites import SpriteService
 
 

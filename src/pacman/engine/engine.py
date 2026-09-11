@@ -1,7 +1,8 @@
 
 import pyray as pr
 
-from pacman.engine.ecs import Entity, System
+from pacman.engine.components import Entity
+from pacman.engine.systems import System
 
 
 class GameEngine:
