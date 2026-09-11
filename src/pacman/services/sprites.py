@@ -14,21 +14,21 @@ class SpriteSheetPos:
     width: int
 
 config = {
-    "pacman-right-1": SpriteSheetPos(x=457, y=1, width=9, height=13),
-    "pacman-right-2": SpriteSheetPos(x=473, y=1, width=13, height=13),
-    "pacman-right-3": SpriteSheetPos(x=489, y=1, width=13, height=13),
+    "pacman-right-1": SpriteSheetPos(x=457, y=1, width=14, height=14),
+    "pacman-right-2": SpriteSheetPos(x=473, y=1, width=14, height=14),
+    "pacman-right-3": SpriteSheetPos(x=489, y=1, width=14, height=14),
 
-    "pacman-left-1": SpriteSheetPos(x=462, y=17, width=9, height=13),
-    "pacman-left-2": SpriteSheetPos(x=475, y=17, width=12, height=13),
-    "pacman-left-3": SpriteSheetPos(x=490, y=17, width=13, height=13),
+    "pacman-left-1": SpriteSheetPos(x=457, y=17, width=14, height=14),
+    "pacman-left-2": SpriteSheetPos(x=473, y=17, width=14, height=14),
+    "pacman-left-3": SpriteSheetPos(x=489, y=17, width=14, height=14),
 
-    "pacman-top-1": SpriteSheetPos(x=457, y=38, width=13, height=9),
-    "pacman-top-2": SpriteSheetPos(x=473, y=35, width=12, height=13),
-    "pacman-top-3": SpriteSheetPos(x=489, y=34, width=13, height=13),
+    "pacman-top-1": SpriteSheetPos(x=457, y=34, width=14, height=14),
+    "pacman-top-2": SpriteSheetPos(x=473, y=34, width=14, height=14),
+    "pacman-top-3": SpriteSheetPos(x=489, y=34, width=14, height=14),
 
-    "pacman-bottom-1": SpriteSheetPos(x=457, y=49, width=13, height=9),
-    "pacman-bottom-2": SpriteSheetPos(x=473, y=49, width=13, height=12),
-    "pacman-bottom-3": SpriteSheetPos(x=489, y=49, width=13, height=13),
+    "pacman-bottom-1": SpriteSheetPos(x=457, y=49, width=14, height=14),
+    "pacman-bottom-2": SpriteSheetPos(x=473, y=49, width=14, height=14),
+    "pacman-bottom-3": SpriteSheetPos(x=489, y=49, width=14, height=14),
 
     "pacman-dead-1": SpriteSheetPos(x=505, y=3, width=13, height=9),
     "pacman-dead-2": SpriteSheetPos(x=520, y=4, width=15, height=8),

@@ -47,8 +47,9 @@ class Size(Component):
 #         self.sprite_name = sprite_name
 
 class Collision(Component):
-    def __init__(self, tag: str):
+    def __init__(self, tag: str, collision_map: dict[str, Callable]):
         self.tag = tag
+        self.collision_map = collision_map
 
 class Hitbox(Component):
     def __init__(
@@ -68,11 +69,11 @@ class Display(Component):
         self.flag = flag
 
 class Sprites(Component):
-    def __init__(self, sprites_animation: list[str]):
-        self.sprites_animation = sprites_animation
+    def __init__(self, sprites: list[str], cooldown: float):
+        self.sprites = sprites
         self.sprite_index = 0
         self.frame: float = 0
-        self.cooldown = 0.1
+        self.cooldown = cooldown
 
 
 class KeyHook(Component):

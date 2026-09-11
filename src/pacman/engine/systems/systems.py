@@ -37,18 +37,6 @@ class CollisionSystem(System):
     def __init__(self, ressources: dict | None):
         super().__init__([Position, Collision])
         self.ressources = ressources
-        self.router_map: dict[
-            tuple[str, str], Callable[[Entity, Entity], None]
-        ] = {}
-
-    def router(self, first: str, second: str) -> Callable:
-        def marker(
-            func: Callable[[Entity, Entity], None]
-        ) -> Callable[[Entity, Entity], None]:
-            self.router_map[(first, second)] = func
-            self.router_map[(second, first)] = func
-            return func
-        return marker
 
     def run(self) -> None:
         for first, second in itertools.combinations(self.subscribers, 2):
@@ -69,10 +57,11 @@ class CollisionSystem(System):
                 f_pos.y + f_hit.height >= s_pos.y and
                 f_pos.y <= s_pos.y + s_hit.height
             ):
-                if (f_col.tag, s_col.tag) in self.router_map:
-                    self.router_map[(f_col.tag, s_col.tag)](first, second)
-                elif (s_col.tag, f_col.tag) in self.router_map:
-                    self.router_map[(s_col.tag, f_col.tag)](first, second)
+                if s_col.tag in f_col.collision_map:
+                    f_col.collision_map[s_col.tag]()
+                elif f_col.tag in s_col.collision_map:
+                    s_col.collision_map[f_col.tag]()
+
 
 
 class MovementSystem(System):
@@ -115,7 +104,7 @@ class SpriteSystem(System):
             if sprite_component.frame >= sprite_component.cooldown:
                 if (
                     sprite_component.sprite_index <
-                    len(sprite_component.sprites_animation) - 1
+                    len(sprite_component.sprites) - 1
                 ):
                     sprite_component.sprite_index += 1
                 else:
@@ -128,7 +117,7 @@ class SpriteSystem(System):
 
             pr.draw_texture_ex(
                 self.ressources[SpriteService].get_sprite(
-                    sprite_component.sprites_animation[index]
+                    sprite_component.sprites[index]
                 ),
                 pr.Vector2(x, y),
                 0.0,
