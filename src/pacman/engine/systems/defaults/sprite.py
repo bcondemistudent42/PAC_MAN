@@ -1,7 +1,9 @@
-from pacman.engine.systems.system import System
-from pacman.engine.components.defaults import Position, Sprites
-from pacman.services.sprites import SpriteService
 import pyray as pr
+
+from pacman.engine.components.defaults import Position, Sprites
+from pacman.engine.systems.system import System
+from pacman.services.sprites import SpriteService
+
 
 class SpriteSystem(System):
     def __init__(self, ressources: dict):
@@ -19,10 +21,7 @@ class SpriteSystem(System):
             # print(f"{sprite_component.frame} >= {sprite_component.cooldown}")
             # print(f"{sprite_component.frame >= sprite_component.cooldown}")
             if sprite_component.frame >= sprite_component.cooldown:
-                if (
-                    sprite_component.sprite_index <
-                    len(sprite_component.sprites) - 1
-                ):
+                if sprite_component.sprite_index < len(sprite_component.sprites) - 1:
                     sprite_component.sprite_index += 1
                 else:
                     sprite_component.sprite_index = 0
@@ -32,7 +31,6 @@ class SpriteSystem(System):
             x = position_component.x
             y = position_component.y
 
-
             pr.draw_texture_ex(
                 self.ressources[SpriteService].get_sprite(
                     sprite_component.sprites[index]
@@ -40,5 +38,5 @@ class SpriteSystem(System):
                 pr.Vector2(x, y),
                 0.0,
                 5.0,
-                pr.WHITE
+                pr.WHITE,
             )

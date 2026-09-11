@@ -1,20 +1,34 @@
 import random
 
 import mazegenerator as mg
-
-from pacman.engine.components.defaults import Collision, Hitbox, Map, Position, Sprites, Velocity, KeyHook
-from pacman.engine.systems.defaults import CollisionSystem, KeySystem, MovementSystem, SpriteSystem
-from pacman.engine.components import Entity
-from src.pacman.engine.engine import GameEngine
-from pacman.services.sprites import SpriteService, config
 import pyray as pr
 
+from pacman.engine.components import Entity
+from pacman.engine.components.defaults import (
+    Collision,
+    Hitbox,
+    KeyHook,
+    Map,
+    Position,
+    Sprites,
+    Velocity,
+)
+from pacman.engine.systems.defaults import (
+    CollisionSystem,
+    KeySystem,
+    MovementSystem,
+    SpriteSystem,
+)
+from pacman.services.sprites import SpriteService, config
+from src.pacman.engine.engine import GameEngine
+
 collision_system = CollisionSystem(None)
+
 
 class PacmanGame:
     def __init__(self, engine: GameEngine):
         self.engine = engine
-        self.system = {} #system name class: system instance
+        self.system = {}  # system name class: system instance
 
     def start_game(self):
         self.engine.run()
@@ -24,7 +38,7 @@ class PacmanGame:
         sprite_service = SpriteService(sprite_sheet, config)
         sprite_service.init_sprites()
         movement_system = MovementSystem(None)
-        #collision_system = CollisionSystem(None)
+        # collision_system = CollisionSystem(None)
         sprite_system = SpriteSystem({SpriteService: sprite_service})
         keys_system = KeySystem(None)
 
@@ -33,7 +47,9 @@ class PacmanGame:
         self.system[CollisionSystem] = collision_system
         self.system[KeySystem] = keys_system
 
-        self.engine.add_system([movement_system, sprite_system, collision_system, keys_system])
+        self.engine.add_system(
+            [movement_system, sprite_system, collision_system, keys_system]
+        )
 
     def make_full_setup(self):
         self.system_init()
@@ -42,15 +58,11 @@ class PacmanGame:
 
     def make_entities_lvl(self) -> None:
 
-        self.engine.add_entities(
-            self.create_level(True)
-        )
+        self.engine.add_entities(self.create_level(True))
         for i in range(10):
-            self.engine.add_entities(
-                self.create_level()
-            )
+            self.engine.add_entities(self.create_level())
 
-    def create_level(self, first_level: bool= False):
+    def create_level(self, first_level: bool = False):
         my_maze = mg.MazeGenerator()
         if first_level:
             my_maze.generate(seed=42)
@@ -90,7 +102,6 @@ class PacmanGame:
             spr.sprite_index = 0
             spr.sprites = ["pacman-right-1", "pacman-right-2", "pacman-right-3"]
 
-
         def on_up_key() -> None:
             print("Top key pressed")
             v.y = -5
@@ -98,7 +109,6 @@ class PacmanGame:
 
             spr.sprite_index = 0
             spr.sprites = ["pacman-top-1", "pacman-top-2", "pacman-top-3"]
-
 
         def on_down_key() -> None:
             print("Down key pressed")
@@ -108,20 +118,19 @@ class PacmanGame:
             spr.sprite_index = 0
             spr.sprites = ["pacman-bottom-1", "pacman-bottom-2", "pacman-bottom-3"]
 
-
         def handle_pacman_ghost_collision() -> None:
             print("Collision entre Pacman et un Ghost")
 
         col = Collision("pacman", {"ghost": handle_pacman_ghost_collision()})
 
-
-        keys = KeyHook(keys={
-            pr.KEY_LEFT: on_left_key,
-            pr.KEY_RIGHT: on_right_key,
-            pr.KEY_UP: on_up_key,
-            pr.KEY_DOWN: on_down_key,
-        })
-
+        keys = KeyHook(
+            keys={
+                pr.KEY_LEFT: on_left_key,
+                pr.KEY_RIGHT: on_right_key,
+                pr.KEY_UP: on_up_key,
+                pr.KEY_DOWN: on_down_key,
+            }
+        )
 
         pac_man = Entity("pac_man")
         pac_man.add_component(p)
@@ -131,7 +140,6 @@ class PacmanGame:
         pac_man.add_component(col)
         pac_man.add_component(keys)
 
-
         self.engine.add_entities(pac_man)
 
     def create_ghosts(self):
@@ -139,7 +147,6 @@ class PacmanGame:
         self.create_clyde()
         self.create_blinky()
         self.create_pinky()
-
 
     def create_inky(self):
 
@@ -149,7 +156,6 @@ class PacmanGame:
         spr = Sprites(["inky-right-1"])
         hitbox = Hitbox(10, 10)
         col = Collision("ghost")
-
 
         inky = Entity("inky")
         inky.add_component(p)
@@ -201,4 +207,3 @@ class PacmanGame:
         pinky.add_component(spr)
 
         self.engine.add_entities(pinky)
-

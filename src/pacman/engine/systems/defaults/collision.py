@@ -1,6 +1,8 @@
-from pacman.engine.systems.system import System
-from pacman.engine.components.defaults import Position, Collision, Hitbox
 import itertools
+
+from pacman.engine.components.defaults import Collision, Hitbox, Position
+from pacman.engine.systems.system import System
+
 
 class CollisionSystem(System):
     def __init__(self, ressources: dict | None):
@@ -16,19 +18,17 @@ class CollisionSystem(System):
             f_col = first.get_component(Collision)
             s_col = second.get_component(Collision)
 
-            #print(f"tag 1: {f_col.tag}, tag 2: {s_col.tag}")
+            # print(f"tag 1: {f_col.tag}, tag 2: {s_col.tag}")
             if s_col.tag == f_col.tag:
                 continue
 
             if (
-                f_pos.x + f_hit.width >= s_pos.x and
-                f_pos.x <= s_pos.x + s_hit.width and
-                f_pos.y + f_hit.height >= s_pos.y and
-                f_pos.y <= s_pos.y + s_hit.height
+                f_pos.x + f_hit.width >= s_pos.x
+                and f_pos.x <= s_pos.x + s_hit.width
+                and f_pos.y + f_hit.height >= s_pos.y
+                and f_pos.y <= s_pos.y + s_hit.height
             ):
                 if s_col.tag in f_col.collision_map:
                     f_col.collision_map[s_col.tag]()
                 elif f_col.tag in s_col.collision_map:
                     s_col.collision_map[f_col.tag]()
-
-

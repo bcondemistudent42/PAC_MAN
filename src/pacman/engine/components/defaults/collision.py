@@ -1,3 +1,4 @@
+from collections.abc import Callable
 
 from pacman.engine.components.component import Component
 

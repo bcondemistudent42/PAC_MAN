@@ -1,8 +1,9 @@
 from typing import TypeVar, cast
+
 from pacman.engine.components.component import Component
 
-
 T = TypeVar("T", bound=Component)
+
 
 class Entity:
     def __init__(self, id: str):

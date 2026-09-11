@@ -1,9 +1,6 @@
 from abc import ABC, abstractmethod
-import pyray as pr
-import itertools
-from collections.abc import Callable
+
 from pacman.engine.components import Component, Entity
-from pacman.services.sprites import SpriteService
 
 
 class System(ABC):
@@ -19,6 +16,4 @@ class System(ABC):
         self.subscribers.append(entity)
 
     @abstractmethod
-    def run():
-        ...
-
+    def run(): ...

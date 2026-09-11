@@ -1,7 +1,4 @@
-from pacman.engine.components.entity import Entity
 from pacman.engine.components.component import Component
+from pacman.engine.components.entity import Entity
 
-__all__ = [
-    "Entity",
-    "Component"
-]
+__all__ = ["Component", "Entity"]

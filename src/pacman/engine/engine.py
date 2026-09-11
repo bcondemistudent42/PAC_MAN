@@ -1,4 +1,3 @@
-
 import pyray as pr
 
 from pacman.engine.components import Entity
@@ -16,6 +15,7 @@ class GameEngine:
         # to clean in a function pr to see how to do ask anselme
 
         from src.pacman.game import PacmanGame
+
         setup = PacmanGame(self)
         setup.make_full_setup()
 
@@ -52,8 +52,7 @@ class GameEngine:
 
         for system in self.systems:
             if all(
-                required in entity.components
-                for required in system.required_components
+                required in entity.components for required in system.required_components
             ):
                 system.subscribe(entity)
 

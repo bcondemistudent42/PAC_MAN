@@ -1,6 +1,8 @@
-from pacman.engine.systems.system import System
-from pacman.engine.components.defaults import KeyHook
 import pyray as pr
+
+from pacman.engine.components.defaults import KeyHook
+from pacman.engine.systems.system import System
+
 
 class KeySystem(System):
     def __init__(self, ressources: dict | None):
@@ -13,4 +15,4 @@ class KeySystem(System):
 
             for key, on_press in key_hook.keys.items():
                 if pr.is_key_pressed(key):
-                    on_press() 
+                    on_press()

@@ -1,5 +1,6 @@
 from pacman.engine.components.component import Component
 
+
 class Position(Component):
     def __init__(self, x: int, y: int) -> None:
         self.x = x
