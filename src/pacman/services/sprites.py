@@ -93,10 +93,8 @@ class SpriteService:
                 pos.y : pos.y + pos.height, pos.x : pos.x + pos.width
             ]
 
-            for lines in sprite_raw:
-                for pixels in lines:
-                    if pixels[0] == 0 and pixels[1] == 0 and pixels[2] == 0:
-                        pixels[3] = 0
+            mask = (sprite_raw[:, :, :3] == [0, 0, 0]).all(axis=-1)
+            sprite_raw[mask, 3] = 0
 
             result = Image.fromarray(sprite_raw)
             bytes_arr = io.BytesIO()
