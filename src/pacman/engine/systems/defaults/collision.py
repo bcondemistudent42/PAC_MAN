@@ -1,5 +1,5 @@
 from pacman.engine.systems.system import System
-from pacman.engine.components import Position, Collision, Hitbox
+from pacman.engine.components.defaults import Position, Collision, Hitbox
 import itertools
 
 class CollisionSystem(System):

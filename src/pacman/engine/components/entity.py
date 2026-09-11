@@ -1,5 +1,5 @@
 from typing import TypeVar, cast
-from pacman.engine.components import Component
+from pacman.engine.components.component import Component
 
 
 T = TypeVar("T", bound=Component)

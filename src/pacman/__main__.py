@@ -1,5 +1,5 @@
 import pyray as pr
-from pacman.engine.ecs import Map
+from pacman.engine.components.defaults import Map
 from src.pacman.engine.engine import GameEngine
 
 pr.set_trace_log_level(pr.LOG_NONE)

@@ -1,5 +1,5 @@
 from pacman.engine.systems.system import System
-from pacman.engine.components import Position, Velocity
+from pacman.engine.components.defaults import Position, Velocity
 
 class MovementSystem(System):
     def __init__(self, ressources: dict):

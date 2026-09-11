@@ -1,5 +1,5 @@
 from pacman.engine.systems.system import System
-from pacman.engine.components import KeyHook
+from pacman.engine.components.defaults import KeyHook
 import pyray as pr
 
 class KeySystem(System):

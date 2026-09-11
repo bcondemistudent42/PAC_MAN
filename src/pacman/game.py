@@ -2,7 +2,9 @@ import random
 
 import mazegenerator as mg
 
-from pacman.engine.ecs import Collision, Entity, Hitbox, Map, Position, Sprites, Velocity, KeyHook, CollisionSystem, MovementSystem, SpriteSystem, KeySystem
+from pacman.engine.components.defaults import Collision, Hitbox, Map, Position, Sprites, Velocity, KeyHook
+from pacman.engine.systems.defaults import CollisionSystem, KeySystem, MovementSystem, SpriteSystem
+from pacman.engine.components import Entity
 from src.pacman.engine.engine import GameEngine
 from pacman.services.sprites import SpriteService, config
 import pyray as pr

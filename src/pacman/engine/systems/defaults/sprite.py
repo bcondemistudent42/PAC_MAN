@@ -1,5 +1,5 @@
 from pacman.engine.systems.system import System
-from pacman.engine.components import Position, Sprites
+from pacman.engine.components.defaults import Position, Sprites
 from pacman.services.sprites import SpriteService
 import pyray as pr
 

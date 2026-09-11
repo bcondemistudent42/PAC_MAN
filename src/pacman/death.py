@@ -24,6 +24,7 @@ class DeathSprites(Enum):
         "white-ghost-2"
     )
 
+<<<<<<< HEAD
     PACMAN = (
                 "pacman-dead-1",
                 "pacman-dead-2",
@@ -37,3 +38,18 @@ class DeathSprites(Enum):
                 "pacman-dead-10",
                 "pacman-dead-11"
     )
+=======
+    PACMAN = [
+        "pacman-dead-1",
+        "pacman-dead-2",
+        "pacman-dead-3",
+        "pacman-dead-4",
+        "pacman-dead-5",
+        "pacman-dead-6",
+        "pacman-dead-7",
+        "pacman-dead-8",
+        "pacman-dead-9",
+        "pacman-dead-10",
+        "pacman-dead-11"
+    ]
+>>>>>>> 1abaaa35c787c691af50873e48e6f7d544c54336
