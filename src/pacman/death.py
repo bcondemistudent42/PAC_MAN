@@ -1,4 +1,6 @@
-from pacman.engine.ecs import Entity, Sprites, Velocity
+from pacman.engine.components.defaults.sprites import Sprites
+from pacman.engine.components.defaults.velocity import Velocity
+from pacman.engine.components.entity import Entity
 
 
 def make_death(entity: Entity, death_sprites: list[str]):
