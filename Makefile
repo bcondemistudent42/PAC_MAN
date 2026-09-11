@@ -22,7 +22,7 @@ install:
 .PHONY: run
 run: install
 	@echo "$(BLUE)[ ᕕ( ᐛ )ᕗ ] Launching the generation engine...$(RESET)"
-	@$(UV) run python -m $(SRC_DIR)
+	@$(UV) run python -m $(NAME)
 
 .PHONY: debug
 debug:
