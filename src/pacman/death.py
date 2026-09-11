@@ -9,20 +9,22 @@ def make_death(entity: Entity, death_sprites: list[str]):
     
     velocity_component.x = 0
     velocity_component.y = 0
-    sprite_component.sprites_animation = death_sprites
-    # to see which respawn to put
+    # sprite_component.sprite_index = 0
+    sprite_component.sprites = death_sprites
+    # to see which respawn to put and freeze the position
+
 
 
 class DeathSprites(Enum):
 
-    GHOSTS = [
+    GHOSTS = (
         "blue-ghost-1",
         "blue-ghost-2",
         "white-ghost-1",
         "white-ghost-2"
-    ]
+    )
 
-    PACMAN = [
+    PACMAN = (
                 "pacman-dead-1",
                 "pacman-dead-2",
                 "pacman-dead-3",
@@ -34,4 +36,4 @@ class DeathSprites(Enum):
                 "pacman-dead-9",
                 "pacman-dead-10",
                 "pacman-dead-11"
-    ]
+    )

@@ -68,38 +68,42 @@ class PacmanGame:
 
         # to spawn at the center of the map
         p = Position(150, 100)
-        v = Velocity(2, 0)
+        v = Velocity(5, 0)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
         hitbox = Hitbox(10, 10)
 
         def on_left_key() -> None:
             print("Left key pressed")
-            v.x = -2
+            v.x = -5
             v.y = 0
 
+            spr.sprite_index = 0
             spr.sprites = ["pacman-left-1", "pacman-left-2", "pacman-left-3"]
 
         def on_right_key() -> None:
             print("Right key pressed")
-            v.x = 2
+            v.x = 5
             v.y = 0
 
+            spr.sprite_index = 0
             spr.sprites = ["pacman-right-1", "pacman-right-2", "pacman-right-3"]
 
 
         def on_up_key() -> None:
             print("Top key pressed")
-            v.y = -2
+            v.y = -5
             v.x = 0
 
+            spr.sprite_index = 0
             spr.sprites = ["pacman-top-1", "pacman-top-2", "pacman-top-3"]
 
 
         def on_down_key() -> None:
             print("Down key pressed")
-            v.y = 2
+            v.y = 5
             v.x = 0
 
+            spr.sprite_index = 0
             spr.sprites = ["pacman-bottom-1", "pacman-bottom-2", "pacman-bottom-3"]
 
 

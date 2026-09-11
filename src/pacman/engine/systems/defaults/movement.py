@@ -18,7 +18,7 @@ class MovementSystem(System):
             actu_position.x += velo.x
             actu_position.y += velo.y
 
-            # if actu_position.x > 270:
-            #     from pacman.death_entities import make_death, DeathSprites
-            #     make_death(subscriber, DeathSprites.PACMAN.value)
+            if actu_position.x > 270:
+                from pacman.death import make_death, DeathSprites
+                make_death(subscriber, DeathSprites.PACMAN.value)
 

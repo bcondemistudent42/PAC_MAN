@@ -16,8 +16,8 @@ class SpriteSystem(System):
 
             sprite_component.frame += pr.get_frame_time()
 
-            print(f"{sprite_component.frame} >= {sprite_component.cooldown}")
-            print(f"{sprite_component.frame >= sprite_component.cooldown}")
+            # print(f"{sprite_component.frame} >= {sprite_component.cooldown}")
+            # print(f"{sprite_component.frame >= sprite_component.cooldown}")
             if sprite_component.frame >= sprite_component.cooldown:
                 if (
                     sprite_component.sprite_index <
@@ -31,6 +31,7 @@ class SpriteSystem(System):
             index = sprite_component.sprite_index
             x = position_component.x
             y = position_component.y
+
 
             pr.draw_texture_ex(
                 self.ressources[SpriteService].get_sprite(
