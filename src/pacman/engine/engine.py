@@ -12,6 +12,7 @@ class GameEngine:
         monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
         pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
+
         # to clean in a function pr to see how to do ask anselme
 
         from src.pacman.game import PacmanGame
@@ -67,5 +68,31 @@ class GameEngine:
 
             for system in self.systems:
                 system.run()
+
+# to clean all this only for testing
+# TODO a proper dislay or render maze
+            # my_monitor = pr.get_current_monitor()
+            # monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
+            # monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
+            # rect_in_w = (monitor_w * 6) // 10
+            # rect_in_h = (monitor_h * 9) // 10
+            # x_in = (monitor_w - rect_in_w) // 2
+            # y_in = (monitor_h - rect_in_h) // 2
+
+            # margin = 10
+            # radius = 20
+
+            # rect_out_w = rect_in_w + (margin * 2)
+            # rect_out_h = rect_in_h + (margin * 2)
+            # x_out = x_in - margin
+            # y_out = y_in - margin
+
+            # from pacman.ft_pyray import FtPyray
+            # FtPyray.ft_draw_rounded_rectangle(
+            #     (x_in, y_in), rect_in_w, rect_in_h, radius, pr.BLUE
+            # )
+            # FtPyray.ft_draw_rounded_rectangle(
+            #     (x_out, y_out), rect_out_w, rect_out_h, radius, pr.BLUE
+            # )
 
             pr.end_drawing()
