@@ -20,6 +20,7 @@ from pacman.engine.systems.defaults import (
     MovementSystem,
     SpriteSystem,
 )
+from pacman.services.maps import PacmanMap
 from pacman.services.sprites import SpriteService, config
 from src.pacman.engine.engine import GameEngine
 
@@ -30,6 +31,7 @@ class PacmanGame:
     def __init__(self, engine: GameEngine):
         self.engine = engine
         self.system = {}  # system name class: system instance
+        self.map_service = PacmanMap(mg.MazeGenerator(), engine)
 
     def start_game(self):
         self.engine.run()
@@ -55,6 +57,7 @@ class PacmanGame:
     def make_full_setup(self):
         self.system_init()
         self.make_entities_lvl()
+        self.map_service.generate_map()
         self.create_movable_entities()
 
     def make_entities_lvl(self) -> None:
@@ -88,7 +91,9 @@ class PacmanGame:
         hitbox = Hitbox(65, 65)
 
         def on_left_key() -> None:
-            print("Left key pressed")
+            if v.x == -5 and v.y == 0:
+                return
+
             v.x = -5
             v.y = 0
 
@@ -96,15 +101,18 @@ class PacmanGame:
             spr.sprites = ["pacman-left-1", "pacman-left-2", "pacman-left-3"]
 
         def on_right_key() -> None:
-            print("Right key pressed")
+            if v.x == 5 and v.y == 0:
+                return
             v.x = 5
             v.y = 0
-
+            # TODO: add security on already right velocity vector to avoid key spamming sprite bugs
             spr.sprite_index = 0
             spr.sprites = ["pacman-right-1", "pacman-right-2", "pacman-right-3"]
 
         def on_up_key() -> None:
-            print("Top key pressed")
+            if v.y == -5 and v.x == 0:
+                return
+
             v.y = -5
             v.x = 0
 
@@ -112,7 +120,9 @@ class PacmanGame:
             spr.sprites = ["pacman-top-1", "pacman-top-2", "pacman-top-3"]
 
         def on_down_key() -> None:
-            print("Down key pressed")
+            if v.y == 5 and v.x == 0:
+                return
+
             v.y = 5
             v.x = 0
 

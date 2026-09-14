@@ -76,6 +76,19 @@ config = {
     "white-ghost-2": SpriteSheetPos(x=632, y=65, width=14, height=14),
     "ghost-eyes-right": SpriteSheetPos(x=584, y=84, width=9, height=4),
     "ghost-eyes-left": SpriteSheetPos(x=602, y=65, width=9, height=4),
+    "left-top-map-corner": SpriteSheetPos(x=0, y=0, width=8, height=8),
+    "left-bottom-map-corner": SpriteSheetPos(x=0, y=240, width=8, height=8),
+    "right-top-map-corner": SpriteSheetPos(x=216, y=0, width=8, height=8),
+    "right-bottom-map-corner": SpriteSheetPos(x=216, y=240, width=8, height=8),
+    "wall-top": SpriteSheetPos(x=24, y=16, width=8, height=8),
+    "wall-bottom": SpriteSheetPos(x=24, y=32, width=8, height=8),
+    "wall-left": SpriteSheetPos(x=16, y=24, width=8, height=8),
+    "wall-right": SpriteSheetPos(x=40, y=24, width=8, height=8),
+    "corner-top-left": SpriteSheetPos(x=16, y=16, width=8, height=8),
+    "corner-top-right": SpriteSheetPos(x=40, y=16, width=8, height=8),
+    "corner-bottom-left": SpriteSheetPos(x=16, y=32, width=8, height=8),
+    "corner-bottom-right": SpriteSheetPos(x=40, y=32, width=8, height=8),
+    "pacgum-cell": SpriteSheetPos(x=8, y=8, width=8, height=8),
 }
 
 

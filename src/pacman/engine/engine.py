@@ -24,8 +24,7 @@ class GameEngine:
     def __exit__(self, exc_type, exc_val, exc_tb):
         pr.close_window()
 
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self):
         self.entities: list[Entity] = []
         self.systems: list[System] = []
 
