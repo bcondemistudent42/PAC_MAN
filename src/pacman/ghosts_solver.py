@@ -68,7 +68,6 @@ class BlinkyBehavior(Behavior):
 
         while not_visited:
             actual_node = hp.heappop(not_visited)
-            # print(actual_node.coord)
             if actual_node.coord in visited:
                 continue
             visited.add(actual_node.coord)
@@ -103,19 +102,13 @@ class BlinkyBehavior(Behavior):
 
         actual_x, actual_y = actual_node.coord
 
-        if actual_x < 0 or actual_y< 0:
-            return
-        
-        if actual_x > matrix_size[0] - 1 or actual_y > matrix_size[1] - 1:
+        if actual_y >= matrix_size[1] - 1 or actual_x >= matrix_size[0] - 1:
             return
 
-        # if actual_x > matrix_size[0] or actual_y > matrix_size[1]:
-            # return
-
-        if self.maze[actual_x][actual_y] & 1 == 0:
-            if actual_y == 0 or (actual_x, actual_y - 1) in visited:
-                pass
-            else:
+        if actual_y == 0 or (actual_x, actual_y - 1) in visited:
+            pass
+        else:
+            if self.maze[actual_y][actual_x] & 1 == 0:
                 to_push = Node(
                     (actual_node, actual_node.coord),
                     self.heuristic((actual_x, actual_y - 1), goal),
@@ -124,22 +117,26 @@ class BlinkyBehavior(Behavior):
                     (actual_x, actual_y - 1)
                 )
                 hp.heappush(queu, to_push)
-        if self.maze[actual_x][actual_y] >> 1 & 1 == 0:
-            if actual_y == matrix_size[1] - 1 or (actual_x + 1, actual_y) in visited:
-                pass
-            else:
+        if actual_y >= matrix_size[1] - 1 or (actual_x + 1, actual_y) in visited:
+            pass
+        else:
+            # EST
+            if self.maze[actual_y][actual_x] >> 1 & 1 == 0:
+                new_x = actual_x + 1
                 to_push = Node(
                     (actual_node, actual_node.coord),
-                    self.heuristic((actual_x + 1, actual_y), goal),
+                    self.heuristic((new_x, actual_y), goal),
                     actual_node.cost + 1,
-                    self.heuristic((actual_x + 1, actual_y), goal) + actual_node.cost + 1,
-                    (actual_x + 1, actual_y)
+                    self.heuristic((new_x, actual_y), goal) + actual_node.cost + 1,
+                    (new_x, actual_y)
                 )
                 hp.heappush(queu, to_push)
-        if self.maze[actual_x][actual_y] >> 2 & 1 == 0:
-            if actual_x == matrix_size[0] - 1 or (actual_x, actual_y + 1) in visited:
-                pass
-            else:
+        if actual_x >= matrix_size[0] - 1 or (actual_x, actual_y + 1) in visited:
+            pass
+        else:
+            # SOUTH
+            # print("SOUTH")
+            if self.maze[actual_y][actual_x] >> 2 & 1 == 0:
                 to_push = Node(
                     (actual_node, actual_node.coord),
                     self.heuristic((actual_x, actual_y + 1), goal),
@@ -148,10 +145,10 @@ class BlinkyBehavior(Behavior):
                     (actual_x, actual_y + 1)
                 )
                 hp.heappush(queu, to_push)
-        if self.maze[actual_x][actual_y] >> 3 & 1 == 0:
-            if actual_x == 0 or (actual_x - 1, actual_y) in visited:
-                pass
-            else:
+        if actual_x == 0 or (actual_x - 1, actual_y) in visited:
+            pass
+        else:
+            if self.maze[actual_y][actual_x] >> 3 & 1 == 0:
                 to_push = Node(
                     (actual_node, actual_node.coord),
                     self.heuristic((actual_x - 1, actual_y), goal),
@@ -173,7 +170,7 @@ class BlinkyBehavior(Behavior):
 m_size = (15, 15)
 # my_maze_gen = mg.MazeGenerator(size=m_size)
 # my_maze_gen.generate(seed=42)
-matrix =[[11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3], [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 7, 10], [10, 12, 5, 4, 2, 12, 7, 9, 3, 10, 12, 5, 6, 9, 2], [10, 9, 5, 3, 14, 9, 5, 6, 10, 14, 9, 5, 3, 10, 10], [12, 6, 11, 12, 5, 6, 9, 3, 12, 5, 6, 11, 10, 10, 10], [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10], [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10], [10, 12, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10], [10, 11, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10], [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 6, 10], [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 11, 10], [9, 6, 9, 4, 7, 12, 6, 13, 3, 10, 9, 5, 6, 10, 10], [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10], [11, 12, 5, 5, 3, 12, 7, 10, 10, 12, 5, 5, 5, 3, 10], [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6]]
+matrix =[[11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3], [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 5, 2], [10, 12, 5, 4, 2, 12, 5, 1, 3, 10, 12, 5, 6, 9, 2], [10, 9, 1, 3, 10, 9, 5, 6, 10, 10, 9, 1, 3, 10, 10], [12, 6, 10, 12, 4, 6, 9, 3, 12, 4, 6, 10, 10, 10, 10], [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10], [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10], [10, 8, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10], [10, 10, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10], [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 2, 10], [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 10, 10], [9, 6, 9, 4, 5, 4, 4, 5, 3, 10, 9, 5, 6, 10, 10], [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10], [11, 12, 5, 5, 3, 12, 5, 2, 10, 12, 5, 5, 5, 3, 10], [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6]]
 ghost = (0, 0)
 pac_man = (5, 0)
 
@@ -185,7 +182,7 @@ blinky = BlinkyBehavior(
     m_size,
     matrix
 )
-road = blinky.find_pacman()
+road = blinky.find_pacman() 
 print(road)
 
 
