@@ -67,8 +67,8 @@ class BlinkyBehavior(Behavior):
         # to do a check a all the width is the same
 
         while not_visited:
-
             actual_node = hp.heappop(not_visited)
+            # print(actual_node.coord)
             if actual_node.coord in visited:
                 continue
             visited.add(actual_node.coord)
@@ -91,108 +91,93 @@ class BlinkyBehavior(Behavior):
             actual_node = actual_node[0].parent
         return output
 
-    def output_north(self, actual_node: Node, goal: Node):
-        x, y = actual_node.coord
-        y -= 1
-        estimated = self.heuristic((x, y), goal) + actual_node.cost + 1
-        to_push = Node(
-            (actual_node, actual_node.coord),
-            self.heuristic((x, y), goal),
-            actual_node.cost + 1,
-            estimated,
-            (x, y)
-        )
-        return to_push
-
-    def output_south(self, actual_node: Node, goal: Node):
-        x, y = actual_node.coord
-        y += 1
-        estimated = self.heuristic((x, y), goal) + actual_node.cost + 1
-        to_push = Node(
-            (actual_node, actual_node.coord),
-            self.heuristic((x, y), goal),
-            actual_node.cost + 1,
-            estimated,
-            (x, y)
-        )
-        return to_push
-
-    def output_west(self, actual_node: Node, goal: Node):
-        x, y = actual_node.coord
-        x -= 1
-        estimated = self.heuristic((x, y), goal) + actual_node.cost + 1
-        to_push = Node(
-            (actual_node, actual_node.coord),
-            self.heuristic((x, y), goal),
-            actual_node.cost + 1,
-            estimated,
-            (x, y)
-        )
-        return to_push
-
-    def output_east(self, actual_node: Node, goal: Node):
-        x, y = actual_node.coord
-        x += 1
-        estimated = self.heuristic((x, y), goal) + actual_node.cost + 1
-        to_push = Node(
-            (actual_node, actual_node.coord),
-            self.heuristic((x, y), goal),
-            actual_node.cost + 1,
-            estimated,
-            (x, y)
-        )
-        return to_push
-
 
     def add_neighbours(
         self,
         queu: hp.heapq,
         actual_node: Node,
         goal: (int, int),
-        visited: list(Node),
+        visited: set(int),
         matrix_size: (int, int)
     ):
 
-        which_node = ["N", "S", "W", "E"]
-
         actual_x, actual_y = actual_node.coord
 
-        if actual_x == 0:
-            which_node.remove("N")
-        if actual_x == matrix_size[0] - 1:
-            which_node.remove("S")
-        if actual_y == 0:
-            which_node.remove("W")
-        if actual_y == matrix_size[1] - 1:
-            which_node.remove("E")
+        if actual_x < 0 or actual_y< 0:
+            return
+        
+        if actual_x > matrix_size[0] - 1 or actual_y > matrix_size[1] - 1:
+            return
 
-        for cardinal in which_node:
-            if cardinal == "N":
-                check = self.output_north(actual_node, goal)
-                if not check.coord in visited:
-                    hp.heappush(queu, check)
-            elif cardinal == "S":
-                check = self.output_south(actual_node, goal)
-                if not check.coord in visited:
-                    hp.heappush(queu, check)
-            elif cardinal == "W":
-                check = self.output_west(actual_node, goal)
-                if not check.coord in visited:
-                    hp.heappush(queu, check)
-            elif cardinal == "E":
-                check = self.output_east(actual_node, goal)
-                if not check.coord in visited:
-                    hp.heappush(queu, check)
+        # if actual_x > matrix_size[0] or actual_y > matrix_size[1]:
+            # return
+
+        if self.maze[actual_x][actual_y] & 1 == 0:
+            if actual_y == 0 or (actual_x, actual_y - 1) in visited:
+                pass
+            else:
+                to_push = Node(
+                    (actual_node, actual_node.coord),
+                    self.heuristic((actual_x, actual_y - 1), goal),
+                    actual_node.cost + 1,
+                    self.heuristic((actual_x, actual_y - 1), goal) + actual_node.cost + 1,
+                    (actual_x, actual_y - 1)
+                )
+                hp.heappush(queu, to_push)
+        if self.maze[actual_x][actual_y] >> 1 & 1 == 0:
+            if actual_y == matrix_size[1] - 1 or (actual_x + 1, actual_y) in visited:
+                pass
+            else:
+                to_push = Node(
+                    (actual_node, actual_node.coord),
+                    self.heuristic((actual_x + 1, actual_y), goal),
+                    actual_node.cost + 1,
+                    self.heuristic((actual_x + 1, actual_y), goal) + actual_node.cost + 1,
+                    (actual_x + 1, actual_y)
+                )
+                hp.heappush(queu, to_push)
+        if self.maze[actual_x][actual_y] >> 2 & 1 == 0:
+            if actual_x == matrix_size[0] - 1 or (actual_x, actual_y + 1) in visited:
+                pass
+            else:
+                to_push = Node(
+                    (actual_node, actual_node.coord),
+                    self.heuristic((actual_x, actual_y + 1), goal),
+                    actual_node.cost + 1,
+                    self.heuristic((actual_x, actual_y + 1), goal) + actual_node.cost + 1,
+                    (actual_x, actual_y + 1)
+                )
+                hp.heappush(queu, to_push)
+        if self.maze[actual_x][actual_y] >> 3 & 1 == 0:
+            if actual_x == 0 or (actual_x - 1, actual_y) in visited:
+                pass
+            else:
+                to_push = Node(
+                    (actual_node, actual_node.coord),
+                    self.heuristic((actual_x - 1, actual_y), goal),
+                    actual_node.cost + 1,
+                    self.heuristic((actual_x - 1, actual_y), goal) + actual_node.cost + 1,
+                    (actual_x - 1, actual_y)
+                )
+                hp.heappush(queu, to_push)
 
 # to refacto pathfinding to adapt for maze of amazeing
 
 
 # To create behavior component for each ghosts
-matrix = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+# matrix = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-ghost = (0, 0)
-pac_man = (14, 14)
+
+# import mazegenerator as mg
+
 m_size = (15, 15)
+# my_maze_gen = mg.MazeGenerator(size=m_size)
+# my_maze_gen.generate(seed=42)
+matrix =[[11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3], [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 7, 10], [10, 12, 5, 4, 2, 12, 7, 9, 3, 10, 12, 5, 6, 9, 2], [10, 9, 5, 3, 14, 9, 5, 6, 10, 14, 9, 5, 3, 10, 10], [12, 6, 11, 12, 5, 6, 9, 3, 12, 5, 6, 11, 10, 10, 10], [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10], [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10], [10, 12, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10], [10, 11, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10], [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 6, 10], [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 11, 10], [9, 6, 9, 4, 7, 12, 6, 13, 3, 10, 9, 5, 6, 10, 10], [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10], [11, 12, 5, 5, 3, 12, 7, 10, 10, 12, 5, 5, 5, 3, 10], [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6]]
+ghost = (0, 0)
+pac_man = (5, 0)
+
+# print(matrix)
 
 blinky = BlinkyBehavior(
     ghost,

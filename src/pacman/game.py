@@ -70,7 +70,7 @@ class PacmanGame:
         else:
             my_maze.generate(seed=random.randint(0, 10000))
 
-        level_entity = Entity("level_0")
+        level_entity = Entity("level")
         map_component = Map(my_maze.maze)
         level_entity.add_component(map_component)
         return level_entity
