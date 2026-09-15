@@ -8,6 +8,7 @@ from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.size import Size
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
+from pacman.engine.components.defaults.target import Target
 
 __all__ = [
     "Collision",
@@ -19,5 +20,6 @@ __all__ = [
     "Position",
     "Size",
     "Sprites",
-    "Velocity",
+    "Target",
+    "Velocity"
 ]

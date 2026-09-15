@@ -12,6 +12,7 @@ from pacman.engine.components.defaults import (
     Map,
     Position,
     Sprites,
+    Target,
     Velocity,
 )
 from pacman.engine.systems.defaults import (
@@ -19,6 +20,7 @@ from pacman.engine.systems.defaults import (
     KeySystem,
     MovementSystem,
     SpriteSystem,
+    TargetSystem,
 )
 from pacman.services.sprites import SpriteService, config
 from src.pacman.engine.engine import GameEngine
@@ -42,14 +44,16 @@ class PacmanGame:
         # collision_system = CollisionSystem(None)
         sprite_system = SpriteSystem({SpriteService: sprite_service})
         keys_system = KeySystem(None)
+        target_sys = TargetSystem()
 
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
         self.system[CollisionSystem] = collision_system
         self.system[KeySystem] = keys_system
+        self.system[TargetSystem] = target_sys
 
         self.engine.add_system(
-            [movement_system, sprite_system, collision_system, keys_system]
+            [movement_system, sprite_system, collision_system, keys_system, target_sys]
         )
 
     def make_full_setup(self):
@@ -188,15 +192,25 @@ class PacmanGame:
 
     def create_blinky(self):
 
+        maze = [[11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3], [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 5, 2], [10, 12, 5, 4, 2, 12, 5, 1, 3, 10, 12, 5, 6, 9, 2], [10, 9, 1, 3, 10, 9, 5, 6, 10, 10, 9, 1, 3, 10, 10], [12, 6, 10, 12, 4, 6, 9, 3, 12, 4, 6, 10, 10, 10, 10], [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10], [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10], [10, 8, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10], [10, 10, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10], [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 2, 10], [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 10, 10], [9, 6, 9, 4, 5, 4, 4, 5, 3, 10, 9, 5, 6, 10, 10], [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10], [11, 12, 5, 5, 3, 12, 5, 2, 10, 12, 5, 5, 5, 3, 10], [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6]]
         # to spawn at the bottom left corner
+        t = Target(
+            (1000, 190),
+            (150, 100),
+            (15, 15),
+            maze
+        )
+
         p = Position(1000, 190)
-        # v = Velocity(1, 0)
+        v = Velocity(0, 0)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(65, 65)
 
         blinky = Entity("blinky")
         blinky.add_component(p)
+        blinky.add_component(t)
+        blinky.add_component(v)
         blinky.add_component(col)
         blinky.add_component(spr)
         blinky.add_component(hitbox)
