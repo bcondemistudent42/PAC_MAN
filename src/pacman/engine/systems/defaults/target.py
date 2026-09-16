@@ -16,12 +16,20 @@ class TargetSystem(System):
                 behavior_component = each_subscriber.get_component(Target)
                 x = each_subscriber.get_component(Position).x
                 y = each_subscriber.get_component(Position).y
+                # ghosts_coord = (0, 0)
                 pac_man_coord = (10, 10)
-                self.behavior = (
+                astar = behavior_component.behavior(
                     (x, y),
                     pac_man_coord,
                     behavior_component.maze_size,
                     behavior_component.maze,
                 )
-                # road = self.behavior.find_pacman()
-                # print(road)to see latee how to do compatible
+
+                road = astar.find_pacman()
+                print(road)
+                # to see latee how to do compatible
+
+
+def pixel_to_coord(display_maze_size: tuple[int, int], graph_size: tuple[int, int]):
+    _x_diplay, _y_display = display_maze_size
+    _x_graph, _y_graph = graph_size
