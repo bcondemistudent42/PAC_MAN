@@ -6,7 +6,7 @@ pr.set_trace_log_level(pr.LOG_NONE)
 
 
 def main():
-    with GameEngine("world") as world:
+    with GameEngine() as world:
         # print(world.entities[0].components[Map].map)
         world.run()
 
