@@ -191,10 +191,6 @@ class PacmanMap:
     def generate_map(self, seed: int = 0) -> None:
         self.generator.generate()
         self.map = self.generator.maze
-        # self.map = [
-        #     [0xFFFF] * 13
-        #     for _ in range(8)
-        # ]
 
         sprite_matrix = self.maze_to_matrix()
 
