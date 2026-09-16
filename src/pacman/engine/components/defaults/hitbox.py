@@ -7,3 +7,4 @@ class Hitbox(Component):
         self.height = height
         self.padding_x = padding_x
         self.padding_y = padding_y
+        # TODO: change coordinates for float

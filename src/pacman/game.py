@@ -154,7 +154,36 @@ class PacmanGame:
             v.x = 0
             v.y = 0
 
-        col = Collision("pacman", {"ghost": handle_pacman_ghost_collision})
+        def handle_pacman_wall_left_collision() -> None:
+            if v.x < 0:
+                v.x = 0
+                v.y = 0
+
+        def handle_pacman_wall_right_collision() -> None:
+            if v.x > 0:
+                v.x = 0
+                v.y = 0
+
+        def handle_pacman_wall_top_collision() -> None:
+            if v.y < 0:
+                v.x = 0
+                v.y = 0
+
+        def handle_pacman_wall_bottom_collision() -> None:
+            if v.y > 0:
+                v.x = 0
+                v.y = 0
+
+        col = Collision(
+            "pacman",
+            {
+                "ghost": handle_pacman_ghost_collision,
+                "wall-left": handle_pacman_wall_left_collision,
+                "wall-right": handle_pacman_wall_right_collision,
+                "wall-top": handle_pacman_wall_top_collision,
+                "wall-bottom": handle_pacman_wall_bottom_collision,
+            },
+        )
 
         keys = KeyHook(
             keys={

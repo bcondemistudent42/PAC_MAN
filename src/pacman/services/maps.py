@@ -213,6 +213,10 @@ class PacmanMap:
                     wall = Entity(f"wall_{x}_{y}")
                     wall.add_component(Position(base_x, base_y))
                     wall.add_component(Sprites([cell_value], 999999999999999999999999))
+                    wall.add_component(Hitbox(int(self.TILE_SIZE), int(self.TILE_SIZE)))
+                    col = Collision(cell_value, {})
+                    wall.add_component(col)
+
                     self.engine.add_single_entity(wall)
 
                 elif cell_value == "":
@@ -230,7 +234,7 @@ class PacmanMap:
                         col = Collision(
                             "pacgum", {"pacman": handle_pacman_pacgum_collision}
                         )
-                        hb = Hitbox(2, 2, 3, 3)
+                        hb = Hitbox(2, 2, 3, 3)  # Add scale
 
                         pacgum.add_component(col)
                         pacgum.add_component(hb)
