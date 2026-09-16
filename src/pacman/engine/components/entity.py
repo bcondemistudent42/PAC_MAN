@@ -15,3 +15,6 @@ class Entity:
 
     def get_component(self, component: type[T]) -> T:
         return cast(T, self.components[component])
+
+    def check_component(self, component: type[Component]) -> bool:
+        return bool(self.components.get(component))

@@ -10,6 +10,7 @@ class SpriteSystem(System):
         super().__init__([Position, Sprites])
         self.ressources = ressources
         self.sprite_service = self.ressources[SpriteService]
+        self.SCALE = self.ressources["scale"]
 
     def run(self):
         for each_subscribed in self.subscribers:
@@ -37,6 +38,6 @@ class SpriteSystem(System):
                 ),
                 pr.Vector2(x, y),
                 0.0,
-                5.0,
+                self.SCALE,
                 pr.WHITE,
             )

@@ -1,14 +1,22 @@
 from mazegenerator import MazeGenerator
 
 from pacman.engine import GameEngine
+from pacman.engine.components.defaults.collision import Collision
+from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.entity import Entity
+from pacman.engine.systems.defaults.collision import CollisionSystem
 
 
 class PacmanMap:
-    def __init__(self, generator: MazeGenerator, engine: GameEngine) -> None:
-        self.generator = generator
+    def __init__(
+        self, engine: GameEngine, scale: float, map_width: int, map_height: int
+    ) -> None:
+        self.generator = MazeGenerator(size=(map_width, map_height), perfect=True)
+
+        self.TILE_SIZE = 8 * scale
+
         self.engine = engine
         self.map = []
 
@@ -28,7 +36,7 @@ class PacmanMap:
 
                 result[y * 3 + 1][x * 3 + 1] = ""  # Centre vide
 
-                # Bords (pas de conflit possible entre eux)
+                # Bords
                 if nord:
                     result[y * 3][x * 3 + 1] = "wall-top"
                 if est:
@@ -38,9 +46,7 @@ class PacmanMap:
                 if ouest:
                     result[y * 3 + 1][x * 3] = "wall-left"
 
-                # Coins : calculés une seule fois selon la combinaison
-                # Haut-gauche : Nord & Ouest
-                # Haut-gauche : Nord & Ouest
+                # Coins
                 if nord and ouest:
                     result[y * 3][x * 3] = "corner-top-left"
                 elif nord:
@@ -194,23 +200,39 @@ class PacmanMap:
 
         sprite_matrix = self.maze_to_matrix()
 
-        SCALE = 5
-        TILE_SIZE = 8 * SCALE
+        col_sys = next(
+            sys for sys in self.engine.systems if isinstance(sys, CollisionSystem)
+        )
 
         for y, row in enumerate(sprite_matrix):
             for x, cell_value in enumerate(row):
-                base_x = x * TILE_SIZE
-                base_y = y * TILE_SIZE
+                base_x = x * self.TILE_SIZE
+                base_y = y * self.TILE_SIZE
 
                 if cell_value != "":
                     wall = Entity(f"wall_{x}_{y}")
                     wall.add_component(Position(base_x, base_y))
-                    wall.add_component(Sprites([cell_value], 0))
+                    wall.add_component(Sprites([cell_value], 999999999999999999999999))
                     self.engine.add_single_entity(wall)
 
                 elif cell_value == "":
                     if (x % 3 == 1) and (y % 3 == 1):
                         pacgum = Entity(f"pacgum_{x}_{y}")
                         pacgum.add_component(Position(base_x, base_y))
-                        pacgum.add_component(Sprites(["pacgum-cell"], 0))
+                        pacgum.add_component(
+                            Sprites(["pacgum-cell"], 999999999999999999999999)
+                        )
+
+                        def handle_pacman_pacgum_collision(target=pacgum) -> None:
+                            target.get_component(Sprites).sprites = ["no-pacgum-cell"]
+                            col_sys.unsubscribe(target)
+
+                        col = Collision(
+                            "pacgum", {"pacman": handle_pacman_pacgum_collision}
+                        )
+                        hb = Hitbox(2, 2, 3, 3)
+
+                        pacgum.add_component(col)
+                        pacgum.add_component(hb)
+
                         self.engine.add_single_entity(pacgum)

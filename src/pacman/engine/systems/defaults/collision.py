@@ -1,32 +1,65 @@
 import itertools
 
 from pacman.engine.components.defaults import Collision, Hitbox, Position
+from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
 
 
 class CollisionSystem(System):
     def __init__(self, ressources: dict | None):
-        super().__init__([Position, Collision])
+        super().__init__([Position, Collision, Hitbox])
         self.ressources = ressources
 
     def run(self) -> None:
-        for first, second in itertools.combinations(self.subscribers, 2):
-            f_pos = first.get_component(Position)
-            s_pos = second.get_component(Position)
-            f_hit = first.get_component(Hitbox)
-            s_hit = second.get_component(Hitbox)
-            f_col = first.get_component(Collision)
-            s_col = second.get_component(Collision)
+        movers = []
+        statics = []
 
-            # print(f"tag 1: {f_col.tag}, tag 2: {s_col.tag}")
-            if s_col.tag == f_col.tag:
+        for subscriber in self.subscribers:
+            if subscriber.check_component(Velocity):
+                movers.append(
+                    (
+                        subscriber.get_component(Position),
+                        subscriber.get_component(Hitbox),
+                        subscriber.get_component(Collision),
+                    )
+                )
+            else:
+                statics.append(
+                    (
+                        subscriber.get_component(Position),
+                        subscriber.get_component(Hitbox),
+                        subscriber.get_component(Collision),
+                    )
+                )
+
+        for m_pos, m_hit, m_col in movers:
+            for s_pos, s_hit, s_col in statics:
+                if m_col.tag == s_col.tag:
+                    continue
+
+                if (
+                    m_pos.x + m_hit.padding_x + m_hit.width >= s_pos.x
+                    and m_pos.x <= s_pos.x + s_hit.padding_x + s_hit.width
+                    and m_pos.y + m_hit.padding_y + m_hit.height >= s_pos.y
+                    and m_pos.y <= s_pos.y + s_hit.padding_y + s_hit.height
+                ):
+                    if s_col.tag in m_col.collision_map:
+                        m_col.collision_map[s_col.tag]()
+                    elif m_col.tag in s_col.collision_map:
+                        s_col.collision_map[m_col.tag]()
+
+        for first, second in itertools.combinations(movers, 2):
+            f_pos, f_hit, f_col = first
+            s_pos, s_hit, s_col = second
+
+            if f_col.tag == s_col.tag:
                 continue
 
             if (
-                f_pos.x + f_hit.width >= s_pos.x
-                and f_pos.x <= s_pos.x + s_hit.width
-                and f_pos.y + f_hit.height >= s_pos.y
-                and f_pos.y <= s_pos.y + s_hit.height
+                f_pos.x + f_hit.padding_x + f_hit.width >= s_pos.x
+                and f_pos.x <= s_pos.x + s_hit.padding_x + s_hit.width
+                and f_pos.y + f_hit.padding_y + f_hit.height >= s_pos.y
+                and f_pos.y <= s_pos.y + s_hit.padding_y + s_hit.height
             ):
                 if s_col.tag in f_col.collision_map:
                     f_col.collision_map[s_col.tag]()

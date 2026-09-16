@@ -15,5 +15,8 @@ class System(ABC):
 
         self.subscribers.append(entity)
 
+    def unsubscribe(self, entity: Entity):
+        self.subscribers.remove(entity)
+
     @abstractmethod
     def run(): ...

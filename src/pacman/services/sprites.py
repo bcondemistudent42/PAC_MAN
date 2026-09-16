@@ -89,6 +89,7 @@ config = {
     "corner-bottom-left": SpriteSheetPos(x=16, y=32, width=8, height=8),
     "corner-bottom-right": SpriteSheetPos(x=40, y=32, width=8, height=8),
     "pacgum-cell": SpriteSheetPos(x=8, y=8, width=8, height=8),
+    "no-pacgum-cell": SpriteSheetPos(x=232, y=20, width=8, height=8),
 }
 
 

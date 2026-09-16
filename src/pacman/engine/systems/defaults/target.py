@@ -5,13 +5,12 @@ from pacman.engine.systems.system import System
 
 
 class TargetSystem(System):
-    def __init__(self):
+    def __init__(self, ressources: dict):
         super().__init__([Position, Velocity, Target])
         self.first_run = True
 
     def run(self):
         # to name better the var to see later first make it work
-        print("TEST CALING")
         if self.first_run:
             for each_subscriber in self.subscribers:
                 behavior_component = each_subscriber.get_component(Target)
@@ -22,8 +21,7 @@ class TargetSystem(System):
                     (x, y),
                     pac_man_coord,
                     behavior_component.maze_size,
-                    behavior_component.maze
+                    behavior_component.maze,
                 )
-                road = self.behavior.find_pacman()
+                # road = self.behavior.find_pacman()
                 # print(road)to see latee how to do compatible
-

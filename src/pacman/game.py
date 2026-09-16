@@ -33,7 +33,22 @@ class PacmanGame:
     def __init__(self, engine: GameEngine):
         self.engine = engine
         self.system = {}  # system name class: system instance
-        self.map_service = PacmanMap(mg.MazeGenerator(), engine)
+
+        map_width = 20
+        map_height = 20
+
+        cell_width_px = 24
+        cell_height_px = 24
+
+        map_pixel_width = map_width * cell_width_px
+        map_pixel_height = map_height * cell_height_px
+
+        self.SCALE = min(
+            engine.window_height / map_pixel_height,
+            engine.window_width / map_pixel_width,
+        )
+
+        self.map_service = PacmanMap(engine, self.SCALE, map_width, map_height)
 
     def start_game(self):
         self.engine.run()
@@ -42,11 +57,13 @@ class PacmanGame:
         sprite_sheet = "sprites/spritesheet.png"
         sprite_service = SpriteService(sprite_sheet, config)
         sprite_service.init_sprites()
-        movement_system = MovementSystem(None)
-        # collision_system = CollisionSystem(None)
-        sprite_system = SpriteSystem({SpriteService: sprite_service})
-        keys_system = KeySystem(None)
-        target_sys = TargetSystem()
+        movement_system = MovementSystem({})
+        collision_system = CollisionSystem({})
+        sprite_system = SpriteSystem(
+            {SpriteService: sprite_service, "scale": self.SCALE}
+        )
+        keys_system = KeySystem({})
+        target_sys = TargetSystem({})
 
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
@@ -90,44 +107,43 @@ class PacmanGame:
 
         # to spawn at the center of the map
         p = Position(150, 100)
-        v = Velocity(5, 0)
+        v = Velocity(1 * self.SCALE, 0)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
-        hitbox = Hitbox(65, 65)
+        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
 
         def on_left_key() -> None:
-            if v.x == -5 and v.y == 0:
+            if v.x < 0 and v.y == 0:
                 return
 
-            v.x = -5
+            v.x = -1.1 * self.SCALE
             v.y = 0
 
             spr.sprite_index = 0
             spr.sprites = ["pacman-left-1", "pacman-left-2", "pacman-left-3"]
 
         def on_right_key() -> None:
-            if v.x == 5 and v.y == 0:
+            if v.x > 0 and v.y == 0:
                 return
-            v.x = 5
+            v.x = 1.1 * self.SCALE
             v.y = 0
-            # TODO: add security on already right velocity vector to avoid key spamming sprite bugs
             spr.sprite_index = 0
             spr.sprites = ["pacman-right-1", "pacman-right-2", "pacman-right-3"]
 
         def on_up_key() -> None:
-            if v.y == -5 and v.x == 0:
+            if v.y < 0 and v.x == 0:
                 return
 
-            v.y = -5
+            v.y = -1.1 * self.SCALE
             v.x = 0
 
             spr.sprite_index = 0
             spr.sprites = ["pacman-top-1", "pacman-top-2", "pacman-top-3"]
 
         def on_down_key() -> None:
-            if v.y == 5 and v.x == 0:
+            if v.y > 0 and v.x == 0:
                 return
 
-            v.y = 5
+            v.y = 1.1 * self.SCALE
             v.x = 0
 
             spr.sprite_index = 0
@@ -171,7 +187,7 @@ class PacmanGame:
         p = Position(10, 180)
         v = Velocity(3, 0)
         spr = Sprites(["inky-right-1"], 0.1)
-        hitbox = Hitbox(65, 65)
+        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
         col = Collision("ghost", {})
 
         inky = Entity("inky")
@@ -189,7 +205,7 @@ class PacmanGame:
         p = Position(590, 590)
         # v = Velocity(1, 0)
         spr = Sprites(["clyde-right-1"], 0.1)
-        hitbox = Hitbox(65, 65)
+        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
 
         col = Collision("ghost", {})
 
@@ -202,20 +218,31 @@ class PacmanGame:
 
     def create_blinky(self):
 
-        maze = [[11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3], [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 5, 2], [10, 12, 5, 4, 2, 12, 5, 1, 3, 10, 12, 5, 6, 9, 2], [10, 9, 1, 3, 10, 9, 5, 6, 10, 10, 9, 1, 3, 10, 10], [12, 6, 10, 12, 4, 6, 9, 3, 12, 4, 6, 10, 10, 10, 10], [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10], [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10], [10, 8, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10], [10, 10, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10], [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 2, 10], [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 10, 10], [9, 6, 9, 4, 5, 4, 4, 5, 3, 10, 9, 5, 6, 10, 10], [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10], [11, 12, 5, 5, 3, 12, 5, 2, 10, 12, 5, 5, 5, 3, 10], [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6]]
+        maze = [
+            [11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3],
+            [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 5, 2],
+            [10, 12, 5, 4, 2, 12, 5, 1, 3, 10, 12, 5, 6, 9, 2],
+            [10, 9, 1, 3, 10, 9, 5, 6, 10, 10, 9, 1, 3, 10, 10],
+            [12, 6, 10, 12, 4, 6, 9, 3, 12, 4, 6, 10, 10, 10, 10],
+            [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10],
+            [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10],
+            [10, 8, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10],
+            [10, 10, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10],
+            [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 2, 10],
+            [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 10, 10],
+            [9, 6, 9, 4, 5, 4, 4, 5, 3, 10, 9, 5, 6, 10, 10],
+            [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10],
+            [11, 12, 5, 5, 3, 12, 5, 2, 10, 12, 5, 5, 5, 3, 10],
+            [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6],
+        ]
         # to spawn at the bottom left corner
-        t = Target(
-            (1000, 190),
-            (150, 100),
-            (15, 15),
-            maze
-        )
+        t = Target((1000, 190), (150, 100), (15, 15), maze)
 
         p = Position(1000, 190)
         v = Velocity(0, 0)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
-        hitbox = Hitbox(65, 65)
+        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
 
         blinky = Entity("blinky")
         blinky.add_component(p)
@@ -233,7 +260,7 @@ class PacmanGame:
         p = Position(290, 1050)
         # v = Velocity(1, 0)
         col = Collision("ghost", {})
-        hitbox = Hitbox(65, 65)
+        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
 
         spr = Sprites(["pinky-right-1"], 0.1)
 

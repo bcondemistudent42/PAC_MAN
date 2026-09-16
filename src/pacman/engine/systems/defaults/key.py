@@ -5,7 +5,7 @@ from pacman.engine.systems.system import System
 
 
 class KeySystem(System):
-    def __init__(self, ressources: dict | None):
+    def __init__(self, ressources: dict):
         super().__init__([KeyHook])
         self.ressources = ressources
 

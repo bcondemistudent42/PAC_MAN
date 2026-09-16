@@ -6,7 +6,7 @@ from pacman.engine.systems import System
 
 class GameEngine:
     def __enter__(self):
-        pr.init_window(1200, 800, "PACMAN DEBUG")
+        pr.init_window(self.window_width, self.window_height, "PACMAN DEBUG")
         my_monitor = pr.get_current_monitor()
         monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
         monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
@@ -28,6 +28,8 @@ class GameEngine:
     def __init__(self):
         self.entities: list[Entity] = []
         self.systems: list[System] = []
+        self.window_width = 1200
+        self.window_height = 800
 
     def add_system(self, system: list[System] | System) -> None:
         if isinstance(system, System):
@@ -62,14 +64,15 @@ class GameEngine:
         while not pr.window_should_close():
             i += 1
             pr.begin_drawing()
+            pr.draw_fps(10, 10)
 
             pr.clear_background(pr.BLACK)
 
             for system in self.systems:
                 system.run()
 
-# to clean all this only for testing
-# TODO a proper dislay or render maze
+            # to clean all this only for testing
+            # TODO a proper dislay or render maze
             # my_monitor = pr.get_current_monitor()
             # monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
             # monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
