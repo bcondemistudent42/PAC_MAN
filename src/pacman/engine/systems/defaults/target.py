@@ -16,20 +16,46 @@ class TargetSystem(System):
                 behavior_component = each_subscriber.get_component(Target)
                 x = each_subscriber.get_component(Position).x
                 y = each_subscriber.get_component(Position).y
+
+                trg = each_subscriber.get_component(Target).target_coord
+                x_target = trg.get_component(Position).x
+                y_target = trg.get_component(Position).y
+                print(x_target, y_target)
+                # each_subscriber.get_component(Target)
+
                 # ghosts_coord = (0, 0)
-                pac_man_coord = (10, 10)
                 astar = behavior_component.behavior(
-                    (x, y),
-                    pac_man_coord,
+                    (x // 30, y // 30),
+                    (x_target // 30, y_target // 30),
                     behavior_component.maze_size,
                     behavior_component.maze,
                 )
+
+                    # 30 is because it's actually to set with ressources
+                    # map_width = 10
+                    # map_height = 10
+                    # cell_width_px =30
+                    # cell_height_px = 30
 
                 road = astar.find_pacman()
                 print(road)
                 # to see latee how to do compatible
 
 
-def pixel_to_coord(display_maze_size: tuple[int, int], graph_size: tuple[int, int]):
-    _x_diplay, _y_display = display_maze_size
-    _x_graph, _y_graph = graph_size
+# def pixel_to_coord(
+#     display_maze_size: tuple[int, int],
+#     graph_size: tuple[int, int],
+#     coord: tuple[int, int]
+# ):
+#     # x_diplay, y_display = display_maze_size
+#     # x_graph, y_graph = graph_size
+#     cell_size_pix = 30
+#     graph_size = 10
+
+#     x, y = coord
+
+#     corect_x = x / 30
+#     corect_y = y / 30
+
+
+

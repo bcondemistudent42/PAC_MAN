@@ -34,11 +34,11 @@ class PacmanGame:
         self.engine = engine
         self.system = {}  # system name class: system instance
 
-        map_width = 20
-        map_height = 20
+        map_width = 10
+        map_height = 10
 
-        cell_width_px = 24
-        cell_height_px = 24
+        cell_width_px =30
+        cell_height_px = 30
 
         map_pixel_width = map_width * cell_width_px
         map_pixel_height = map_height * cell_height_px
@@ -100,8 +100,8 @@ class PacmanGame:
         return level_entity
 
     def create_movable_entities(self):
-        self.create_pacman()
-        self.create_ghosts()
+        pac_man = self.create_pacman()
+        self.create_ghosts(pac_man)
 
     def create_pacman(self):
 
@@ -203,11 +203,12 @@ class PacmanGame:
         pac_man.add_component(keys)
 
         self.engine.add_entities(pac_man)
+        return pac_man
 
-    def create_ghosts(self):
+    def create_ghosts(self, pac_man):
         self.create_inky()
         self.create_clyde()
-        self.create_blinky()
+        self.create_blinky(pac_man)
         self.create_pinky()
 
     def create_inky(self):
@@ -245,7 +246,7 @@ class PacmanGame:
         clyde.add_component(hitbox)
         self.engine.add_entities(clyde)
 
-    def create_blinky(self):
+    def create_blinky(self, pac_man):
 
         maze = [
             [11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3],
@@ -265,9 +266,9 @@ class PacmanGame:
             [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6],
         ]
         # to spawn at the bottom left corner
-        t = Target((1000, 190), (150, 100), (15, 15), maze)
+        t = Target((14, 18), pac_man, (15, 15), maze)
 
-        p = Position(1000, 190)
+        p = Position(14, 14)
         v = Velocity(0, 0)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
