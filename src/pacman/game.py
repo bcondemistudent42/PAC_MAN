@@ -34,11 +34,11 @@ class PacmanGame:
         self.engine = engine
         self.system = {}  # system name class: system instance
 
-        map_width = 10
-        map_height = 10
+        map_width = 30
+        map_height = 30
 
-        cell_width_px =30
-        cell_height_px = 30
+        cell_width_px = 24
+        cell_height_px = 24 # DO NOT TOUCH
 
         map_pixel_width = map_width * cell_width_px
         map_pixel_height = map_height * cell_height_px
@@ -47,6 +47,7 @@ class PacmanGame:
             engine.window_height / map_pixel_height,
             engine.window_width / map_pixel_width,
         )
+        print(self.SCALE)
 
         self.map_service = PacmanMap(engine, self.SCALE, map_width, map_height)
 
@@ -248,27 +249,11 @@ class PacmanGame:
 
     def create_blinky(self, pac_man):
 
-        maze = [
-            [11, 11, 9, 5, 5, 5, 1, 5, 7, 9, 5, 3, 9, 5, 3],
-            [10, 10, 12, 3, 9, 3, 12, 5, 5, 2, 9, 6, 8, 5, 2],
-            [10, 12, 5, 4, 2, 12, 5, 1, 3, 10, 12, 5, 6, 9, 2],
-            [10, 9, 1, 3, 10, 9, 5, 6, 10, 10, 9, 1, 3, 10, 10],
-            [12, 6, 10, 12, 4, 6, 9, 3, 12, 4, 6, 10, 10, 10, 10],
-            [9, 5, 4, 3, 15, 9, 2, 14, 15, 15, 15, 8, 6, 10, 10],
-            [10, 9, 5, 2, 15, 14, 12, 1, 5, 7, 15, 12, 5, 6, 10],
-            [10, 8, 3, 14, 15, 15, 15, 10, 15, 15, 15, 13, 1, 3, 10],
-            [10, 10, 12, 1, 5, 3, 15, 10, 15, 13, 5, 1, 6, 10, 10],
-            [10, 12, 3, 12, 3, 14, 15, 10, 15, 15, 15, 10, 9, 2, 10],
-            [12, 3, 12, 3, 12, 3, 9, 4, 5, 1, 5, 6, 10, 10, 10],
-            [9, 6, 9, 4, 5, 4, 4, 5, 3, 10, 9, 5, 6, 10, 10],
-            [12, 3, 12, 5, 5, 1, 5, 1, 2, 10, 12, 5, 5, 6, 10],
-            [11, 12, 5, 5, 3, 12, 5, 2, 10, 12, 5, 5, 5, 3, 10],
-            [12, 5, 5, 5, 4, 5, 5, 6, 12, 5, 5, 5, 7, 12, 6],
-        ]
+        maze = self.map_service.map
         # to spawn at the bottom left corner
-        t = Target((14, 18), pac_man, (15, 15), maze)
+        t = Target((14, 18), pac_man, (10, 10), maze)
 
-        p = Position(14, 14)
+        p = Position(14, 18)
         v = Velocity(0, 0)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)

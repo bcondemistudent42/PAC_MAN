@@ -10,13 +10,12 @@ class FtPyray:
         self.maze = maze
 
     def start_game(self):
-        pr.init_window(800, 450, "PACMAN")
 
         my_monitor = pr.get_current_monitor()
         monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
         monitor_h = int(pr.get_monitor_height(my_monitor) / 10) * 8
+        pr.init_window(monitor_w, monitor_h, "PACMAN")
 
-        pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
 
         rect_in_w = (monitor_w * 6) // 10

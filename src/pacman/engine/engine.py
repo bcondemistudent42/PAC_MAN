@@ -64,7 +64,7 @@ class GameEngine:
         while not pr.window_should_close():
             i += 1
             pr.begin_drawing()
-            pr.draw_fps(10, 10)
+            pr.draw_fps(1000, 10)
 
             pr.clear_background(pr.BLACK)
 

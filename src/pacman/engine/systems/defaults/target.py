@@ -20,13 +20,14 @@ class TargetSystem(System):
                 trg = each_subscriber.get_component(Target).target_coord
                 x_target = trg.get_component(Position).x
                 y_target = trg.get_component(Position).y
-                print(x_target, y_target)
-                # each_subscriber.get_component(Target)
+                print(int(x_target // (24 * 1.2)),  int(y_target // (24 * 1.2)))
+                each_subscriber.get_component(Target)
 
                 # ghosts_coord = (0, 0)
+                # to adapt with scale, some problem of mapping value
                 astar = behavior_component.behavior(
-                    (x // 30, y // 30),
-                    (x_target // 30, y_target // 30),
+                    (int(x // (24 * 1.2)), int(y // (24 * 1.2))),
+                    (int(x_target // (24 * 1.2)), int(y_target // (24 * 1.2))),
                     behavior_component.maze_size,
                     behavior_component.maze,
                 )
@@ -38,7 +39,7 @@ class TargetSystem(System):
                     # cell_height_px = 30
 
                 road = astar.find_pacman()
-                print(road)
+                # print(road)
                 # to see latee how to do compatible
 
 

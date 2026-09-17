@@ -13,7 +13,7 @@ class PacmanMap:
     def __init__(
         self, engine: GameEngine, scale: float, map_width: int, map_height: int
     ) -> None:
-        self.generator = MazeGenerator(size=(map_width, map_height), perfect=True)
+        self.generator = MazeGenerator(size=(map_width, map_height), perfect=False)
 
         self.TILE_SIZE = 8 * scale
 
