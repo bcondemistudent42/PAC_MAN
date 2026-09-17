@@ -1,3 +1,4 @@
+import re
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -16,8 +17,15 @@ class Parser(BaseModel):
 
 def parse():
     with open("config.json") as f:
-        data = json.load(f)
-        Parser.model_validate(data)
-        print(data)
+        raw_data = f.read()
+        print(raw_data)
+        first_clean = re.sub('//*', '', raw_data)
+        second_clean = re.sub('#*', '', first_clean)
+        # to see what to replace with
+
+        print(second_clean)
+
+    # cleaned_data = json.load(second_clean)
+    # Parser.model_validate(cleaned_data)
 
 parse()

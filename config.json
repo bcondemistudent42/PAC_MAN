@@ -1,8 +1,8 @@
 {
     "seed": 20,
     "lives": 100,
-    "level_max_time": 31,
-    "point_per_pacgum": 2,
-    "point_per_ghosts": 25,
-    "points_per_super_pacgum": 200
+    "level_max_time": 31
+    // "point_per_pacgum": 2,
+    // "point_per_ghosts": 25,
+    // "points_per_super_pacgum": 200
 }
