@@ -18,14 +18,16 @@ class Parser(BaseModel):
 def parse():
     with open("config.json") as f:
         raw_data = f.read()
-        print(raw_data)
-        first_clean = re.sub('//*', '', raw_data)
-        second_clean = re.sub('#*', '', first_clean)
+        # print(raw_data)
+        first_clean = re.sub(r'//.*', '', raw_data)
+        second_clean = re.sub(r'#.*', '', first_clean)
         # to see what to replace with
 
-        print(second_clean)
+        # print("\n============\n")
+        # print(second_clean)
 
-    # cleaned_data = json.load(second_clean)
-    # Parser.model_validate(cleaned_data)
+    # to write the result and then open it again
+    cleaned_data = json.loads(second_clean)
+    Parser.model_validate(cleaned_data)
 
 parse()
