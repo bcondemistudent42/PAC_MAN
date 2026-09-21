@@ -12,7 +12,6 @@ class Target(Component):
         maze: list[list[int]],
         behavior_class: type = BlinkyBehavior,
     ):
-        # to define special behavior later for each ghosts
         self.behavior = behavior_class
         self.entity_coord = entity_coord
         self.target_coord = target
