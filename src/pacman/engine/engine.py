@@ -26,8 +26,8 @@ class GameEngine:
     def __init__(self):
         self.entities: list[Entity] = []
         self.systems: list[System] = []
-        self.window_width = 1200
-        self.window_height = 800
+        self.window_width = 2000
+        self.window_height = 1500
 
     def add_system(self, system: list[System] | System) -> None:
         if isinstance(system, System):

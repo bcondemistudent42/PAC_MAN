@@ -13,14 +13,14 @@ class SpriteSystem(System):
     def run(self):
         self.sprite_service = self.ressources[SpriteService]
         self.SCALE = self.ressources["scale"]
+        tile_size = 8 * self.SCALE
+
         for each_subscribed in self.subscribers:
             sprite_component = each_subscribed.get_component(Sprites)
             position_component = each_subscribed.get_component(Position)
 
             sprite_component.frame += pr.get_frame_time()
 
-            # print(f"{sprite_component.frame} >= {sprite_component.cooldown}")
-            # print(f"{sprite_component.frame >= sprite_component.cooldown}")
             if sprite_component.frame >= sprite_component.cooldown:
                 if sprite_component.sprite_index < len(sprite_component.sprites) - 1:
                     sprite_component.sprite_index += 1
@@ -32,11 +32,14 @@ class SpriteSystem(System):
             x = position_component.x
             y = position_component.y
 
+            texture = self.sprite_service.get_sprite(sprite_component.sprites[index])
+
+            offset_x = (tile_size - texture.width * self.SCALE) / 2
+            offset_y = (tile_size - texture.height * self.SCALE) / 2
+
             pr.draw_texture_ex(
-                self.ressources[SpriteService].get_sprite(
-                    sprite_component.sprites[index]
-                ),
-                pr.Vector2(x, y),
+                texture,
+                pr.Vector2(x + offset_x, y + offset_y),
                 0.0,
                 self.SCALE,
                 pr.WHITE,

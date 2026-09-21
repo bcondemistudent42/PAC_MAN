@@ -137,7 +137,6 @@ class PacmanGame:
 
     def create_pacman(self):
 
-        # The playable position is the center sub-cell of the maze center.
         center = (self.map_width // 2) * 3 + 1
         tile_size = 8 * self.SCALE
         p = Position(center * tile_size, center * tile_size)
