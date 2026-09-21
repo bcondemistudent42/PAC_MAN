@@ -9,10 +9,10 @@ class SpriteSystem(System):
     def __init__(self, ressources: dict):
         super().__init__([Position, Sprites])
         self.ressources = ressources
-        self.sprite_service = self.ressources[SpriteService]
-        self.SCALE = self.ressources["scale"]
 
     def run(self):
+        self.sprite_service = self.ressources[SpriteService]
+        self.SCALE = self.ressources["scale"]
         for each_subscribed in self.subscribers:
             sprite_component = each_subscribed.get_component(Sprites)
             position_component = each_subscribed.get_component(Position)

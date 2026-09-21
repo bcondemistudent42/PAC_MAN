@@ -15,6 +15,8 @@ from pacman.engine.components.defaults import (
     Target,
     Velocity,
 )
+from pacman.engine.components.defaults.direction import Dir, Direction
+from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.systems.defaults import (
     CollisionSystem,
     KeySystem,
@@ -33,15 +35,16 @@ class PacmanGame:
     def __init__(self, engine: GameEngine):
         self.engine = engine
         self.system = {}  # system name class: system instance
+        self.ressources = {}
 
-        map_width = 30
-        map_height = 30
+        self.map_width = 15
+        self.map_height = 15
 
         cell_width_px = 24
-        cell_height_px = 24 # DO NOT TOUCH
+        cell_height_px = 24
 
-        map_pixel_width = map_width * cell_width_px
-        map_pixel_height = map_height * cell_height_px
+        map_pixel_width = self.map_width * cell_width_px
+        map_pixel_height = self.map_height * cell_height_px
 
         self.SCALE = min(
             engine.window_height / map_pixel_height,
@@ -49,22 +52,33 @@ class PacmanGame:
         )
         print(self.SCALE)
 
-        self.map_service = PacmanMap(engine, self.SCALE, map_width, map_height)
+        self.map_service = PacmanMap(
+            self.engine,
+            self.SCALE,
+            self.map_width,
+            self.map_height,
+        )
 
     def start_game(self):
+        self.ressources["matrix"] = self.matrix
+        self.ressources["pos_to_cell"] = self.get_maze_cell_by_position
+        self.ressources[SpriteService] = self.sprite_service
+        self.ressources["scale"] = self.SCALE
+        print(id(self.ressources))
+        # print(self.matrix)
+
         self.engine.run()
 
     def system_init(self):
         sprite_sheet = "sprites/spritesheet.png"
-        sprite_service = SpriteService(sprite_sheet, config)
-        sprite_service.init_sprites()
-        movement_system = MovementSystem({})
-        collision_system = CollisionSystem({})
-        sprite_system = SpriteSystem(
-            {SpriteService: sprite_service, "scale": self.SCALE}
-        )
-        keys_system = KeySystem({})
-        target_sys = TargetSystem({})
+        self.sprite_service = SpriteService(sprite_sheet, config)
+        self.sprite_service.init_sprites()
+        collision_system = CollisionSystem(self.ressources)
+        movement_system = MovementSystem(self.ressources)
+        print(id(movement_system.ressources), " VS", id(self.ressources))
+        sprite_system = SpriteSystem(self.ressources)
+        keys_system = KeySystem(self.ressources)
+        target_sys = TargetSystem(self.ressources)
 
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
@@ -80,6 +94,7 @@ class PacmanGame:
         self.system_init()
         self.make_entities_lvl()
         self.map_service.generate_map()
+        self.matrix = self.map_service.get_map_matrix()
         self.create_movable_entities()
 
     def make_entities_lvl(self) -> None:
@@ -104,85 +119,66 @@ class PacmanGame:
         pac_man = self.create_pacman()
         self.create_ghosts(pac_man)
 
+    def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
+        tile_size = 8 * self.SCALE
+        return (round(position.x / tile_size), round(position.y / tile_size))
+
+    def get_target_position(
+        self, position: Position, direction: tuple[int, int]
+    ) -> tuple[float, float]:
+        cell_x, cell_y = self.get_maze_cell_by_position(position)
+        center_x = round((cell_x - 1) / 3) * 3 + 1
+        center_y = round((cell_y - 1) / 3) * 3 + 1
+        tile_size = 8 * self.SCALE
+        return (
+            (center_x + direction[0] * 3) * tile_size,
+            (center_y + direction[1] * 3) * tile_size,
+        )
+
     def create_pacman(self):
 
-        # to spawn at the center of the map
-        p = Position(150, 100)
-        v = Velocity(1 * self.SCALE, 0)
+        # The playable position is the center sub-cell of the maze center.
+        center = (self.map_width // 2) * 3 + 1
+        tile_size = 8 * self.SCALE
+        p = Position(center * tile_size, center * tile_size)
+        v = Velocity(1 * self.SCALE)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
-        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        direction = Direction(Dir.DOWN)
+        intention = Intention(Dir.DOWN)
 
         def on_left_key() -> None:
-            if v.x < 0 and v.y == 0:
-                return
-
-            v.x = -1.1 * self.SCALE
-            v.y = 0
+            intention.direction = Dir.LEFT
 
             spr.sprite_index = 0
             spr.sprites = ["pacman-left-1", "pacman-left-2", "pacman-left-3"]
 
         def on_right_key() -> None:
-            if v.x > 0 and v.y == 0:
-                return
-            v.x = 1.1 * self.SCALE
-            v.y = 0
+            intention.direction = Dir.RIGHT
+
             spr.sprite_index = 0
             spr.sprites = ["pacman-right-1", "pacman-right-2", "pacman-right-3"]
 
         def on_up_key() -> None:
-            if v.y < 0 and v.x == 0:
-                return
-
-            v.y = -1.1 * self.SCALE
-            v.x = 0
+            intention.direction = Dir.UP
 
             spr.sprite_index = 0
             spr.sprites = ["pacman-top-1", "pacman-top-2", "pacman-top-3"]
 
         def on_down_key() -> None:
-            if v.y > 0 and v.x == 0:
-                return
-
-            v.y = 1.1 * self.SCALE
-            v.x = 0
+            intention.direction = Dir.DOWN
 
             spr.sprite_index = 0
             spr.sprites = ["pacman-bottom-1", "pacman-bottom-2", "pacman-bottom-3"]
 
         def handle_pacman_ghost_collision() -> None:
             spr.sprites = DeathSprites().PACMAN
-            v.x = 0
-            v.y = 0
-
-        def handle_pacman_wall_left_collision() -> None:
-            if v.x < 0:
-                v.x = 0
-                v.y = 0
-
-        def handle_pacman_wall_right_collision() -> None:
-            if v.x > 0:
-                v.x = 0
-                v.y = 0
-
-        def handle_pacman_wall_top_collision() -> None:
-            if v.y < 0:
-                v.x = 0
-                v.y = 0
-
-        def handle_pacman_wall_bottom_collision() -> None:
-            if v.y > 0:
-                v.x = 0
-                v.y = 0
+            v.speed = 0
 
         col = Collision(
             "pacman",
             {
                 "ghost": handle_pacman_ghost_collision,
-                "wall-left": handle_pacman_wall_left_collision,
-                "wall-right": handle_pacman_wall_right_collision,
-                "wall-top": handle_pacman_wall_top_collision,
-                "wall-bottom": handle_pacman_wall_bottom_collision,
             },
         )
 
@@ -202,6 +198,8 @@ class PacmanGame:
         pac_man.add_component(hitbox)
         pac_man.add_component(col)
         pac_man.add_component(keys)
+        pac_man.add_component(direction)
+        pac_man.add_component(intention)
 
         self.engine.add_entities(pac_man)
         return pac_man
@@ -216,9 +214,9 @@ class PacmanGame:
 
         # to spaw at the left top corner
         p = Position(10, 180)
-        v = Velocity(3, 0)
+        v = Velocity(3)
         spr = Sprites(["inky-right-1"], 0.1)
-        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         col = Collision("ghost", {})
 
         inky = Entity("inky")
@@ -236,7 +234,7 @@ class PacmanGame:
         p = Position(590, 590)
         # v = Velocity(1, 0)
         spr = Sprites(["clyde-right-1"], 0.1)
-        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
 
         col = Collision("ghost", {})
 
@@ -253,11 +251,11 @@ class PacmanGame:
         # to spawn at the bottom left corner
         t = Target((14, 18), pac_man, (10, 10), maze)
 
-        p = Position(14, 18)
-        v = Velocity(0, 0)
+        p = Position(14, 14)
+        v = Velocity(0)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
-        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
 
         blinky = Entity("blinky")
         blinky.add_component(p)
@@ -275,7 +273,7 @@ class PacmanGame:
         p = Position(290, 1050)
         # v = Velocity(1, 0)
         col = Collision("ghost", {})
-        hitbox = Hitbox(int(13 * self.SCALE), int(13 * self.SCALE))
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
 
         spr = Sprites(["pinky-right-1"], 0.1)
 

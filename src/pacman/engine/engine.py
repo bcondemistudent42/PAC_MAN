@@ -16,11 +16,7 @@ class GameEngine:
 
         # to clean in a function pr to see how to do ask anselme
 
-        from src.pacman.game import PacmanGame
-
         self.data_user = parse()
-        setup = PacmanGame(self)
-        setup.make_full_setup()
 
         return self
 
@@ -39,7 +35,7 @@ class GameEngine:
         elif isinstance(system, list):
             self.systems.extend(system)
         else:
-            print(f"{system}, {type(system)}")
+            # print(f"{system}, {type(system)}")
             raise TypeError("Cannot add this in system to adapt add system")
 
     def add_entities(self, entity: Entity | list[Entity]) -> None:

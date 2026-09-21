@@ -20,8 +20,8 @@ class TargetSystem(System):
                 trg = each_subscriber.get_component(Target).target_coord
                 x_target = trg.get_component(Position).x
                 y_target = trg.get_component(Position).y
-                print(int(x_target // (24 * 1.2)),  int(y_target // (24 * 1.2)))
-                each_subscriber.get_component(Target)
+                # print(x_target, y_target)
+                # each_subscriber.get_component(Target)
 
                 # ghosts_coord = (0, 0)
                 # to adapt with scale, some problem of mapping value
@@ -32,13 +32,13 @@ class TargetSystem(System):
                     behavior_component.maze,
                 )
 
-                    # 30 is because it's actually to set with ressources
-                    # map_width = 10
-                    # map_height = 10
-                    # cell_width_px =30
-                    # cell_height_px = 30
+                # 30 is because it's actually to set with ressources
+                # map_width = 10
+                # map_height = 10
+                # cell_width_px =30
+                # cell_height_px = 30
 
-                road = astar.find_pacman()
+                astar.find_pacman()
                 # print(road)
                 # to see latee how to do compatible
 
@@ -57,6 +57,3 @@ class TargetSystem(System):
 
 #     corect_x = x / 30
 #     corect_y = y / 30
-
-
-
