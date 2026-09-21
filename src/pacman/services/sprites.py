@@ -101,6 +101,8 @@ class SpriteService:
         self.img_array = np.array(self.img)
         self.map = {}
 
+        self.init_sprites()
+
     def init_sprites(self) -> None:
         for sprite, pos in self.config_map.items():
             sprite_raw = self.img_array[

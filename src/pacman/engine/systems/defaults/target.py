@@ -2,11 +2,13 @@ from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.target import Target
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
+from ressources import Ressources
 
 
 class TargetSystem(System):
-    def __init__(self, ressources: dict):
+    def __init__(self, ressources: Ressources):
         super().__init__([Position, Velocity, Target])
+        self.ressources = ressources
         self.first_run = True
 
     def run(self):

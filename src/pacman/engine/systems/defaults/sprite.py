@@ -2,18 +2,21 @@ import pyray as pr
 
 from pacman.engine.components.defaults import Position, Sprites
 from pacman.engine.systems.system import System
-from pacman.services.sprites import SpriteService
+from ressources import Ressources
 
 
 class SpriteSystem(System):
-    def __init__(self, ressources: dict):
+    def __init__(self, ressources: Ressources):
         super().__init__([Position, Sprites])
         self.ressources = ressources
 
     def run(self):
-        self.sprite_service = self.ressources[SpriteService]
-        self.SCALE = self.ressources["scale"]
-        tile_size = 8 * self.SCALE
+        sprite_service = self.ressources.sprite_service
+        if sprite_service is None:
+            raise RuntimeError("Sprite service is not initialized")
+
+        scale = self.ressources.scale
+        tile_size = 8 * scale
 
         for each_subscribed in self.subscribers:
             sprite_component = each_subscribed.get_component(Sprites)
@@ -32,15 +35,15 @@ class SpriteSystem(System):
             x = position_component.x
             y = position_component.y
 
-            texture = self.sprite_service.get_sprite(sprite_component.sprites[index])
+            texture = sprite_service.get_sprite(sprite_component.sprites[index])
 
-            offset_x = (tile_size - texture.width * self.SCALE) / 2
-            offset_y = (tile_size - texture.height * self.SCALE) / 2
+            offset_x = (tile_size - texture.width * scale) / 2
+            offset_y = (tile_size - texture.height * scale) / 2
 
             pr.draw_texture_ex(
                 texture,
                 pr.Vector2(x + offset_x, y + offset_y),
                 0.0,
-                self.SCALE,
+                scale,
                 pr.WHITE,
             )

@@ -3,10 +3,11 @@ import itertools
 from pacman.engine.components.defaults import Collision, Hitbox, Position
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
+from ressources import Ressources
 
 
 class CollisionSystem(System):
-    def __init__(self, ressources: dict | None):
+    def __init__(self, ressources: Ressources):
         super().__init__([Position, Collision, Hitbox])
         self.ressources = ressources
 

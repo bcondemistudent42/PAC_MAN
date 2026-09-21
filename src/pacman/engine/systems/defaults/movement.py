@@ -4,10 +4,11 @@ from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
 from pacman.services.maps import PacmanCell
+from ressources import Ressources
 
 
 class MovementSystem(System):
-    def __init__(self, ressources: dict):
+    def __init__(self, ressources: Ressources):
         super().__init__([Position, Velocity, Direction, Intention])
         self.ressources = ressources
         self.direction_map = {
@@ -18,8 +19,8 @@ class MovementSystem(System):
         }
 
     def run(self):
-        matrix = self.ressources["matrix"]
-        scale = self.ressources["scale"]
+        matrix = self.ressources.matrix
+        scale = self.ressources.scale
 
         tile_size = 8 * scale
 
