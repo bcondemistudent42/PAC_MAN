@@ -3,7 +3,6 @@ import random
 import mazegenerator as mg
 import pyray as pr
 
-from factories.ghost import GhostFactory
 from pacman.engine.components import Entity
 from pacman.engine.components.defaults import (
     Collision,
@@ -24,6 +23,7 @@ from pacman.engine.systems.defaults import (
     SpriteSystem,
     TargetSystem,
 )
+from pacman.game.factories.ghost import GhostFactory
 from pacman.game.ressources import Ressources
 from pacman.game.settings import GameSettings
 from pacman.services.death import DeathSprites
