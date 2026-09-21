@@ -3,6 +3,7 @@ import random
 import mazegenerator as mg
 import pyray as pr
 
+from factories.ghost import GhostFactory
 from pacman.death import DeathSprites
 from pacman.engine.components import Entity
 from pacman.engine.components.defaults import (
@@ -12,7 +13,6 @@ from pacman.engine.components.defaults import (
     Map,
     Position,
     Sprites,
-    Target,
     Velocity,
 )
 from pacman.engine.components.defaults.direction import Dir, Direction
@@ -203,84 +203,15 @@ class PacmanGame:
         self.engine.add_entities(pac_man)
         return pac_man
 
-    def create_ghosts(self, pac_man):
-        self.create_inky()
-        self.create_clyde()
-        self.create_blinky(pac_man)
-        self.create_pinky()
+    def create_ghosts(self, pacman) -> None:
+        ghosts_factory = GhostFactory(
+            scale=self.SCALE,
+            maze=self.map_service.map,
+            pacman=pacman,
+            engine=self.engine,
+        )
 
-    def create_inky(self):
-
-        # to spaw at the left top corner
-        p = Position(10, 180)
-        v = Velocity(3)
-        spr = Sprites(["inky-right-1"], 0.1)
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-        col = Collision("ghost", {})
-
-        inky = Entity("inky")
-        inky.add_component(p)
-        inky.add_component(col)
-        inky.add_component(spr)
-        inky.add_component(v)
-        inky.add_component(hitbox)
-
-        self.engine.add_entities(inky)
-
-    def create_clyde(self):
-
-        # to spawn at the bottom right corner
-        p = Position(590, 590)
-        # v = Velocity(1, 0)
-        spr = Sprites(["clyde-right-1"], 0.1)
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-        col = Collision("ghost", {})
-
-        clyde = Entity("clyde")
-        clyde.add_component(p)
-        clyde.add_component(col)
-        clyde.add_component(spr)
-        clyde.add_component(hitbox)
-        self.engine.add_entities(clyde)
-
-    def create_blinky(self, pac_man):
-
-        maze = self.map_service.map
-        # to spawn at the bottom left corner
-        t = Target((14, 18), pac_man, (10, 10), maze)
-
-        p = Position(14, 14)
-        v = Velocity(0)
-        col = Collision("ghost", {})
-        spr = Sprites(["blinky-right-1"], 0.1)
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-        blinky = Entity("blinky")
-        blinky.add_component(p)
-        blinky.add_component(t)
-        blinky.add_component(v)
-        blinky.add_component(col)
-        blinky.add_component(spr)
-        blinky.add_component(hitbox)
-
-        self.engine.add_entities(blinky)
-
-    def create_pinky(self):
-
-        # to spaw at the bottom left corner
-        p = Position(290, 1050)
-        # v = Velocity(1, 0)
-        col = Collision("ghost", {})
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-        spr = Sprites(["pinky-right-1"], 0.1)
-
-        pinky = Entity("pinky")
-        pinky.add_component(p)
-        pinky.add_component(col)
-        pinky.add_component(hitbox)
-
-        pinky.add_component(spr)
-
-        self.engine.add_entities(pinky)
+        ghosts_factory.create("inky")
+        ghosts_factory.create("blinky")
+        ghosts_factory.create("clyde")
+        ghosts_factory.create("pinky")
