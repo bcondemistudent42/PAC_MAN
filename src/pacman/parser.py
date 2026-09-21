@@ -1,5 +1,5 @@
-import re
 import json
+import re
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -18,16 +18,10 @@ class Parser(BaseModel):
 def parse():
     with open("config.json") as f:
         raw_data = f.read()
-        # print(raw_data)
         first_clean = re.sub(r'//.*', '', raw_data)
         second_clean = re.sub(r'#.*', '', first_clean)
-        # to see what to replace with
 
-        # print("\n============\n")
-        # print(second_clean)
-
-    # to write the result and then open it again
     cleaned_data = json.loads(second_clean)
-    Parser.model_validate(cleaned_data)
-
-parse()
+    data = Parser.model_validate(cleaned_data)
+    return data
+    # to handle later the try except properly in main with pydantic error and file not found error

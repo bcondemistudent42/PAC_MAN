@@ -2,6 +2,7 @@ import pyray as pr
 
 from pacman.engine.components import Entity
 from pacman.engine.systems import System
+from pacman.parser import parse
 
 
 class GameEngine:
@@ -17,6 +18,7 @@ class GameEngine:
 
         from src.pacman.game import PacmanGame
 
+        self.data_user = parse()
         setup = PacmanGame(self)
         setup.make_full_setup()
 
