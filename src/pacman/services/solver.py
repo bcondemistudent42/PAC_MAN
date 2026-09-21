@@ -1,19 +1,21 @@
-from dataclasses import dataclass
 import heapq as hp
+from dataclasses import dataclass
 
 
 @dataclass
 class Node:
     parent: tuple(int, int) | None | str
-    heuristic : int | None
-    cost : int | None
-    total_cost_est : int | None
+    heuristic: int | None
+    cost: int | None
+    total_cost_est: int | None
     coord: tuple(int, int)
 
     def __lt__(self, other: Node):
         return self.total_cost_est < other.total_cost_est
 
+
 from abc import ABC, abstractmethod
+
 
 class Behavior(ABC):
     def __init__(
@@ -21,7 +23,7 @@ class Behavior(ABC):
         ghost_coord: tuple(int, int),
         pacman_coord: tuple(int, int),
         maze_size: tuple(int, int),
-        maze: list[list[int]]
+        maze: list[list[int]],
     ):
         self.ghost_coord = ghost_coord
         self.pacman_coord = pacman_coord
@@ -32,13 +34,14 @@ class Behavior(ABC):
     def find_pacman(self):
         pass
 
+
 class BlinkyBehavior(Behavior):
     def __init__(
         self,
         ghost_coord: tuple[int, int],
         pacman_coord: tuple[int, int],
         maze_size: tuple[int, int],
-        maze: list[list[int]]
+        maze: list[list[int]],
     ):
         super().__init__(ghost_coord, pacman_coord, maze_size, maze)
 
@@ -53,11 +56,11 @@ class BlinkyBehavior(Behavior):
         hp.heapify(not_visited)
 
         blinky_red = Node(
-                    None,
-                    self.heuristic(self.ghost_coord, self.pacman_coord),
-                    0,
-                    self.heuristic(self.ghost_coord, self.pacman_coord),
-                    self.ghost_coord
+            None,
+            self.heuristic(self.ghost_coord, self.pacman_coord),
+            0,
+            self.heuristic(self.ghost_coord, self.pacman_coord),
+            self.ghost_coord,
         )
 
         hp.heappush(not_visited, blinky_red)
@@ -77,7 +80,7 @@ class BlinkyBehavior(Behavior):
                 actual_node,
                 self.pacman_coord,
                 visited,
-                (maxtrix_height, matrix_width)
+                (maxtrix_height, matrix_width),
             )
             if actual_node.coord == self.pacman_coord:
                 return self.get_way(actual_node)
@@ -90,14 +93,13 @@ class BlinkyBehavior(Behavior):
             actual_node = actual_node[0].parent
         return output
 
-
     def add_neighbours(
         self,
         queu: hp.heapq,
         actual_node: Node,
         goal: (int, int),
         visited: set(int),
-        matrix_size: (int, int)
+        matrix_size: (int, int),
     ):
 
         actual_x, actual_y = actual_node.coord
@@ -113,8 +115,10 @@ class BlinkyBehavior(Behavior):
                     (actual_node, actual_node.coord),
                     self.heuristic((actual_x, actual_y - 1), goal),
                     actual_node.cost + 1,
-                    self.heuristic((actual_x, actual_y - 1), goal) + actual_node.cost + 1,
-                    (actual_x, actual_y - 1)
+                    self.heuristic((actual_x, actual_y - 1), goal)
+                    + actual_node.cost
+                    + 1,
+                    (actual_x, actual_y - 1),
                 )
                 hp.heappush(queu, to_push)
         if actual_y >= matrix_size[1] or (actual_x + 1, actual_y) in visited:
@@ -128,7 +132,7 @@ class BlinkyBehavior(Behavior):
                     self.heuristic((new_x, actual_y), goal),
                     actual_node.cost + 1,
                     self.heuristic((new_x, actual_y), goal) + actual_node.cost + 1,
-                    (new_x, actual_y)
+                    (new_x, actual_y),
                 )
                 hp.heappush(queu, to_push)
         if actual_x >= matrix_size[0] or (actual_x, actual_y + 1) in visited:
@@ -141,8 +145,10 @@ class BlinkyBehavior(Behavior):
                     (actual_node, actual_node.coord),
                     self.heuristic((actual_x, actual_y + 1), goal),
                     actual_node.cost + 1,
-                    self.heuristic((actual_x, actual_y + 1), goal) + actual_node.cost + 1,
-                    (actual_x, actual_y + 1)
+                    self.heuristic((actual_x, actual_y + 1), goal)
+                    + actual_node.cost
+                    + 1,
+                    (actual_x, actual_y + 1),
                 )
                 hp.heappush(queu, to_push)
         if actual_x == 0 or (actual_x - 1, actual_y) in visited:
@@ -153,10 +159,13 @@ class BlinkyBehavior(Behavior):
                     (actual_node, actual_node.coord),
                     self.heuristic((actual_x - 1, actual_y), goal),
                     actual_node.cost + 1,
-                    self.heuristic((actual_x - 1, actual_y), goal) + actual_node.cost + 1,
-                    (actual_x - 1, actual_y)
+                    self.heuristic((actual_x - 1, actual_y), goal)
+                    + actual_node.cost
+                    + 1,
+                    (actual_x - 1, actual_y),
                 )
                 hp.heappush(queu, to_push)
+
 
 # to refacto pathfinding to adapt for maze of amazeing
 
@@ -182,7 +191,5 @@ class BlinkyBehavior(Behavior):
 #     m_size,
 #     matrix
 # )
-# road = blinky.find_pacman() 
+# road = blinky.find_pacman()
 # print(road)
-
-

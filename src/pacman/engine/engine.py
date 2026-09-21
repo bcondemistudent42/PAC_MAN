@@ -2,7 +2,7 @@ import pyray as pr
 
 from pacman.engine.components import Entity
 from pacman.engine.systems import System
-from pacman.parser import parse
+from pacman.services.parser import parse
 
 
 class GameEngine:
