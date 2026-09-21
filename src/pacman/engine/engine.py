@@ -1,6 +1,7 @@
 import pyray as pr
 
 from pacman.engine.components import Entity
+from pacman.engine.events.queue import EventsQueue
 from pacman.engine.systems import System
 from pacman.services.parser import parse
 
@@ -24,6 +25,7 @@ class GameEngine:
     def __init__(self):
         self.entities: list[Entity] = []
         self.systems: list[System] = []
+        self.events = EventsQueue()
         self.window_width = 2000
         self.window_height = 1500
 

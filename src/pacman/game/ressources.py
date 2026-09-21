@@ -4,6 +4,8 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+from pacman.engine.events.queue import EventsQueue
+
 if TYPE_CHECKING:
     from pacman.engine.components.defaults.position import Position
     from pacman.services.maps import PacmanCell
@@ -12,6 +14,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class Ressources:
+    events: EventsQueue
     matrix: list[list[PacmanCell]] = field(default_factory=list)
     pos_to_cell: Callable[[Position], tuple[int, int]] | None = None
     sprite_service: SpriteService | None = None

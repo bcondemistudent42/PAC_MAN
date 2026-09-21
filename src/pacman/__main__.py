@@ -1,7 +1,7 @@
 import pyray as pr
 
+from pacman.game.game import PacmanGame
 from src.pacman.engine.engine import GameEngine
-from src.pacman.game import PacmanGame
 
 pr.set_trace_log_level(pr.LOG_NONE)
 

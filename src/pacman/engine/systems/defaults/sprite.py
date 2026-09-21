@@ -2,7 +2,7 @@ import pyray as pr
 
 from pacman.engine.components.defaults import Position, Sprites
 from pacman.engine.systems.system import System
-from ressources import Ressources
+from pacman.game.ressources import Ressources
 
 
 class SpriteSystem(System):

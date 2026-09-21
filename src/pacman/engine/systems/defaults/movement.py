@@ -3,8 +3,8 @@ from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
+from pacman.game.ressources import Ressources
 from pacman.services.maps import PacmanCell
-from ressources import Ressources
 
 
 class MovementSystem(System):

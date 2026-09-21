@@ -2,7 +2,7 @@ from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.target import Target
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
-from ressources import Ressources
+from pacman.game.ressources import Ressources
 
 
 class TargetSystem(System):

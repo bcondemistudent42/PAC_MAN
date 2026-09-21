@@ -24,11 +24,11 @@ from pacman.engine.systems.defaults import (
     SpriteSystem,
     TargetSystem,
 )
+from pacman.game.ressources import Ressources
+from pacman.game.settings import GameSettings
 from pacman.services.death import DeathSprites
 from pacman.services.maps import PacmanMap
 from pacman.services.sprites import SpriteService, config
-from ressources import Ressources
-from settings import GameSettings
 
 
 class PacmanGame:
@@ -39,7 +39,7 @@ class PacmanGame:
             window_width=engine.window_width,
             window_height=engine.window_height,
         )
-        self.ressources = Ressources(scale=self.settings.scale)
+        self.ressources = Ressources(self.engine.events, scale=self.settings.scale)
 
         self.map_service = PacmanMap(
             self.engine,
