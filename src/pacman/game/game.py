@@ -53,6 +53,7 @@ class PacmanGame:
         )
 
         self.cell_size = cell_height_px * self.SCALE
+
         self.system = {}
         self.settings = GameSettings.from_window(
             window_width=engine.window_width,
@@ -211,7 +212,7 @@ class PacmanGame:
         # self.create_inky()
         # self.create_clyde()
         self.create_blinky(pac_man)
-        # self.create_pinky()
+        self.create_pinky()
 
     # def create_inky(self):
 
@@ -253,13 +254,15 @@ class PacmanGame:
         maze = self.map_service.map
         # to spawn at the bottom left corner
 
-        p = Position(14, 14)
-        v = Velocity(0)
+        p = Position(40, 32)
+        v = Velocity(1)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         # to do the tuple stuff dynamic
         t = Target(self.cell_size, pac_man, (15, 15), maze)
+        direction = Direction(Dir.DOWN)
+        intention = Intention(Dir.DOWN)
 
         blinky = Entity("blinky")
         blinky.add_component(p)
@@ -268,24 +271,27 @@ class PacmanGame:
         blinky.add_component(col)
         blinky.add_component(spr)
         blinky.add_component(hitbox)
+        blinky.add_component(direction)
+        blinky.add_component(intention)
+
 
         self.engine.add_entities(blinky)
 
-    # def create_pinky(self):
+    def create_pinky(self):
 
-    #     # to spaw at the bottom left corner
-    #     p = Position(290, 1050)
-    #     # v = Velocity(1, 0)
-    #     col = Collision("ghost", {})
-    #     hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        # to spaw at the bottom left corner
+        p = Position(290, 1050)
+        # v = Velocity(1, 0)
+        col = Collision("ghost", {})
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
 
-    #     spr = Sprites(["pinky-right-1"], 0.1)
+        spr = Sprites(["pinky-right-1"], 0.1)
 
-    #     pinky = Entity("pinky")
-    #     pinky.add_component(p)
-    #     pinky.add_component(col)
-    #     pinky.add_component(hitbox)
+        pinky = Entity("pinky")
+        pinky.add_component(p)
+        pinky.add_component(col)
+        pinky.add_component(hitbox)
 
-    #     pinky.add_component(spr)
+        pinky.add_component(spr)
 
-    #     self.engine.add_entities(pinky)
+        self.engine.add_entities(pinky)
