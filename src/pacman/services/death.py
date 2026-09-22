@@ -7,11 +7,9 @@ def make_death(entity: Entity, death_sprites: list[str]):
     velocity_component = entity.get_component(Velocity)
     sprite_component = entity.get_component(Sprites)
 
-    velocity_component.x = 0
-    velocity_component.y = 0
-    # sprite_component.sprite_index = 0
+    velocity_component.speed = 0
+    sprite_component.sprite_index = 0
     sprite_component.sprites = death_sprites
-    # to see which respawn to put and freeze the position
 
 
 class DeathSprites:

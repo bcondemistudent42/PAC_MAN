@@ -30,7 +30,6 @@ class PacmanMap:
         self.engine = engine
         self.map = []
 
-        # Nouvelles matrices stockées dans l'instance
         self.sprite_matrix = []
         self.logic_matrix = []
 

@@ -3,7 +3,6 @@ import random
 import mazegenerator as mg
 import pyray as pr
 
-from pacman.death import DeathSprites
 from pacman.engine.components import Entity
 from pacman.engine.components.defaults import (
     Collision,
@@ -17,17 +16,18 @@ from pacman.engine.components.defaults import (
 )
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
+from pacman.engine.engine import GameEngine
 from pacman.engine.systems.defaults import (
     CollisionSystem,
     KeySystem,
     MovementSystem,
     SpriteSystem,
 )
+from pacman.game.ressources import Ressources
+from pacman.game.settings import GameSettings
+from pacman.services.death import DeathSprites
 from pacman.services.maps import PacmanMap
 from pacman.services.sprites import SpriteService, config
-from src.pacman.engine.engine import GameEngine
-
-collision_system = CollisionSystem(None)
 
 
 class PacmanGame:
@@ -53,21 +53,25 @@ class PacmanGame:
         )
 
         self.cell_size = cell_height_px * self.SCALE
+        self.system = {}
+        self.settings = GameSettings.from_window(
+            window_width=engine.window_width,
+            window_height=engine.window_height,
+        )
+        self.ressources = Ressources(self.engine.events, scale=self.settings.scale)
 
         self.map_service = PacmanMap(
             self.engine,
-            self.SCALE,
-            self.map_width,
-            self.map_height,
+            self.settings.scale,
+            self.settings.map_width,
+            self.settings.map_height,
         )
 
     def start_game(self):
-        self.ressources["matrix"] = self.matrix
-        self.ressources["pos_to_cell"] = self.get_maze_cell_by_position
-        self.ressources[SpriteService] = self.sprite_service
-        self.ressources["scale"] = self.SCALE
-        print(id(self.ressources))
-        # print(self.matrix)
+        self.ressources.matrix = self.matrix
+        self.ressources.pos_to_cell = self.get_maze_cell_by_position
+        self.ressources.sprite_service = self.sprite_service
+        self.ressources.scale = self.settings.scale
 
         self.engine.run()
 
@@ -75,7 +79,6 @@ class PacmanGame:
         from pacman.engine.systems.defaults import TargetSystem
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
-        self.sprite_service.init_sprites()
         collision_system = CollisionSystem(self.ressources)
         movement_system = MovementSystem(self.ressources)
         sprite_system = SpriteSystem(self.ressources)
@@ -122,18 +125,28 @@ class PacmanGame:
         self.create_ghosts(pac_man)
 
     def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
-        tile_size = 8 * self.SCALE
+        tile_size = 8 * self.settings.scale
         return (round(position.x / tile_size), round(position.y / tile_size))
 
-    def create_pacman(self):
+    def get_target_position(
+        self, position: Position, direction: tuple[int, int]
+    ) -> tuple[float, float]:
+        cell_x, cell_y = self.get_maze_cell_by_position(position)
+        center_x = round((cell_x - 1) / 3) * 3 + 1
+        center_y = round((cell_y - 1) / 3) * 3 + 1
+        tile_size = 8 * self.settings.scale
+        return (
+            (center_x + direction[0] * 3) * tile_size,
+            (center_y + direction[1] * 3) * tile_size,
+        )
 
-        # The playable position is the center sub-cell of the maze center.
-        center = (self.map_width // 2) * 3 + 1
-        tile_size = 8 * self.SCALE
+    def create_pacman(self):
+        center = (self.settings.map_width // 2) * 3 + 1
+        tile_size = 8 * self.settings.scale
         p = Position(center * tile_size, center * tile_size)
-        v = Velocity(1 * self.SCALE)
+        v = Velocity(1 * self.settings.scale)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        hitbox = Hitbox(13 * self.settings.scale, 13 * self.settings.scale)
         direction = Direction(Dir.DOWN)
         intention = Intention(Dir.DOWN)
 

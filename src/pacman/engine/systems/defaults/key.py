@@ -2,10 +2,11 @@ import pyray as pr
 
 from pacman.engine.components.defaults import KeyHook
 from pacman.engine.systems.system import System
+from pacman.game.ressources import Ressources
 
 
 class KeySystem(System):
-    def __init__(self, ressources: dict):
+    def __init__(self, ressources: Ressources):
         super().__init__([KeyHook])
         self.ressources = ressources
 
