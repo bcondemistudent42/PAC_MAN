@@ -52,8 +52,13 @@ class TargetSystem(System):
             return
             # raise ValueError("ERROR LEN IS EMPTY")
             # return #to handle properly
+
+# bug idntified, when ghost in mid of two cases, it's not going anymore in the if diff 
+# because it's one case ahead
+
         x, y = ghost_coord
-        print(x, y)
+        print("Ghost", x, y)
+        print("Next Cell", right_way[-1])
         x_way, y_way = right_way[-1]
         x_diff = x - x_way
         y_diff = y - y_way

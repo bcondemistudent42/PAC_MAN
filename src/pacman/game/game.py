@@ -255,7 +255,7 @@ class PacmanGame:
         # to spawn at the bottom left corner
 
         p = Position(40, 32)
-        v = Velocity(1)
+        v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
