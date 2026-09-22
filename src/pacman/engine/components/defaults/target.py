@@ -6,7 +6,7 @@ from pacman.ghosts_solver import BlinkyBehavior
 class Target(Component):
     def __init__(
         self,
-        entity_coord: tuple[int, int],
+        cell_size: float,
         target: Entity,
         maze_size: tuple[int, int],
         maze: list[list[int]],
@@ -14,7 +14,7 @@ class Target(Component):
     ):
     # to define special behavior later for each ghosts
         self.behavior = behavior_class
-        self.entity_coord = entity_coord
+        self.cell_size = cell_size
         self.target_coord = target
         self.maze_size = maze_size
         self.maze = maze

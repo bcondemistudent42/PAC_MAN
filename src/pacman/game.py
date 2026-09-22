@@ -22,7 +22,6 @@ from pacman.engine.systems.defaults import (
     KeySystem,
     MovementSystem,
     SpriteSystem,
-    TargetSystem,
 )
 from pacman.services.maps import PacmanMap
 from pacman.services.sprites import SpriteService, config
@@ -42,15 +41,18 @@ class PacmanGame:
 
         cell_width_px = 24
         cell_height_px = 24
+        # must always be the same, easier for everything, astar problem after if changed
 
         map_pixel_width = self.map_width * cell_width_px
         map_pixel_height = self.map_height * cell_height_px
+
 
         self.SCALE = min(
             engine.window_height / map_pixel_height,
             engine.window_width / map_pixel_width,
         )
-        print(self.SCALE)
+
+        self.cell_size = cell_height_px * self.SCALE
 
         self.map_service = PacmanMap(
             self.engine,
@@ -70,12 +72,12 @@ class PacmanGame:
         self.engine.run()
 
     def system_init(self):
+        from pacman.engine.systems.defaults import TargetSystem
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
         self.sprite_service.init_sprites()
         collision_system = CollisionSystem(self.ressources)
         movement_system = MovementSystem(self.ressources)
-        print(id(movement_system.ressources), " VS", id(self.ressources))
         sprite_system = SpriteSystem(self.ressources)
         keys_system = KeySystem(self.ressources)
         target_sys = TargetSystem(self.ressources)
@@ -122,18 +124,6 @@ class PacmanGame:
     def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
         tile_size = 8 * self.SCALE
         return (round(position.x / tile_size), round(position.y / tile_size))
-
-    def get_target_position(
-        self, position: Position, direction: tuple[int, int]
-    ) -> tuple[float, float]:
-        cell_x, cell_y = self.get_maze_cell_by_position(position)
-        center_x = round((cell_x - 1) / 3) * 3 + 1
-        center_y = round((cell_y - 1) / 3) * 3 + 1
-        tile_size = 8 * self.SCALE
-        return (
-            (center_x + direction[0] * 3) * tile_size,
-            (center_y + direction[1] * 3) * tile_size,
-        )
 
     def create_pacman(self):
 
@@ -205,57 +195,58 @@ class PacmanGame:
         return pac_man
 
     def create_ghosts(self, pac_man):
-        self.create_inky()
-        self.create_clyde()
+        # self.create_inky()
+        # self.create_clyde()
         self.create_blinky(pac_man)
-        self.create_pinky()
+        # self.create_pinky()
 
-    def create_inky(self):
+    # def create_inky(self):
 
-        # to spaw at the left top corner
-        p = Position(10, 180)
-        v = Velocity(3)
-        spr = Sprites(["inky-right-1"], 0.1)
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-        col = Collision("ghost", {})
+    #     # to spaw at the left top corner
+    #     p = Position(10, 180)
+    #     v = Velocity(3)
+    #     spr = Sprites(["inky-right-1"], 0.1)
+    #     hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+    #     col = Collision("ghost", {})
 
-        inky = Entity("inky")
-        inky.add_component(p)
-        inky.add_component(col)
-        inky.add_component(spr)
-        inky.add_component(v)
-        inky.add_component(hitbox)
+    #     inky = Entity("inky")
+    #     inky.add_component(p)
+    #     inky.add_component(col)
+    #     inky.add_component(spr)
+    #     inky.add_component(v)
+    #     inky.add_component(hitbox)
 
-        self.engine.add_entities(inky)
+    #     self.engine.add_entities(inky)
 
-    def create_clyde(self):
+    # def create_clyde(self):
 
-        # to spawn at the bottom right corner
-        p = Position(590, 590)
-        # v = Velocity(1, 0)
-        spr = Sprites(["clyde-right-1"], 0.1)
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+    #     # to spawn at the bottom right corner
+    #     p = Position(590, 590)
+    #     # v = Velocity(1, 0)
+    #     spr = Sprites(["clyde-right-1"], 0.1)
+    #     hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
 
-        col = Collision("ghost", {})
+    #     col = Collision("ghost", {})
 
-        clyde = Entity("clyde")
-        clyde.add_component(p)
-        clyde.add_component(col)
-        clyde.add_component(spr)
-        clyde.add_component(hitbox)
-        self.engine.add_entities(clyde)
+    #     clyde = Entity("clyde")
+    #     clyde.add_component(p)
+    #     clyde.add_component(col)
+    #     clyde.add_component(spr)
+    #     clyde.add_component(hitbox)
+    #     self.engine.add_entities(clyde)
 
     def create_blinky(self, pac_man):
 
         maze = self.map_service.map
         # to spawn at the bottom left corner
-        t = Target((14, 18), pac_man, (10, 10), maze)
 
         p = Position(14, 14)
         v = Velocity(0)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        # to do the tuple stuff dynamic
+        t = Target(self.cell_size, pac_man, (15, 15), maze)
 
         blinky = Entity("blinky")
         blinky.add_component(p)
@@ -267,21 +258,21 @@ class PacmanGame:
 
         self.engine.add_entities(blinky)
 
-    def create_pinky(self):
+    # def create_pinky(self):
 
-        # to spaw at the bottom left corner
-        p = Position(290, 1050)
-        # v = Velocity(1, 0)
-        col = Collision("ghost", {})
-        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+    #     # to spaw at the bottom left corner
+    #     p = Position(290, 1050)
+    #     # v = Velocity(1, 0)
+    #     col = Collision("ghost", {})
+    #     hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
 
-        spr = Sprites(["pinky-right-1"], 0.1)
+    #     spr = Sprites(["pinky-right-1"], 0.1)
 
-        pinky = Entity("pinky")
-        pinky.add_component(p)
-        pinky.add_component(col)
-        pinky.add_component(hitbox)
+    #     pinky = Entity("pinky")
+    #     pinky.add_component(p)
+    #     pinky.add_component(col)
+    #     pinky.add_component(hitbox)
 
-        pinky.add_component(spr)
+    #     pinky.add_component(spr)
 
-        self.engine.add_entities(pinky)
+    #     self.engine.add_entities(pinky)

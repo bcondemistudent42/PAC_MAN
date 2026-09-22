@@ -14,46 +14,33 @@ class TargetSystem(System):
         if self.first_run:
             for each_subscriber in self.subscribers:
                 behavior_component = each_subscriber.get_component(Target)
-                x = each_subscriber.get_component(Position).x
-                y = each_subscriber.get_component(Position).y
+                cell_size = each_subscriber.get_component(Target).cell_size
+
+
+                x, y = self.pixel_to_matrix(
+                    (each_subscriber.get_component(Position).x,
+                    each_subscriber.get_component(Position).y),
+                    cell_size
+                )
 
                 trg = each_subscriber.get_component(Target).target_coord
-                x_target = trg.get_component(Position).x
-                y_target = trg.get_component(Position).y
-                # print(x_target, y_target)
-                # each_subscriber.get_component(Target)
+                x_target, y_target = self.pixel_to_matrix(
+                    (trg.get_component(Position).x,
+                    trg.get_component(Position).y),
+                    cell_size
+                )
 
-                # ghosts_coord = (0, 0)
-                # to adapt with scale, some problem of mapping value
                 astar = behavior_component.behavior(
-                    (int(x // (24 * 1.2)), int(y // (24 * 1.2))),
-                    (int(x_target // (24 * 1.2)), int(y_target // (24 * 1.2))),
+                    (x, y),
+                    (x_target, y_target),
                     behavior_component.maze_size,
                     behavior_component.maze,
                 )
 
-                # 30 is because it's actually to set with ressources
-                # map_width = 10
-                # map_height = 10
-                # cell_width_px =30
-                # cell_height_px = 30
-
-                astar.find_pacman()
-                # print(road)
+                road = astar.find_pacman()
                 # to see latee how to do compatible
 
 
-# def pixel_to_coord(
-#     display_maze_size: tuple[int, int],
-#     graph_size: tuple[int, int],
-#     coord: tuple[int, int]
-# ):
-#     # x_diplay, y_display = display_maze_size
-#     # x_graph, y_graph = graph_size
-#     cell_size_pix = 30
-#     graph_size = 10
-
-#     x, y = coord
-
-#     corect_x = x / 30
-#     corect_y = y / 30
+    def pixel_to_matrix(self, coord: tuple[int, int], cell_size: int):
+        x, y = coord
+        return (int(x // cell_size), int(y // cell_size))
