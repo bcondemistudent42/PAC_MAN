@@ -1,6 +1,3 @@
-import random
-
-import mazegenerator as mg
 import pyray as pr
 
 from pacman.engine.components import Entity
@@ -8,7 +5,6 @@ from pacman.engine.components.defaults import (
     Collision,
     Hitbox,
     KeyHook,
-    Map,
     Position,
     Sprites,
     Target,
@@ -46,7 +42,6 @@ class PacmanGame:
         map_pixel_width = self.map_width * cell_width_px
         map_pixel_height = self.map_height * cell_height_px
 
-
         self.SCALE = min(
             engine.window_height / map_pixel_height,
             engine.window_width / map_pixel_width,
@@ -78,6 +73,7 @@ class PacmanGame:
 
     def system_init(self):
         from pacman.engine.systems.defaults import TargetSystem
+
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
         collision_system = CollisionSystem(self.ressources)
@@ -98,28 +94,9 @@ class PacmanGame:
 
     def make_full_setup(self):
         self.system_init()
-        self.make_entities_lvl()
         self.map_service.generate_map()
         self.matrix = self.map_service.get_map_matrix()
         self.create_movable_entities()
-
-    def make_entities_lvl(self) -> None:
-
-        self.engine.add_entities(self.create_level(True))
-        for i in range(10):
-            self.engine.add_entities(self.create_level())
-
-    def create_level(self, first_level: bool = False):
-        my_maze = mg.MazeGenerator()
-        if first_level:
-            my_maze.generate(seed=42)
-        else:
-            my_maze.generate(seed=random.randint(0, 10000))
-
-        level_entity = Entity("level")
-        map_component = Map(my_maze.maze)
-        level_entity.add_component(map_component)
-        return level_entity
 
     def create_movable_entities(self):
         pac_man = self.create_pacman()
@@ -273,7 +250,6 @@ class PacmanGame:
         blinky.add_component(hitbox)
         blinky.add_component(direction)
         blinky.add_component(intention)
-
 
         self.engine.add_entities(blinky)
 

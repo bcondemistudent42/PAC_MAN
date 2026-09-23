@@ -22,7 +22,7 @@ class PacmanMap:
         self, engine: GameEngine, scale: float, map_width: int, map_height: int
     ) -> None:
         self.generator = MazeGenerator(
-            size=(map_width, map_height), perfect=True, seed=engine.data_user.seed
+            size=(map_width, map_height), perfect=True, seed=48515
         )
 
         self.TILE_SIZE = 8 * scale
@@ -66,7 +66,7 @@ class PacmanMap:
 
                 # Coins
                 if nord and ouest:
-                    self.sprite_matrix[y * 3][x * 3] = "corner-top-left"
+                    self.sprite_matrix[y * 3][x * 3] = "corner-jonction-top-left"
                 elif nord:
                     self.sprite_matrix[y * 3][x * 3] = "wall-top"
                 elif ouest:
@@ -74,7 +74,7 @@ class PacmanMap:
 
                 # Haut-droit : Nord & Est
                 if nord and est:
-                    self.sprite_matrix[y * 3][x * 3 + 2] = "corner-top-right"
+                    self.sprite_matrix[y * 3][x * 3 + 2] = "corner-jonction-top-right"
                 elif nord:
                     self.sprite_matrix[y * 3][x * 3 + 2] = "wall-top"
                 elif est:
@@ -82,7 +82,7 @@ class PacmanMap:
 
                 # Bas-gauche : Sud & Ouest
                 if sud and ouest:
-                    self.sprite_matrix[y * 3 + 2][x * 3] = "corner-bottom-left"
+                    self.sprite_matrix[y * 3 + 2][x * 3] = "corner-jonction-bottom-left"
                 elif sud:
                     self.sprite_matrix[y * 3 + 2][x * 3] = "wall-bottom"
                 elif ouest:
@@ -90,7 +90,9 @@ class PacmanMap:
 
                 # Bas-droit : Sud & Est
                 if sud and est:
-                    self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "corner-bottom-right"
+                    self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                        "corner-jonction-bottom-right"
+                    )
                 elif sud:
                     self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-bottom"
                 elif est:
@@ -103,7 +105,7 @@ class PacmanMap:
                 # Fermeture des murs horizontaux (nord/sud), caps gauche/droite
                 if x > 0 and nord and not self.map[y][x - 1] & 1:
                     if self.map[y][x - 1] & (1 << 1):
-                        self.sprite_matrix[y * 3][x * 3] = "corner-top-left"
+                        self.sprite_matrix[y * 3][x * 3] = "corner-jonction-top-left"
                     elif self.map[y - 1][x - 1] & (1 << 1):
                         self.sprite_matrix[y * 3][x * 3] = "wall-top"
                     else:
@@ -111,7 +113,9 @@ class PacmanMap:
 
                 if x > 0 and sud and not self.map[y][x - 1] & (1 << 2):
                     if self.map[y][x - 1] & (1 << 1):
-                        self.sprite_matrix[y * 3 + 2][x * 3] = "corner-bottom-left"
+                        self.sprite_matrix[y * 3 + 2][x * 3] = (
+                            "corner-jonction-bottom-left"
+                        )
                     elif self.map[y + 1][x - 1] & (1 << 1):
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-bottom"
                     else:
@@ -119,7 +123,9 @@ class PacmanMap:
 
                 if x < last_x and nord and not self.map[y][x + 1] & 1:
                     if self.map[y][x + 1] & (1 << 3):
-                        self.sprite_matrix[y * 3][x * 3 + 2] = "corner-top-right"
+                        self.sprite_matrix[y * 3][x * 3 + 2] = (
+                            "corner-jonction-top-right"
+                        )
                     elif self.map[y - 1][x + 1] & (1 << 3):
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-top"
                     else:
@@ -127,7 +133,9 @@ class PacmanMap:
 
                 if x < last_x and sud and not self.map[y][x + 1] & (1 << 2):
                     if self.map[y][x + 1] & (1 << 3):
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "corner-bottom-right"
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                            "corner-jonction-bottom-right"
+                        )
                     elif self.map[y + 1][x + 1] & (1 << 3):
                         self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-bottom"
                     else:
@@ -136,7 +144,7 @@ class PacmanMap:
                 # Fermeture des murs verticaux (est/ouest), caps haut/bas
                 if y > 0 and ouest and not self.map[y - 1][x] & (1 << 3):
                     if self.map[y - 1][x] & (1 << 2):
-                        self.sprite_matrix[y * 3][x * 3] = "corner-top-left"
+                        self.sprite_matrix[y * 3][x * 3] = "corner-jonction-top-left"
                     elif self.map[y - 1][x - 1] & (1 << 2):
                         self.sprite_matrix[y * 3][x * 3] = "wall-left"
                     else:
@@ -144,7 +152,9 @@ class PacmanMap:
 
                 if y > 0 and est and not self.map[y - 1][x] & (1 << 1):
                     if self.map[y - 1][x] & (1 << 2):
-                        self.sprite_matrix[y * 3][x * 3 + 2] = "corner-top-right"
+                        self.sprite_matrix[y * 3][x * 3 + 2] = (
+                            "corner-jonction-top-right"
+                        )
                     elif self.map[y - 1][x + 1] & (1 << 2):
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-right"
                     else:
@@ -152,7 +162,9 @@ class PacmanMap:
 
                 if y < last_y and ouest and not self.map[y + 1][x] & (1 << 3):
                     if self.map[y + 1][x] & 1:
-                        self.sprite_matrix[y * 3 + 2][x * 3] = "corner-bottom-left"
+                        self.sprite_matrix[y * 3 + 2][x * 3] = (
+                            "corner-jonction-bottom-left"
+                        )
                     elif self.map[y + 1][x - 1] & 1:
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-left"
                     else:
@@ -160,7 +172,9 @@ class PacmanMap:
 
                 if y < last_y and est and not self.map[y + 1][x] & (1 << 1):
                     if self.map[y + 1][x] & 1:
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "corner-bottom-right"
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                            "corner-jonction-bottom-right"
+                        )
                     elif self.map[y + 1][x + 1] & 1:
                         self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-right"
                     else:
