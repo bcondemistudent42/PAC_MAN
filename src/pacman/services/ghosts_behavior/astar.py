@@ -1,8 +1,6 @@
 import heapq as hp
 from dataclasses import dataclass
 
-from .behavior import Behavior
-
 
 @dataclass
 class Node:
