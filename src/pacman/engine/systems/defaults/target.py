@@ -13,52 +13,41 @@ class TargetSystem(System):
         self.first_run = True
 
     def run(self):
-        # if self.first_run:
+        # if self.first_run: instiance the comrpotement else just run it
         for each_subscriber in self.subscribers:
             behavior_component = each_subscriber.get_component(Target)
             cell_size = each_subscriber.get_component(Target).cell_size
-            x, y = self.pixel_to_matrix(
-                (each_subscriber.get_component(Position).x,
-                each_subscriber.get_component(Position).y),
-                cell_size
-            )
-            trg = each_subscriber.get_component(Target).target_coord
-            x_target, y_target = self.pixel_to_matrix(
-                (trg.get_component(Position).x,
-                trg.get_component(Position).y),
-                cell_size
-            )
-            astar = behavior_component.behavior(
-                (x, y),
-                (x_target, y_target),
+
+            pacman = each_subscriber.get_component(Target).target
+
+            finder = behavior_component.behavior(
+                each_subscriber,
+                pacman,
                 behavior_component.maze_size,
                 behavior_component.maze,
             )
-            road = astar.find_pacman()
+            road = finder.find_pacman()
 
             self.change_direction(
                 each_subscriber,
                 road,
-                (x, y))
+                finder.ghost_coord
+            )
             # to see latee how to do compatible
 
-
-    def pixel_to_matrix(self, coord: tuple[int, int], cell_size: int):
-        x, y = coord
-        return (int(x // cell_size), int(y // cell_size))
-
-    def change_direction(self, entity: Entity, right_way: list[tuple[int, int]], ghost_coord: tuple[int, int]):
+    def change_direction(
+        self,
+        entity: Entity,
+        right_way: list[tuple[int, int]],
+        ghost_coord: tuple[int, int]
+    ):
+        # return #to handle properly
         if not right_way:
             return
-            # raise ValueError("ERROR LEN IS EMPTY")
-            # return #to handle properly
-
-# bug idntified, when ghost in mid of two cases, it's not going anymore in the if diff 
-# because it's one case ahead
 
         x, y = ghost_coord
-        print("Ghost", x, y)
-        print("Next Cell", right_way[-1])
+        # print("Ghost", x, y)
+        # print("Next Cell", right_way[-1])
         x_way, y_way = right_way[-1]
         x_diff = x - x_way
         y_diff = y - y_way
@@ -74,3 +63,9 @@ class TargetSystem(System):
         if y_diff == 1:
             # print("UP")
             entity.get_component(Direction).direction = Dir.UP
+        # else:
+            # print("Problems")
+
+
+# bug idntified, when ghost in mid of two cases, it's not going anymore in the if diff 
+# because it's one case ahead

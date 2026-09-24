@@ -22,6 +22,8 @@ from pacman.engine.systems.defaults import (
 from pacman.game.ressources import Ressources
 from pacman.game.settings import GameSettings
 from pacman.services.death import DeathSprites
+from pacman.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
+from pacman.services.ghosts_behavior.pinkybehavior import PinkyBehavior
 from pacman.services.maps import PacmanMap
 from pacman.services.sprites import SpriteService, config
 
@@ -189,7 +191,7 @@ class PacmanGame:
         # self.create_inky()
         # self.create_clyde()
         self.create_blinky(pac_man)
-        self.create_pinky()
+        self.create_pinky(pac_man)
 
     # def create_inky(self):
 
@@ -237,7 +239,7 @@ class PacmanGame:
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         # to do the tuple stuff dynamic
-        t = Target(self.cell_size, pac_man, (15, 15), maze)
+        t = Target(self.cell_size, pac_man, (15, 15), maze, BlinkyBehavior)
         direction = Direction(Dir.DOWN)
         intention = Intention(Dir.DOWN)
 
@@ -253,21 +255,29 @@ class PacmanGame:
 
         self.engine.add_entities(blinky)
 
-    def create_pinky(self):
+    def create_pinky(self, pac_man):
 
         # to spaw at the bottom left corner
+        maze = self.map_service.map
+
         p = Position(290, 1050)
-        # v = Velocity(1, 0)
         col = Collision("ghost", {})
+        v = Velocity(1 * self.settings.scale)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        direction = Direction(Dir.UP)
+        intention = Intention(Dir.UP)
+        t = Target(self.cell_size, pac_man, (15, 15), maze, PinkyBehavior)
 
         spr = Sprites(["pinky-right-1"], 0.1)
 
         pinky = Entity("pinky")
+        pinky.add_component(t)
         pinky.add_component(p)
+        pinky.add_component(v)
         pinky.add_component(col)
-        pinky.add_component(hitbox)
-
         pinky.add_component(spr)
+        pinky.add_component(hitbox)
+        pinky.add_component(direction)
+        pinky.add_component(intention)
 
         self.engine.add_entities(pinky)
