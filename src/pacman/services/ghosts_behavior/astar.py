@@ -41,7 +41,7 @@ class Astar:
         not_visited = []
         hp.heapify(not_visited)
 
-        blinky_red = Node(
+        start_node = Node(
             None,
             self.heuristic(self.ghost_coord, self.pacman_coord),
             0,
@@ -49,7 +49,7 @@ class Astar:
             self.ghost_coord,
         )
 
-        hp.heappush(not_visited, blinky_red)
+        hp.heappush(not_visited, start_node)
 
         maxtrix_height = self.maze_size[0]
         matrix_width = self.maze_size[1]
