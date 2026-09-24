@@ -22,8 +22,10 @@ class PinkyBehavior(Behavior):
             maze
         )
 
-        pacman_intention = self.pacman.get_component(Intention).direction
+    def find_pacman(self):
+
         preshot_dist = 4
+        pacman_intention = self.pacman.get_component(Intention).direction
 
         x, y = self.pacman_coord
 
@@ -37,10 +39,10 @@ class PinkyBehavior(Behavior):
             x += preshot_dist
 
         if x < 0 or x >= self.maze_size[0] or y < 0 or y >= self.maze_size[1]:
-            return
-        self.pacman_coord = (x, y)
+            pass
+        else:
+            self.pacman_coord = (x, y)
 
-    def find_pacman(self):
         solver = Astar(
             self.ghost_coord,
             self.pacman_coord,
