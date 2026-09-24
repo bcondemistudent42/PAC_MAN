@@ -9,10 +9,10 @@ from pacman.services.parser import parse
 class GameEngine:
     def __enter__(self):
         pr.init_window(self.window_width, self.window_height, "PACMAN DEBUG")
-        my_monitor = pr.get_current_monitor()
-        monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
-        monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
-        pr.set_window_size(monitor_w, monitor_h)
+        #my_monitor = pr.get_current_monitor()
+        #monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
+        #monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
+        pr.set_window_size(self.window_width, self.window_height)
         pr.set_target_fps(60)
 
         self.data_user = parse()
@@ -26,8 +26,8 @@ class GameEngine:
         self.entities: list[Entity] = []
         self.systems: list[System] = []
         self.events = EventsQueue()
-        self.window_width = 2000
-        self.window_height = 1500
+        self.window_width = 1280
+        self.window_height = 720
 
     def add_system(self, system: list[System] | System) -> None:
         if isinstance(system, System):
