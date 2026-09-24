@@ -2,6 +2,7 @@ from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.target import Target
+from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
 from pacman.game.ressources import Ressources
 
@@ -16,8 +17,6 @@ class TargetSystem(System):
         # if self.first_run: instiance the comrpotement else just run it
         for each_subscriber in self.subscribers:
             behavior_component = each_subscriber.get_component(Target)
-            cell_size = each_subscriber.get_component(Target).cell_size
-
             pacman = each_subscriber.get_component(Target).target
 
             finder = behavior_component.behavior(
@@ -38,7 +37,7 @@ class TargetSystem(System):
     def change_direction(
         self,
         entity: Entity,
-        right_way: list[tuple[int, int]],
+        right_way: list | None,
         ghost_coord: tuple[int, int]
     ):
         # return #to handle properly

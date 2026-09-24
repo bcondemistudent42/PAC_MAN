@@ -39,6 +39,8 @@ class PinkyBehavior(Behavior):
         elif pacman_direction == Dir.RIGHT:
             y += preshot_dist
 
+        if x < 0 or x >= self.maze_size[0] or y < 0 or y >= self.maze_size[1]:
+            return
         print("AFTER\n")
         print(x, y)
         print()

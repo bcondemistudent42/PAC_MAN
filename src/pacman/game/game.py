@@ -123,12 +123,13 @@ class PacmanGame:
     def create_pacman(self):
         center = (self.settings.map_width // 2) * 3 + 1
         tile_size = 8 * self.settings.scale
-        p = Position(center * tile_size, center * tile_size)
+        # p = Position(center * tile_size, center * tile_size)
+        p = Position(30, 35)
         v = Velocity(1 * self.settings.scale)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
         hitbox = Hitbox(13 * self.settings.scale, 13 * self.settings.scale)
-        direction = Direction(Dir.DOWN)
-        intention = Intention(Dir.DOWN)
+        direction = Direction(Dir.RIGHT)
+        intention = Intention(Dir.RIGHT)
 
         def on_left_key() -> None:
             intention.direction = Dir.LEFT
@@ -190,7 +191,7 @@ class PacmanGame:
     def create_ghosts(self, pac_man):
         # self.create_inky()
         # self.create_clyde()
-        self.create_blinky(pac_man)
+        # self.create_blinky(pac_man)
         self.create_pinky(pac_man)
 
     # def create_inky(self):
@@ -260,7 +261,8 @@ class PacmanGame:
         # to spaw at the bottom left corner
         maze = self.map_service.map
 
-        p = Position(290, 1050)
+        # p = Position(40, 32)
+        p = Position(400, 320)
         col = Collision("ghost", {})
         v = Velocity(1 * self.settings.scale)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
