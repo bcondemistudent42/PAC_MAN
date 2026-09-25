@@ -188,45 +188,63 @@ class PacmanGame:
         return pac_man
 
     def create_ghosts(self, pac_man):
-        # self.create_inky()
-        # self.create_clyde()
-        # self.create_blinky(pac_man)
+        self.create_inky(pac_man)
+        self.create_clyde(pac_man)
+        self.create_blinky(pac_man)
         self.create_pinky(pac_man)
 
-    # def create_inky(self):
+    def create_inky(self, pac_man: Entity):
 
-    #     # to spaw at the left top corner
-    #     p = Position(10, 180)
-    #     v = Velocity(3)
-    #     spr = Sprites(["inky-right-1"], 0.1)
-    #     hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-    #     col = Collision("ghost", {})
+        maze = self.map_service.map
 
-    #     inky = Entity("inky")
-    #     inky.add_component(p)
-    #     inky.add_component(col)
-    #     inky.add_component(spr)
-    #     inky.add_component(v)
-    #     inky.add_component(hitbox)
+        # to spaw at the left top corner
+        v = Velocity(1 * self.settings.scale)
+        p = Position(10, 180)
+        col = Collision("ghost", {})
+        intention = Intention(Dir.DOWN)
+        direction = Direction(Dir.DOWN)
+        spr = Sprites(["inky-right-1"], 0.1)
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        t = Target(self.cell_size, pac_man, (15, 15), maze, BlinkyBehavior)
 
-    #     self.engine.add_entities(inky)
+        inky = Entity("inky")
+        inky.add_component(t)
+        inky.add_component(p)
+        inky.add_component(v)
+        inky.add_component(col)
+        inky.add_component(spr)
+        inky.add_component(hitbox)
+        inky.add_component(direction)
+        inky.add_component(intention)
 
-    # def create_clyde(self):
+        self.engine.add_entities(inky)
 
-    #     # to spawn at the bottom right corner
-    #     p = Position(590, 590)
-    #     # v = Velocity(1, 0)
-    #     spr = Sprites(["clyde-right-1"], 0.1)
-    #     hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+    def create_clyde(self, pac_man: Entity):
 
-    #     col = Collision("ghost", {})
+        # to spawn at the bottom right corner
+        maze = self.map_service.map
 
-    #     clyde = Entity("clyde")
-    #     clyde.add_component(p)
-    #     clyde.add_component(col)
-    #     clyde.add_component(spr)
-    #     clyde.add_component(hitbox)
-    #     self.engine.add_entities(clyde)
+        v = Velocity(1 * self.settings.scale)
+        p = Position(590, 590)
+        col = Collision("ghost", {})
+        intention = Intention(Dir.DOWN)
+        direction = Direction(Dir.DOWN)
+        spr = Sprites(["clyde-right-1"], 0.1)
+        hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
+        t = Target(self.cell_size, pac_man, (15, 15), maze, BlinkyBehavior)
+
+
+        clyde = Entity("clyde")
+        clyde.add_component(p)
+        clyde.add_component(v)
+        clyde.add_component(t)
+        clyde.add_component(col)
+        clyde.add_component(spr)
+        clyde.add_component(hitbox)
+        clyde.add_component(direction)
+        clyde.add_component(intention)
+
+        self.engine.add_entities(clyde)
 
     def create_blinky(self, pac_man):
 
