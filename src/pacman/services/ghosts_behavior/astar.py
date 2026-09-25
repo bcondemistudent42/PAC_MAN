@@ -10,11 +10,11 @@ class Node:
     total_cost_est: int | None
     coord: tuple[int, int]
 
+
     def __lt__(self, other: Node):
         if not self.total_cost_est or not other.total_cost_est:
             return False
         return self.total_cost_est < other.total_cost_est
-
 
 
 class Astar:
@@ -34,6 +34,10 @@ class Astar:
     @staticmethod
     def heuristic(start: tuple[int, int], end: tuple[int, int]):
         return abs(start[0] - end[0]) + abs(start[1] - end[1])
+
+# to pass ghost cord and pacman cord directly in parameter
+# rename them into ghost and target instead, clearer
+# readapt the other behavior to be clean
 
     def find_road(self) -> list | None:
 

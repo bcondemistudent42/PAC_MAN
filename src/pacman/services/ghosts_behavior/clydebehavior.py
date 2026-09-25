@@ -22,8 +22,12 @@ class ClydeBehavior(Behavior):
             maze_size,
             maze
         )
+        self.corner = (13, 13)
+        self.margin = 8
 
     def find_pacman(self) -> list | None:
+
+
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
@@ -39,9 +43,13 @@ class ClydeBehavior(Behavior):
             self.cell_size)
         )
 
+        target = (x_pacman_graph, y_pacman_graph)
+        if abs(x_ghost_graph - x_pacman_graph) + abs(y_ghost_graph - y_pacman_graph) <= self.margin:
+            target = self.corner
+
         solver = Astar(
             (x_ghost_graph, y_ghost_graph),
-            (x_pacman_graph, y_pacman_graph),
+            target,
             self.maze_size,
             self.maze
         )

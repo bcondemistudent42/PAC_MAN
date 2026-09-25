@@ -190,9 +190,9 @@ class PacmanGame:
         return pac_man
 
     def create_ghosts(self, pac_man):
-        # self.create_clyde(pac_man)
-        blinky = self.create_blinky(pac_man)
-        self.create_inky(pac_man, blinky)
+        self.create_clyde(pac_man)
+        # blinky = self.create_blinky(pac_man)
+        # self.create_inky(pac_man, blinky)
         # self.create_pinky(pac_man)
 
     def create_inky(self, pac_man: Entity, blinky: Entity):
@@ -239,7 +239,7 @@ class PacmanGame:
         maze_size = (self.map_width, self.map_height)
         # to spawn at the bottom left corner
 
-        p = Position(670, 39)
+        p = Position(352, 490)
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["clyde-right-1"], 0.1)
