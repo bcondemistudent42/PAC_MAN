@@ -9,6 +9,7 @@ class Behavior(ABC):
         self,
         ghost: Entity,
         pacman: Entity,
+        cell_size: float,
         maze_size: tuple[int, int],
         maze: list[list[int]],
     ):
@@ -16,24 +17,7 @@ class Behavior(ABC):
         self.pacman = pacman
         self.maze_size = maze_size
         self.maze = maze
-
-        x_ghost = ghost.get_component(Position).x
-        y_ghost = ghost.get_component(Position).y
-        from pacman.engine.components.defaults.target import Target
-        cell_size = ghost.get_component(Target).cell_size
-
-        self.ghost_coord = (self.pixel_to_matrix(
-            (x_ghost, y_ghost),
-            cell_size)
-        )
-
-        x_pacman = pacman.get_component(Position).x
-        y_pacman = pacman.get_component(Position).y
-
-        self.pacman_coord = (self.pixel_to_matrix(
-            (x_pacman, y_pacman),
-            cell_size)
-        )
+        self.cell_size = cell_size
 
     @abstractmethod
     def find_pacman(self) -> list | None:
