@@ -1,6 +1,5 @@
 from pacman.engine.components.component import Component
 from pacman.engine.components.entity import Entity
-from pacman.services.ghosts_behavior.behavior import Behavior
 
 
 class Target(Component):
