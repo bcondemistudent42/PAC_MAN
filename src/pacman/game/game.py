@@ -24,6 +24,7 @@ from pacman.game.settings import GameSettings
 from pacman.services.death import DeathSprites
 from pacman.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
 from pacman.services.ghosts_behavior.clydebehavior import ClydeBehavior
+from pacman.services.ghosts_behavior.inkybehavior import InkyBehavior
 from pacman.services.ghosts_behavior.pinkybehavior import PinkyBehavior
 from pacman.services.maps import PacmanMap
 from pacman.services.sprites import SpriteService, config
@@ -189,18 +190,18 @@ class PacmanGame:
         return pac_man
 
     def create_ghosts(self, pac_man):
-        self.create_inky(pac_man)
-        self.create_clyde(pac_man)
-        self.create_blinky(pac_man)
-        self.create_pinky(pac_man)
+        # self.create_clyde(pac_man)
+        blinky = self.create_blinky(pac_man)
+        self.create_inky(pac_man, blinky)
+        # self.create_pinky(pac_man)
 
-    def create_inky(self, pac_man: Entity):
+    def create_inky(self, pac_man: Entity, blinky: Entity):
 
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
         # to spawn at the bottom left corner
 
-        p = Position(400, 320)
+        p = Position(670, 39)
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["inky-right-1"], 0.1)
@@ -218,8 +219,9 @@ class PacmanGame:
         inky.add_component(direction)
         inky.add_component(intention)
 
-        behavior = ClydeBehavior(
+        behavior = InkyBehavior(
             inky,
+            blinky,
             pac_man,
             self.cell_size,
             maze_size,
@@ -304,6 +306,7 @@ class PacmanGame:
         blinky.add_component(t)
 
         self.engine.add_entities(blinky)
+        return blinky
 
     def create_pinky(self, pac_man):
 

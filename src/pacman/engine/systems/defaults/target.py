@@ -11,10 +11,8 @@ class TargetSystem(System):
     def __init__(self, ressources: Ressources):
         super().__init__([Target, Position, Intention, Direction])
         self.ressources = ressources
-        self.first_run = True
 
     def run(self):
-        # if self.first_run: instiance the comrpotement else just run it
         for each_subscriber in self.subscribers:
             behavior = each_subscriber.get_component(Target).behavior
  
@@ -25,7 +23,6 @@ class TargetSystem(System):
                 road,
                 behavior.ghost_coord
             )
-            # to see latee how to do compatible
 
     def change_direction(
         self,
