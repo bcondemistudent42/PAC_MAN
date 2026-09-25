@@ -199,7 +199,6 @@ class PacmanGame:
 
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
-        # to spawn at the bottom left corner
 
         p = Position(670, 39)
         v = Velocity(1 * self.settings.scale)
@@ -237,7 +236,6 @@ class PacmanGame:
 
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
-        # to spawn at the bottom left corner
 
         p = Position(352, 490)
         v = Velocity(1 * self.settings.scale)
@@ -274,7 +272,6 @@ class PacmanGame:
 
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
-        # to spawn at the bottom left corner
 
         p = Position(40, 32)
         v = Velocity(1 * self.settings.scale)
@@ -312,7 +309,6 @@ class PacmanGame:
 
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
-        # to spawn at the bottom left corner
 
         p = Position(590, 590)
         v = Velocity(1 * self.settings.scale)

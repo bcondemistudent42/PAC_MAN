@@ -1,4 +1,3 @@
-
 from pacman.engine.components.defaults.direction import Dir
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
@@ -23,6 +22,7 @@ class PinkyBehavior(Behavior):
             maze_size,
             maze
         )
+        self.corner = (0, maze_size[1] - 1)
 
     def find_pacman(self):
 

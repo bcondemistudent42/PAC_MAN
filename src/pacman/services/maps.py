@@ -34,10 +34,13 @@ class PacmanMap:
         self.logic_matrix = []
 
     def get_map_matrix(self) -> list[list[PacmanCell]]:
+        # in english plz
+        # hahahahahahahahahah
         """Retourne la matrice logique du niveau pour le système de mouvement."""
         return self.logic_matrix
 
     def maze_to_matrix(self) -> None:
+        # in english plz
         """Génère la matrice visuelle et la matrice logique dans l'instance."""
         self.sprite_matrix = [
             ["" for _ in range(len(self.map[0]) * 3)] for _ in range(len(self.map) * 3)

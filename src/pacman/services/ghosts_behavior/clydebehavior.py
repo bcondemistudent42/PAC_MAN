@@ -22,7 +22,7 @@ class ClydeBehavior(Behavior):
             maze
         )
         self.margin = 8
-        self.corner = (13, 13)
+        self.corner = (maze_size[0] - 1, maze_size[1] - 1)
 
     def find_pacman(self) -> list | None:
 

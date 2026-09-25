@@ -21,6 +21,7 @@ class BlinkyBehavior(Behavior):
             maze_size,
             maze
         )
+        self.corner = (0, 0)
 
     def find_pacman(self) -> list | None:
         x_ghost = self.ghost.get_component(Position).x

@@ -25,6 +25,8 @@ class InkyBehavior(Behavior):
             maze
         )
         self.blinky = blinky
+        self.corner = (0, maze_size[1] - 1)
+        # to use for scared behavior to se implementation later
 
     def find_pacman(self) -> list | None:
 

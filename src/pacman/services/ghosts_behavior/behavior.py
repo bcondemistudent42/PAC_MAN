@@ -28,6 +28,9 @@ class Behavior(ABC):
         pass
 
     @staticmethod
-    def pixel_to_matrix(coord: tuple[int | float, int | float], cell_size: float) -> tuple[int, int]:
+    def pixel_to_matrix(
+        coord: tuple[int | float, int | float],
+        cell_size: float
+    )-> tuple[int, int]:
         x, y = coord
         return (int(x // cell_size), int(y // cell_size))
