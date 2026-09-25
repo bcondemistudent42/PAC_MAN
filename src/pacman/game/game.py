@@ -191,9 +191,9 @@ class PacmanGame:
 
     def create_ghosts(self, pac_man):
         self.create_clyde(pac_man)
-        # blinky = self.create_blinky(pac_man)
-        # self.create_inky(pac_man, blinky)
-        # self.create_pinky(pac_man)
+        blinky = self.create_blinky(pac_man)
+        self.create_inky(pac_man, blinky)
+        self.create_pinky(pac_man)
 
     def create_inky(self, pac_man: Entity, blinky: Entity):
 

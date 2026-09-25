@@ -20,13 +20,9 @@ class Node:
 class Astar:
     def __init__(
         self,
-        ghost_coord: tuple[int, int],
-        pacman_coord: tuple[int, int],
         maze_size: tuple[int, int],
         maze: list[list[int]],
     ):
-        self.ghost_coord = ghost_coord
-        self.pacman_coord = pacman_coord
         self.maze_size = maze_size
         self.maze = maze
 
@@ -39,7 +35,8 @@ class Astar:
 # rename them into ghost and target instead, clearer
 # readapt the other behavior to be clean
 
-    def find_road(self) -> list | None:
+    def find_road(self, ghost_coord: tuple[int, int], pacman_coord: tuple[int, int],
+    ) -> list | None:
 
         visited = set()
         not_visited = []
@@ -47,10 +44,10 @@ class Astar:
 
         start_node = Node(
             None,
-            self.heuristic(self.ghost_coord, self.pacman_coord),
+            self.heuristic(ghost_coord, pacman_coord),
             0,
-            self.heuristic(self.ghost_coord, self.pacman_coord),
-            self.ghost_coord,
+            self.heuristic(ghost_coord, pacman_coord),
+            ghost_coord,
         )
 
         hp.heappush(not_visited, start_node)
@@ -68,11 +65,11 @@ class Astar:
             self.add_neighbours(
                 not_visited,
                 actual_node,
-                self.pacman_coord,
+                pacman_coord,
                 visited,
                 (maxtrix_height, matrix_width),
             )
-            if actual_node.coord == self.pacman_coord:
+            if actual_node.coord == pacman_coord:
                 return self.get_way(actual_node)
 
     def get_way(self, actual_node: Node):

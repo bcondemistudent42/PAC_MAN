@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
+from pacman.services.ghosts_behavior.astar import Astar
 
 
 class Behavior(ABC):
@@ -18,6 +19,10 @@ class Behavior(ABC):
         self.maze_size = maze_size
         self.maze = maze
         self.cell_size = cell_size
+        self.solver = Astar(
+            self.maze_size,
+            self.maze
+        )
 
     @abstractmethod
     def find_pacman(self) -> list | None:

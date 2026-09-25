@@ -73,13 +73,10 @@ class InkyBehavior(Behavior):
         if final[0] < 0 or final[0] >= self.maze_size[0] or final[1] < 0 or final[1] >= self.maze_size[1]:
             final = (x_before, y_before)
 
-        solver = Astar(
+        output = self.solver.find_road(
             (x_inky_graph, y_inky_graph),
-            final,
-            self.maze_size,
-            self.maze
+            final
         )
-        output = solver.find_road()
         if output is None:
             return [(x_before, y_before)]
 

@@ -39,10 +39,7 @@ class BlinkyBehavior(Behavior):
             self.cell_size)
         )
 
-        solver = Astar(
+        return self.solver.find_road(
             (x_ghost_graph, y_ghost_graph),
-            (x_pacman_graph, y_pacman_graph),
-            self.maze_size,
-            self.maze
+            (x_pacman_graph, y_pacman_graph)
         )
-        return solver.find_road()

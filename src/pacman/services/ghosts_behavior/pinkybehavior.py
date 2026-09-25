@@ -61,10 +61,7 @@ class PinkyBehavior(Behavior):
         else:
             good_coord_target = (x, y)
 
-        solver = Astar(
+        return self.solver.find_road(
             (x_ghost_graph, y_ghost_graph),
-            good_coord_target,
-            self.maze_size,
-            self.maze
+            good_coord_target
         )
-        return solver.find_road()
