@@ -54,10 +54,11 @@ class MovementSystem(System):
                     and matrix[cell_y + intent_dy][cell_x + intent_dx]
                     != PacmanCell.WALL
                 ):
+                    if direction.direction != intention.direction:
+                        sprites = subscriber.get_component(Sprites)
+                        sprites.sprite_index = 0
+                        sprites.sprites = direction.sprite_map[intention.direction]
                     direction.direction = intention.direction
-                    sprites = subscriber.get_component(Sprites)
-                    sprites.sprite_index = 0
-                    sprites.sprites = direction.sprite_map[direction.direction]
 
                 curr_dx, curr_dy = self.direction_map[direction.direction]
                 if (
