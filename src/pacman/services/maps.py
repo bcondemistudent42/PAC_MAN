@@ -22,7 +22,7 @@ class PacmanMap:
         self, engine: GameEngine, scale: float, map_width: int, map_height: int
     ) -> None:
         self.generator = MazeGenerator(
-            size=(map_width, map_height), perfect=False, seed=48515
+            size=(map_width, map_height), perfect=True, seed=48515
         )
 
         self.TILE_SIZE = 8 * scale
@@ -32,6 +32,59 @@ class PacmanMap:
 
         self.sprite_matrix = []
         self.logic_matrix = []
+
+    def break_dead_ends(self, maze: list[list[int]]) -> list[list[int]]:
+        height = len(maze)
+        if height == 0:
+            return maze
+        width = len(maze[0])
+
+        directions = [
+            (1, 0, -1, 4),  # Nord
+            (2, 1, 0, 8),  # Est
+            (4, 0, 1, 1),  # Sud
+            (8, -1, 0, 2),  # Ouest
+        ]
+
+        for y in range(height):
+            for x in range(width):
+                cell = maze[y][x]
+
+                walls_count = sum(1 for bit, _, _, _ in directions if (cell & bit))
+
+                if walls_count >= 3:
+                    candidates = []
+                    passage_bit = 15 & ~cell
+
+                    for bit, dx, dy, opp in directions:
+                        if cell & bit:
+                            nx, ny = x + dx, y + dy
+                            if 0 <= nx < width and 0 <= ny < height:
+                                candidates.append((bit, nx, ny, opp))
+
+                    if candidates:
+                        preferred_opp = None
+                        if walls_count == 3:
+                            if passage_bit == 1:
+                                preferred_opp = 4
+                            elif passage_bit == 2:
+                                preferred_opp = 8
+                            elif passage_bit == 4:
+                                preferred_opp = 1
+                            elif passage_bit == 8:
+                                preferred_opp = 2
+
+                        target = next(
+                            (c for c in candidates if c[0] == preferred_opp),
+                            candidates[0],
+                        )
+
+                        bit_to_break, nx, ny, opp_bit = target
+
+                        maze[y][x] &= ~bit_to_break
+                        maze[ny][nx] &= ~opp_bit
+
+            return maze
 
     def get_map_matrix(self) -> list[list[PacmanCell]]:
         # in english plz
@@ -121,7 +174,9 @@ class PacmanMap:
 
                 if x > 0 and sud and not self.map[y][x - 1] & (1 << 2):
                     if self.map[y][x - 1] & (1 << 1):
-                        self.sprite_matrix[y * 3 + 2][x * 3] = "corner-jonction-bottom-left"
+                        self.sprite_matrix[y * 3 + 2][x * 3] = (
+                            "corner-jonction-bottom-left"
+                        )
                     elif self.map[y + 1][x - 1] & (1 << 1):
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-bottom"
                     else:
@@ -130,7 +185,9 @@ class PacmanMap:
 
                 if x < last_x and nord and not self.map[y][x + 1] & 1:
                     if self.map[y][x + 1] & (1 << 3):
-                        self.sprite_matrix[y * 3][x * 3 + 2] = "corner-jonction-top-right"
+                        self.sprite_matrix[y * 3][x * 3 + 2] = (
+                            "corner-jonction-top-right"
+                        )
                     elif self.map[y - 1][x + 1] & (1 << 3):
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-top"
                     else:
@@ -139,7 +196,9 @@ class PacmanMap:
 
                 if x < last_x and sud and not self.map[y][x + 1] & (1 << 2):
                     if self.map[y][x + 1] & (1 << 3):
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "corner-jonction-bottom-right"
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                            "corner-jonction-bottom-right"
+                        )
                     elif self.map[y + 1][x + 1] & (1 << 3):
                         self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-bottom"
                     else:
@@ -161,7 +220,9 @@ class PacmanMap:
 
                 if y > 0 and est and not self.map[y - 1][x] & (1 << 1):
                     if self.map[y - 1][x] & (1 << 2):
-                        self.sprite_matrix[y * 3][x * 3 + 2] = "corner-jonction-top-right"
+                        self.sprite_matrix[y * 3][x * 3 + 2] = (
+                            "corner-jonction-top-right"
+                        )
                     elif self.map[y - 1][x + 1] & (1 << 2):
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-right"
                     else:
@@ -170,7 +231,9 @@ class PacmanMap:
 
                 if y < last_y and ouest and not self.map[y + 1][x] & (1 << 3):
                     if self.map[y + 1][x] & 1:
-                        self.sprite_matrix[y * 3 + 2][x * 3] = "corner-jonction-bottom-left"
+                        self.sprite_matrix[y * 3 + 2][x * 3] = (
+                            "corner-jonction-bottom-left"
+                        )
                     elif self.map[y + 1][x - 1] & 1:
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-left"
                     else:
@@ -179,7 +242,9 @@ class PacmanMap:
 
                 if y < last_y and est and not self.map[y + 1][x] & (1 << 1):
                     if self.map[y + 1][x] & 1:
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "corner-jonction-bottom-right"
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                            "corner-jonction-bottom-right"
+                        )
                     elif self.map[y + 1][x + 1] & 1:
                         self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-right"
                     else:
@@ -246,6 +311,7 @@ class PacmanMap:
     def generate_map(self, seed: int = 0) -> None:
         self.generator.generate()
         self.map = self.generator.maze
+        self.break_dead_ends(self.map)
 
         self.maze_to_matrix()
 

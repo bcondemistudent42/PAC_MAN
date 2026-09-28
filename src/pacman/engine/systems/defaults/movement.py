@@ -1,6 +1,7 @@
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
 from pacman.game.ressources import Ressources
@@ -54,6 +55,9 @@ class MovementSystem(System):
                     != PacmanCell.WALL
                 ):
                     direction.direction = intention.direction
+                    sprites = subscriber.get_component(Sprites)
+                    sprites.sprite_index = 0
+                    sprites.sprites = direction.sprite_map[direction.direction]
 
                 curr_dx, curr_dy = self.direction_map[direction.direction]
                 if (

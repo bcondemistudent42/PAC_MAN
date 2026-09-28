@@ -52,7 +52,7 @@ class PacmanGame:
         )
 
         self.cell_size = cell_height_px * self.SCALE
-
+        self.tile_size = 8 * self.SCALE * 3
         self.system = {}
         self.settings = GameSettings.from_window(
             window_width=engine.window_width,
@@ -123,38 +123,32 @@ class PacmanGame:
         )
 
     def create_pacman(self):
-        center = (self.settings.map_width // 2) * 3 + 1
         tile_size = 8 * self.settings.scale
-        p = Position(16, 16)
+        p = Position(16 * tile_size, 16 * tile_size)
         v = Velocity(1 * self.settings.scale)
-        spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
+        spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.10)
         hitbox = Hitbox(13 * self.settings.scale, 13 * self.settings.scale)
-        direction = Direction(Dir.RIGHT)
+        direction_sprites_map = {
+            Dir.RIGHT: ["pacman-right-1", "pacman-right-2", "pacman-right-3"],
+            Dir.LEFT: ["pacman-left-1", "pacman-left-2", "pacman-left-3"],
+            Dir.UP: ["pacman-top-1", "pacman-top-2", "pacman-top-3"],
+            Dir.DOWN: ["pacman-bottom-1", "pacman-bottom-2", "pacman-bottom-3"],
+        }
+
+        direction = Direction(Dir.RIGHT, direction_sprites_map)
         intention = Intention(Dir.RIGHT)
 
         def on_left_key() -> None:
             intention.direction = Dir.LEFT
 
-            spr.sprite_index = 0
-            spr.sprites = ["pacman-left-1", "pacman-left-2", "pacman-left-3"]
-
         def on_right_key() -> None:
             intention.direction = Dir.RIGHT
-
-            spr.sprite_index = 0
-            spr.sprites = ["pacman-right-1", "pacman-right-2", "pacman-right-3"]
 
         def on_up_key() -> None:
             intention.direction = Dir.UP
 
-            spr.sprite_index = 0
-            spr.sprites = ["pacman-top-1", "pacman-top-2", "pacman-top-3"]
-
         def on_down_key() -> None:
             intention.direction = Dir.DOWN
-
-            spr.sprite_index = 0
-            spr.sprites = ["pacman-bottom-1", "pacman-bottom-2", "pacman-bottom-3"]
 
         def handle_pacman_ghost_collision() -> None:
             spr.sprites = DeathSprites().PACMAN
@@ -190,22 +184,30 @@ class PacmanGame:
         return pac_man
 
     def create_ghosts(self, pac_man):
-        # self.create_clyde(pac_man)
+        self.create_clyde(pac_man)
         blinky = self.create_blinky(pac_man)
-        # self.create_inky(pac_man, blinky)
-        # self.create_pinky(pac_man)
+        self.create_inky(pac_man, blinky)
+        self.create_pinky(pac_man)
 
     def create_inky(self, pac_man: Entity, blinky: Entity):
 
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        p = Position(670, 39)
+        p = Position(
+            1 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
+        )
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["inky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-        direction = Direction(Dir.DOWN)
+        direction_sprites_map = {
+            Dir.RIGHT: ["inky-right-1", "inky-right-2"],
+            Dir.LEFT: ["inky-left-1", "inky-left-2"],
+            Dir.UP: ["inky-top-1", "inky-top-2"],
+            Dir.DOWN: ["inky-bottom-1", "inky-bottom-2"],
+        }
+        direction = Direction(Dir.DOWN, direction_sprites_map)
         intention = Intention(Dir.DOWN)
 
         inky = Entity("inky")
@@ -218,14 +220,7 @@ class PacmanGame:
         inky.add_component(direction)
         inky.add_component(intention)
 
-        behavior = InkyBehavior(
-            inky,
-            blinky,
-            pac_man,
-            self.cell_size,
-            maze_size,
-            maze
-        )
+        behavior = InkyBehavior(inky, blinky, pac_man, self.cell_size, maze_size, maze)
 
         t = Target(pac_man, maze_size, maze, behavior)
         inky.add_component(t)
@@ -237,12 +232,20 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        p = Position(352, 490)
+        p = Position(
+            1 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
+        )
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["clyde-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-        direction = Direction(Dir.DOWN)
+        direction_sprites_map = {
+            Dir.RIGHT: ["clyde-right-1", "clyde-right-2"],
+            Dir.LEFT: ["clyde-left-1", "clyde-left-2"],
+            Dir.UP: ["clyde-top-1", "clyde-top-2"],
+            Dir.DOWN: ["clyde-bottom-1", "clyde-bottom-2"],
+        }
+        direction = Direction(Dir.DOWN, direction_sprites_map)
         intention = Intention(Dir.DOWN)
 
         clyde = Entity("clyde")
@@ -255,13 +258,7 @@ class PacmanGame:
         clyde.add_component(direction)
         clyde.add_component(intention)
 
-        behavior = ClydeBehavior(
-            clyde,
-            pac_man,
-            self.cell_size,
-            maze_size,
-            maze
-        )
+        behavior = ClydeBehavior(clyde, pac_man, self.cell_size, maze_size, maze)
 
         t = Target(pac_man, maze_size, maze, behavior)
         clyde.add_component(t)
@@ -273,15 +270,20 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        center = (self.settings.map_width // 2) * 3 + 1
-        tile_size = 8 * self.settings.scale
-
-        p = Position(center * tile_size, center * tile_size)
+        p = Position(
+            14 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
+        )
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-        direction = Direction(Dir.DOWN)
+        direction_sprites_map = {
+            Dir.RIGHT: ["blinky-right-1", "blinky-right-2"],
+            Dir.LEFT: ["blinky-left-1", "blinky-left-2"],
+            Dir.UP: ["blinky-top-1", "blinky-top-2"],
+            Dir.DOWN: ["blinky-bottom-1", "blinky-bottom-2"],
+        }
+        direction = Direction(Dir.DOWN, direction_sprites_map)
         intention = Intention(Dir.DOWN)
 
         blinky = Entity("blinky")
@@ -294,13 +296,7 @@ class PacmanGame:
         blinky.add_component(direction)
         blinky.add_component(intention)
 
-        behavior = BlinkyBehavior(
-            blinky,
-            pac_man,
-            self.cell_size,
-            maze_size,
-            maze
-        )
+        behavior = BlinkyBehavior(blinky, pac_man, self.cell_size, maze_size, maze)
 
         t = Target(pac_man, maze_size, maze, behavior)
         blinky.add_component(t)
@@ -313,12 +309,20 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        p = Position(590, 590)
+        p = Position(
+            14 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
+        )
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["pinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-        direction = Direction(Dir.DOWN)
+        direction_sprites_map = {
+            Dir.RIGHT: ["pinky-right-1", "pinky-right-2"],
+            Dir.LEFT: ["pinky-left-1", "pinky-left-2"],
+            Dir.UP: ["pinky-top-1", "pinky-top-2"],
+            Dir.DOWN: ["pinky-bottom-1", "pinky-bottom-2"],
+        }
+        direction = Direction(Dir.DOWN, direction_sprites_map)
         intention = Intention(Dir.DOWN)
 
         pinky = Entity("pinky")
@@ -331,13 +335,7 @@ class PacmanGame:
         pinky.add_component(direction)
         pinky.add_component(intention)
 
-        behavior = PinkyBehavior(
-            pinky,
-            pac_man,
-            self.cell_size,
-            maze_size,
-            maze
-        )
+        behavior = PinkyBehavior(pinky, pac_man, self.cell_size, maze_size, maze)
 
         t = Target(pac_man, maze_size, maze, behavior)
         pinky.add_component(t)

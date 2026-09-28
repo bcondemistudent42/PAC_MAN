@@ -11,5 +11,6 @@ class Dir(Enum):
 
 
 class Direction(Component):
-    def __init__(self, direction: Dir) -> None:
+    def __init__(self, direction: Dir, sprite_map: dict[Dir, list[str]]) -> None:
         self.direction = direction
+        self.sprite_map = sprite_map
