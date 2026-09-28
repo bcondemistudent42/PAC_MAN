@@ -125,7 +125,7 @@ class PacmanGame:
     def create_pacman(self):
         center = (self.settings.map_width // 2) * 3 + 1
         tile_size = 8 * self.settings.scale
-        p = Position(center * tile_size, center * tile_size)
+        p = Position(16, 16)
         v = Velocity(1 * self.settings.scale)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.1)
         hitbox = Hitbox(13 * self.settings.scale, 13 * self.settings.scale)
@@ -190,10 +190,10 @@ class PacmanGame:
         return pac_man
 
     def create_ghosts(self, pac_man):
-        self.create_clyde(pac_man)
+        # self.create_clyde(pac_man)
         blinky = self.create_blinky(pac_man)
-        self.create_inky(pac_man, blinky)
-        self.create_pinky(pac_man)
+        # self.create_inky(pac_man, blinky)
+        # self.create_pinky(pac_man)
 
     def create_inky(self, pac_man: Entity, blinky: Entity):
 
@@ -273,7 +273,10 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        p = Position(40, 32)
+        center = (self.settings.map_width // 2) * 3 + 1
+        tile_size = 8 * self.settings.scale
+
+        p = Position(center * tile_size, center * tile_size)
         v = Velocity(1 * self.settings.scale)
         col = Collision("ghost", {})
         spr = Sprites(["blinky-right-1"], 0.1)

@@ -38,13 +38,13 @@ class TargetSystem(System):
         x_diff = x - x_way
         y_diff = y - y_way
         if x_diff == -1:
-            entity.get_component(Direction).direction = Dir.RIGHT
+            entity.get_component(Intention).direction = Dir.RIGHT
         if x_diff == 1:
-            entity.get_component(Direction).direction = Dir.LEFT
+            entity.get_component(Intention).direction = Dir.LEFT
         if y_diff == -1:
-            entity.get_component(Direction).direction = Dir.DOWN
+            entity.get_component(Intention).direction = Dir.DOWN
         if y_diff == 1:
-            entity.get_component(Direction).direction = Dir.UP
+            entity.get_component(Intention).direction = Dir.UP
 
 # TODO bug identified, when ghost in mid of two cases,
 # it's not going anymore in the if diff 
