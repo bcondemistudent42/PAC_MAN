@@ -24,9 +24,8 @@ class TargetSystem(System):
             end = time.time()
             # to replace with component scared check if present for entity
             # and then check, do it also for the sprites stuff
-            print(self.start - end)
-            if self.start - end < -10:
-                each_subscriber.get_component(Scared).scared = True
+            # if self.start - end < -10:
+                # each_subscriber.get_component(Scared).scared = True
             if each_subscriber.get_component(Scared).scared:
                 road = behavior.scared_behavior()
             else:

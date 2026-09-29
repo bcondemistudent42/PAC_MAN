@@ -34,66 +34,102 @@ class PacmanMap:
         self.logic_matrix = []
 
     def break_dead_ends(self, maze: list[list[int]]) -> list[list[int]]:
+
+        import random
+
         height = len(maze)
         if height == 0:
             return maze
         width = len(maze[0])
 
-        directions = [
-            (1, 0, -1, 4),  # Nord
-            (2, 1, 0, 8),  # Est
-            (4, 0, 1, 1),  # Sud
-            (8, -1, 0, 2),  # Ouest
-        ]
+        def count_2x2_walls(r: int, c: int) -> int:
+            count = 0
+            if maze[r][c] & 2:
+                count += 1
+            if maze[r + 1][c] & 2:
+                count += 1
+            if maze[r][c] & 4:
+                count += 1
+            if maze[r][c + 1] & 4:
+                count += 1
+            return count
 
+        def can_break_h(y: int, x: int, min_walls: int = 1) -> bool:
+            if maze[y][x] == 15 or maze[y][x + 1] == 15:
+                return False
+            if not (maze[y][x] & 2):
+                return False
+            if y > 0 and x < width - 1 and count_2x2_walls(y - 1, x) <= min_walls:
+                return False
+            if y < height - 1 and x < width - 1 and count_2x2_walls(y, x) <= min_walls:
+                return False
+            return True
+
+        def can_break_v(y: int, x: int, min_walls: int = 1) -> bool:
+            if maze[y][x] == 15 or maze[y + 1][x] == 15:
+                return False
+            if not (maze[y][x] & 4):
+                return False
+            if x > 0 and y < height - 1 and count_2x2_walls(y, x - 1) <= min_walls:
+                return False
+            if x < width - 1 and y < height - 1 and count_2x2_walls(y, x) <= min_walls:
+                return False
+            return True
+
+        lines = []
         for y in range(height):
+            lines.append(('H', y))
+        for x in range(width):
+            lines.append(('V', x))
+
+        for i in range(len(lines) - 1, 0, -1):
+            j = random.randint(0, i)
+            lines[i], lines[j] = lines[j], lines[i]
+
+        for line_type, idx in lines:
+            if line_type == 'H':
+                y = idx
+                for x in range(width - 1):
+                    if can_break_h(y, x, min_walls=2):
+                        maze[y][x] &= ~2
+                        maze[y][x + 1] &= ~8
+            else:
+                x = idx
+                for y in range(height - 1):
+                    if can_break_v(y, x, min_walls=2):
+                        maze[y][x] &= ~4
+                        maze[y + 1][x] &= ~1
+
+        remaining_walls = []
+        for y in range(height):
+            for x in range(width - 1):
+                if maze[y][x] & 2:
+                    remaining_walls.append(('H', y, x))
+        for y in range(height - 1):
             for x in range(width):
-                cell = maze[y][x]
+                if maze[y][x] & 4:
+                    remaining_walls.append(('V', y, x))
 
-                walls_count = sum(1 for bit, _, _, _ in directions if (cell & bit))
+        for i in range(len(remaining_walls) - 1, 0, -1):
+            j = random.randint(0, i)
+            remaining_walls[i], remaining_walls[j] = remaining_walls[j], remaining_walls[i]
 
-                if walls_count >= 3:
-                    candidates = []
-                    passage_bit = 15 & ~cell
+        for wtype, y, x in remaining_walls:
+            if random.random() < 0.30:
+                if wtype == 'H' and can_break_h(y, x, min_walls=1):
+                    maze[y][x] &= ~2
+                    maze[y][x + 1] &= ~8
+                elif wtype == 'V' and can_break_v(y, x, min_walls=1):
+                    maze[y][x] &= ~4
+                    maze[y + 1][x] &= ~1
 
-                    for bit, dx, dy, opp in directions:
-                        if cell & bit:
-                            nx, ny = x + dx, y + dy
-                            if 0 <= nx < width and 0 <= ny < height:
-                                candidates.append((bit, nx, ny, opp))
-
-                    if candidates:
-                        preferred_opp = None
-                        if walls_count == 3:
-                            if passage_bit == 1:
-                                preferred_opp = 4
-                            elif passage_bit == 2:
-                                preferred_opp = 8
-                            elif passage_bit == 4:
-                                preferred_opp = 1
-                            elif passage_bit == 8:
-                                preferred_opp = 2
-
-                        target = next(
-                            (c for c in candidates if c[0] == preferred_opp),
-                            candidates[0],
-                        )
-
-                        bit_to_break, nx, ny, opp_bit = target
-
-                        maze[y][x] &= ~bit_to_break
-                        maze[ny][nx] &= ~opp_bit
-
-            return maze
+        return maze
 
     def get_map_matrix(self) -> list[list[PacmanCell]]:
-        # in english plz
-        # hahahahahahahahahah
         """Retourne la matrice logique du niveau pour le système de mouvement."""
         return self.logic_matrix
 
     def maze_to_matrix(self) -> None:
-        # in english plz
         """Génère la matrice visuelle et la matrice logique dans l'instance."""
         self.sprite_matrix = [
             ["" for _ in range(len(self.map[0]) * 3)] for _ in range(len(self.map) * 3)
