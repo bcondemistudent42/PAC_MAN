@@ -6,10 +6,10 @@ from pacman.engine.components.defaults import (
     Hitbox,
     KeyHook,
     Position,
+    Scared,
     Sprites,
     Target,
     Velocity,
-    Scared,
 )
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
