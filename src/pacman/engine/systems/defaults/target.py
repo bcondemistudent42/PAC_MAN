@@ -11,12 +11,21 @@ class TargetSystem(System):
     def __init__(self, ressources: Ressources):
         super().__init__([Target, Position, Intention, Direction])
         self.ressources = ressources
+        import time
+        self.start = time.time()
 
     def run(self):
+        # to delete later
         for each_subscriber in self.subscribers:
             behavior = each_subscriber.get_component(Target).behavior
- 
-            road = behavior.find_pacman()
+
+            import time
+            end = time.time()
+            print(self.start - end)
+            if end - self.start < 15:
+                road = behavior.find_pacman()
+            else:
+                road = behavior.scared_behavior()
 
             self.change_direction(
                 each_subscriber,

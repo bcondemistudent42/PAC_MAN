@@ -226,8 +226,7 @@ class PacmanGame:
             pac_man,
             self.cell_size,
             maze_size,
-            maze,
-            (0, maze_size[1] - 1)
+            maze
         )
 
         t = Target(pac_man, maze_size, maze, behavior)
@@ -271,8 +270,7 @@ class PacmanGame:
             pac_man,
             self.cell_size,
             maze_size,
-            maze,
-            (maze_size[0] - 1, maze_size[1] - 1)
+            maze
         )
 
         t = Target(pac_man, maze_size, maze, behavior)
@@ -316,8 +314,7 @@ class PacmanGame:
             pac_man,
             self.cell_size,
             maze_size,
-            maze,
-            (0, 0)
+            maze
         )
 
         t = Target(pac_man, maze_size, maze, behavior)
@@ -362,8 +359,7 @@ class PacmanGame:
             pac_man,
             self.cell_size,
             maze_size,
-            maze,
-            (0, maze_size[1] - 1)
+            maze
         )
 
         t = Target(pac_man, maze_size, maze, behavior)

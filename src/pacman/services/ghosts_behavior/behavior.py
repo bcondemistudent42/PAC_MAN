@@ -48,7 +48,6 @@ class Behavior(ABC):
 
         self.ghost_coord = (x_ghost_graph, y_ghost_graph)
 
-
         return self.solver.find_road(
             (x_ghost_graph, y_ghost_graph),
             self.corner
