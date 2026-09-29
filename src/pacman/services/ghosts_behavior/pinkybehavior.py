@@ -13,16 +13,16 @@ class PinkyBehavior(Behavior):
         cell_size: float,
         maze_size: tuple[int, int],
         maze: list[list[int]],
-    ) -> None:
+    ):
 
         super().__init__(
             ghost,
             pacman,
             cell_size,
             maze_size,
-            maze
+            maze,
+            (0, maze_size[1] - 1)
         )
-        self.corner = (0, maze_size[1] - 1)
 
     def find_pacman(self):
 
