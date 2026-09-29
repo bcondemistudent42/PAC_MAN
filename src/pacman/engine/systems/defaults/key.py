@@ -1,8 +1,14 @@
 import pyray as pr
 
 from pacman.engine.components.defaults import KeyHook
+from pacman.engine.events.event import Event
 from pacman.engine.systems.system import System
 from pacman.game.ressources import Ressources
+
+
+class KeyPressEvent(Event):
+    def __init__(self, key: pr.KeyboardKey) -> None:
+        self.key = key
 
 
 class KeySystem(System):

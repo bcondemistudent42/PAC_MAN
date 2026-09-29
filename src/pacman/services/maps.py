@@ -8,7 +8,6 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.entity import Entity
-from pacman.engine.systems.defaults.collision import CollisionSystem
 
 
 class PacmanCell(Enum):
@@ -373,10 +372,6 @@ class PacmanMap:
 
         self.maze_to_matrix()
 
-        col_sys = next(
-            sys for sys in self.engine.systems if isinstance(sys, CollisionSystem)
-        )
-
         for y, row in enumerate(self.logic_matrix):
             for x, cell_type in enumerate(row):
                 base_x = x * self.TILE_SIZE
@@ -388,7 +383,7 @@ class PacmanMap:
                     wall.add_component(Position(base_x, base_y))
                     wall.add_component(Sprites([sprite_val], 999999999999999999999999))
                     wall.add_component(Hitbox(self.TILE_SIZE, self.TILE_SIZE))
-                    col = Collision(sprite_val, {})
+                    col = Collision(sprite_val)
                     wall.add_component(col)
 
                     self.engine.add_single_entity(wall)
@@ -399,19 +394,7 @@ class PacmanMap:
                     pacgum.add_component(
                         Sprites(["pacgum-cell"], 999999999999999999999999)
                     )
-
-                    def handle_pacman_pacgum_collision(
-                        target=pacgum,
-                        pacgum_x=x,
-                        pacgum_y=y,
-                    ) -> None:
-                        target.get_component(Sprites).sprites = ["no-pacgum-cell"]
-                        col_sys.unsubscribe(target)
-                        self.logic_matrix[pacgum_y][pacgum_x] = PacmanCell.EMPTY
-
-                    col = Collision(
-                        "pacgum", {"pacman": handle_pacman_pacgum_collision}
-                    )
+                    col = Collision("pacgum")
                     hb = Hitbox(2, 2, 3, 3)  # Add scale
 
                     pacgum.add_component(col)

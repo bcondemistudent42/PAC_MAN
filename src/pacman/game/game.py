@@ -6,10 +6,10 @@ from pacman.engine.components.defaults import (
     Hitbox,
     KeyHook,
     Position,
+    Scared,
     Sprites,
     Target,
     Velocity,
-    Scared,
 )
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
@@ -20,9 +20,9 @@ from pacman.engine.systems.defaults import (
     MovementSystem,
     SpriteSystem,
 )
+from pacman.engine.systems.defaults.death import DeathSystem
 from pacman.game.ressources import Ressources
 from pacman.game.settings import GameSettings
-from pacman.services.death import DeathSprites
 from pacman.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
 from pacman.services.ghosts_behavior.clydebehavior import ClydeBehavior
 from pacman.services.ghosts_behavior.inkybehavior import InkyBehavior
@@ -35,8 +35,6 @@ class PacmanGame:
     def __init__(self, engine: GameEngine):
         self.engine = engine
         self.system = {}  # system name class: system instance
-        self.ressources = {}
-
         self.map_width = 15
         self.map_height = 15
 
@@ -87,7 +85,7 @@ class PacmanGame:
         sprite_system = SpriteSystem(self.ressources)
         keys_system = KeySystem(self.ressources)
         target_sys = TargetSystem(self.ressources)
-
+        death_system = DeathSystem(self.ressources)
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
         self.system[CollisionSystem] = collision_system
@@ -95,7 +93,14 @@ class PacmanGame:
         self.system[TargetSystem] = target_sys
 
         self.engine.add_system(
-            [movement_system, sprite_system, collision_system, keys_system, target_sys]
+            [
+                movement_system,
+                sprite_system,
+                collision_system,
+                keys_system,
+                target_sys,
+                death_system,
+            ]
         )
 
     def make_full_setup(self):
@@ -152,16 +157,7 @@ class PacmanGame:
         def on_down_key() -> None:
             intention.direction = Dir.DOWN
 
-        def handle_pacman_ghost_collision() -> None:
-            spr.sprites = DeathSprites().PACMAN
-            v.speed = 0
-
-        col = Collision(
-            "pacman",
-            {
-                "ghost": handle_pacman_ghost_collision,
-            },
-        )
+        col = Collision("pacman")
 
         keys = KeyHook(
             keys={
@@ -196,12 +192,14 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
+        scared = Scared(
+            ["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"]
+        )
         p = Position(
             1 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
         )
         v = Velocity(1 * self.settings.scale)
-        col = Collision("ghost", {})
+        col = Collision("ghost")
         spr = Sprites(["inky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         direction_sprites_map = {
@@ -236,12 +234,14 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
+        scared = Scared(
+            ["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"]
+        )
         p = Position(
             1 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
         )
         v = Velocity(1 * self.settings.scale)
-        col = Collision("ghost", {})
+        col = Collision("ghost")
         spr = Sprites(["clyde-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         direction_sprites_map = {
@@ -276,12 +276,14 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
+        scared = Scared(
+            ["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"]
+        )
         p = Position(
             14 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
         )
         v = Velocity(1 * self.settings.scale)
-        col = Collision("ghost", {})
+        col = Collision("ghost")
         spr = Sprites(["blinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         direction_sprites_map = {
@@ -317,12 +319,14 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
+        scared = Scared(
+            ["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"]
+        )
         p = Position(
             14 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
         )
         v = Velocity(1 * self.settings.scale)
-        col = Collision("ghost", {})
+        col = Collision("ghost")
         spr = Sprites(["pinky-right-1"], 0.1)
         hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
         direction_sprites_map = {
