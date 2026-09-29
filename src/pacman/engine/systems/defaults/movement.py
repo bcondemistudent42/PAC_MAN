@@ -43,7 +43,17 @@ class MovementSystem(System):
             is_aligned_x = dist_x <= (velo.speed / 2.0)
             is_aligned_y = dist_y <= (velo.speed / 2.0)
 
-            if is_aligned_x and is_aligned_y:
+            if (
+                (is_aligned_x and is_aligned_y)
+                or (
+                    intention.direction == Dir.LEFT and direction.direction == Dir.RIGHT
+                )
+                or (
+                    intention.direction == Dir.RIGHT and direction.direction == Dir.LEFT
+                )
+                or (intention.direction == Dir.UP and direction.direction == Dir.DOWN)
+                or (intention.direction == Dir.DOWN and direction.direction == Dir.UP)
+            ):
                 position.x = target_x
                 position.y = target_y
 
