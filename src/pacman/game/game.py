@@ -18,6 +18,7 @@ from pacman.engine.systems.defaults import (
     CollisionSystem,
     KeySystem,
     MovementSystem,
+    PacmanIntentionSystem,
     SpriteSystem,
 )
 from pacman.engine.systems.defaults.death import DeathSystem
@@ -84,12 +85,14 @@ class PacmanGame:
         movement_system = MovementSystem(self.ressources)
         sprite_system = SpriteSystem(self.ressources)
         keys_system = KeySystem(self.ressources)
+        pacman_intention_system = PacmanIntentionSystem(self.ressources)
         target_sys = TargetSystem(self.ressources)
         death_system = DeathSystem(self.ressources)
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
         self.system[CollisionSystem] = collision_system
         self.system[KeySystem] = keys_system
+        self.system[PacmanIntentionSystem] = pacman_intention_system
         self.system[TargetSystem] = target_sys
 
         self.engine.add_system(
@@ -98,6 +101,7 @@ class PacmanGame:
                 sprite_system,
                 collision_system,
                 keys_system,
+                pacman_intention_system,
                 target_sys,
                 death_system,
             ]
@@ -145,26 +149,14 @@ class PacmanGame:
         direction = Direction(Dir.RIGHT, direction_sprites_map)
         intention = Intention(Dir.RIGHT)
 
-        def on_left_key() -> None:
-            intention.direction = Dir.LEFT
-
-        def on_right_key() -> None:
-            intention.direction = Dir.RIGHT
-
-        def on_up_key() -> None:
-            intention.direction = Dir.UP
-
-        def on_down_key() -> None:
-            intention.direction = Dir.DOWN
-
         col = Collision("pacman")
 
         keys = KeyHook(
             keys={
-                pr.KEY_LEFT: on_left_key,
-                pr.KEY_RIGHT: on_right_key,
-                pr.KEY_UP: on_up_key,
-                pr.KEY_DOWN: on_down_key,
+                pr.KEY_LEFT: Dir.LEFT,
+                pr.KEY_RIGHT: Dir.RIGHT,
+                pr.KEY_UP: Dir.UP,
+                pr.KEY_DOWN: Dir.DOWN,
             }
         )
 

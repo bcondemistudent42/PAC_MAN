@@ -20,6 +20,6 @@ class KeySystem(System):
         for subscriber in self.subscribers:
             key_hook = subscriber.get_component(KeyHook)
 
-            for key, on_press in key_hook.keys.items():
+            for key in key_hook.keys:
                 if pr.is_key_pressed(key):
-                    on_press()
+                    self.ressources.events.push(KeyPressEvent(key))

@@ -11,13 +11,15 @@ class Entity:
         self.components: dict[type[Component], Component] = {}
 
     def add_component(self, component: Component | list[Component]):
-        if type(component) == Component:
-            self.components[type(component)] = component
-        if type(component) == list:
+        if isinstance(component, list):
             for each_comp in component:
-                self.components[type(each_comp)] = each_comp
-        else:
-            raise ValueError(f"Inapropriate value for component: {component}")
+                self.add_component(each_comp)
+            return
+
+        if not isinstance(component, Component):
+            raise TypeError(f"Inapropriate value for component: {component}")
+
+        self.components[type(component)] = component
 
     def get_component(self, component: type[T]) -> T:
         return cast(T, self.components[component])

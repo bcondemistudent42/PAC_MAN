@@ -359,10 +359,7 @@ class PacmanMap:
                 if cell_value != "":
                     logic_row.append(PacmanCell.WALL)
                 else:
-                    # if (x % 3 == 1) and (y % 3 == 1):
                     logic_row.append(PacmanCell.PACGUM)
-                    # else:
-                    # logic_row.append(PacmanCell.EMPTY)
             self.logic_matrix.append(logic_row)
 
     def generate_map(self, seed: int = 0) -> None:
