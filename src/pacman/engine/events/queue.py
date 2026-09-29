@@ -7,3 +7,8 @@ class EventsQueue:
 
     def push(self, event: Event) -> None:
         self.events.append(event)
+
+    def drain(self) -> list[Event]:
+        events = self.events
+        self.events = []
+        return events

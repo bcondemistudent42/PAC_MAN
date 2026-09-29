@@ -64,4 +64,5 @@ class GameEngine:
             for system in self.systems:
                 system.run()
 
+            self.events.drain()
             pr.end_drawing()
