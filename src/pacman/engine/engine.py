@@ -8,7 +8,7 @@ from pacman.services.parser import parse
 
 class GameEngine:
     def __enter__(self):
-        pr.init_window(self.window_width, self.window_height, "PACMAN DEBUG")
+        pr.init_window(self.window_width, self.window_height, "PACMAN")
         my_monitor = pr.get_current_monitor()
         monitor_w = int(pr.get_monitor_width(my_monitor) / 4) * 3
         monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3

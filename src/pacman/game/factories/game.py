@@ -9,7 +9,6 @@ from pacman.engine.components.defaults import (
     Sprites,
     Target,
     Velocity,
-    Scared,
 )
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
@@ -28,7 +27,7 @@ from pacman.services.ghosts_behavior.clydebehavior import ClydeBehavior
 from pacman.services.ghosts_behavior.inkybehavior import InkyBehavior
 from pacman.services.ghosts_behavior.pinkybehavior import PinkyBehavior
 from pacman.services.maps import PacmanMap
-from pacman.services.sprites import SpriteService, config, config_spritesheet_2
+from pacman.services.sprites import SpriteService, config
 
 
 class PacmanGame:
@@ -81,7 +80,6 @@ class PacmanGame:
 
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
-        self.sprite_service.add_spritesheet("sprites/creeper.png", config_spritesheet_2)
         collision_system = CollisionSystem(self.ressources)
         movement_system = MovementSystem(self.ressources)
         sprite_system = SpriteSystem(self.ressources)
@@ -196,7 +194,6 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             1 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
         )
@@ -215,7 +212,6 @@ class PacmanGame:
 
         inky = Entity("inky")
 
-        inky.add_component(scared)
         inky.add_component(p)
         inky.add_component(v)
         inky.add_component(col)
@@ -224,7 +220,14 @@ class PacmanGame:
         inky.add_component(direction)
         inky.add_component(intention)
 
-        behavior = InkyBehavior(inky, blinky, pac_man, self.cell_size, maze_size, maze)
+        behavior = InkyBehavior(
+            inky,
+            blinky,
+            pac_man,
+            self.cell_size,
+            maze_size,
+            maze
+        )
 
         t = Target(pac_man, maze_size, maze, behavior)
         inky.add_component(t)
@@ -236,7 +239,6 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             1 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
         )
@@ -256,7 +258,6 @@ class PacmanGame:
         clyde = Entity("clyde")
 
         clyde.add_component(p)
-        clyde.add_component(scared)
         clyde.add_component(v)
         clyde.add_component(col)
         clyde.add_component(spr)
@@ -264,7 +265,13 @@ class PacmanGame:
         clyde.add_component(direction)
         clyde.add_component(intention)
 
-        behavior = ClydeBehavior(clyde, pac_man, self.cell_size, maze_size, maze)
+        behavior = ClydeBehavior(
+            clyde,
+            pac_man,
+            self.cell_size,
+            maze_size,
+            maze
+        )
 
         t = Target(pac_man, maze_size, maze, behavior)
         clyde.add_component(t)
@@ -276,7 +283,6 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             14 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
         )
@@ -296,7 +302,6 @@ class PacmanGame:
         blinky = Entity("blinky")
 
         blinky.add_component(p)
-        blinky.add_component(scared)
         blinky.add_component(v)
         blinky.add_component(col)
         blinky.add_component(spr)
@@ -304,7 +309,13 @@ class PacmanGame:
         blinky.add_component(direction)
         blinky.add_component(intention)
 
-        behavior = BlinkyBehavior(blinky, pac_man, self.cell_size, maze_size, maze)
+        behavior = BlinkyBehavior(
+            blinky,
+            pac_man,
+            self.cell_size,
+            maze_size,
+            maze
+        )
 
         t = Target(pac_man, maze_size, maze, behavior)
         blinky.add_component(t)
@@ -317,7 +328,6 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
-        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             14 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
         )
@@ -336,7 +346,6 @@ class PacmanGame:
 
         pinky = Entity("pinky")
 
-        pinky.add_component(scared)
         pinky.add_component(p)
         pinky.add_component(v)
         pinky.add_component(col)
@@ -345,7 +354,13 @@ class PacmanGame:
         pinky.add_component(direction)
         pinky.add_component(intention)
 
-        behavior = PinkyBehavior(pinky, pac_man, self.cell_size, maze_size, maze)
+        behavior = PinkyBehavior(
+            pinky,
+            pac_man,
+            self.cell_size,
+            maze_size,
+            maze
+        )
 
         t = Target(pac_man, maze_size, maze, behavior)
         pinky.add_component(t)
