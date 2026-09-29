@@ -27,7 +27,7 @@ from pacman.services.ghosts_behavior.clydebehavior import ClydeBehavior
 from pacman.services.ghosts_behavior.inkybehavior import InkyBehavior
 from pacman.services.ghosts_behavior.pinkybehavior import PinkyBehavior
 from pacman.services.maps import PacmanMap
-from pacman.services.sprites import SpriteService, config
+from pacman.services.sprites import SpriteService, config, config_spritesheet_2
 
 
 class PacmanGame:
@@ -80,6 +80,7 @@ class PacmanGame:
 
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
+        self.sprite_service.add_spritesheet("sprites/creeper.png", config_spritesheet_2)
         collision_system = CollisionSystem(self.ressources)
         movement_system = MovementSystem(self.ressources)
         sprite_system = SpriteSystem(self.ressources)

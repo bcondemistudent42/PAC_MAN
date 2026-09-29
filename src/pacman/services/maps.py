@@ -108,6 +108,19 @@ class PacmanMap:
                 sud = bool(cell & (1 << 2))
                 ouest = bool(cell & (1 << 3))
 
+                if nord and est and sud and ouest:
+                    self.sprite_matrix[y * 3][x * 3] = "creeper-1"
+                    self.sprite_matrix[y * 3][x * 3 + 1] = "creeper-2"
+                    self.sprite_matrix[y * 3][x * 3 + 2] = "creeper-3"
+                    self.sprite_matrix[y * 3 + 1][x * 3] = "creeper-4"
+                    self.sprite_matrix[y * 3 + 1][x * 3 + 1] = "creeper-5"
+                    self.sprite_matrix[y * 3 + 1][x * 3 + 2] = "creeper-6"
+                    self.sprite_matrix[y * 3 + 2][x * 3] = "creeper-7"
+                    self.sprite_matrix[y * 3 + 2][x * 3 + 1] = "creeper-8"
+                    self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "creeper-9"
+
+                    continue
+
                 self.sprite_matrix[y * 3 + 1][x * 3 + 1] = ""  # Centre vide
 
                 # Bords

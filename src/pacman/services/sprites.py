@@ -97,6 +97,19 @@ config = {
 }
 
 
+config_spritesheet_2 = {
+    "creeper-1": SpriteSheetPos(x=0, y=0, width=8, height=8),
+    "creeper-2": SpriteSheetPos(x=8, y=0, width=8, height=8),
+    "creeper-3": SpriteSheetPos(x=16, y=0, width=8, height=8),
+    "creeper-4": SpriteSheetPos(x=0, y=8, width=8, height=8),
+    "creeper-5": SpriteSheetPos(x=8, y=8, width=8, height=8),
+    "creeper-6": SpriteSheetPos(x=16, y=8, width=8, height=8),
+    "creeper-7": SpriteSheetPos(x=0, y=16, width=8, height=8),
+    "creeper-8": SpriteSheetPos(x=8, y=16, width=8, height=8),
+    "creeper-9": SpriteSheetPos(x=16, y=16, width=8, height=8),
+}
+
+
 class SpriteService:
     def __init__(self, spritesheet: str, map: dict[str, SpriteSheetPos]) -> None:
         self.spritesheet = spritesheet
@@ -104,6 +117,14 @@ class SpriteService:
         self.img = Image.open(spritesheet).convert("RGBA")
         self.img_array = np.array(self.img)
         self.map = {}
+
+        self.init_sprites()
+
+    def add_spritesheet(self, spritesheet: str, map: dict[str, SpriteSheetPos]) -> None:
+        self.spritesheet = spritesheet
+        self.config_map = map
+        self.img = Image.open(spritesheet).convert("RGBA")
+        self.img_array = np.array(self.img)
 
         self.init_sprites()
 
