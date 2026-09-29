@@ -1,6 +1,7 @@
 import pyray as pr
 
 from pacman.engine.components.defaults import Position, Sprites
+from pacman.engine.components.defaults.scared import Scared
 from pacman.engine.systems.system import System
 from pacman.game.ressources import Ressources
 
@@ -36,6 +37,11 @@ class SpriteSystem(System):
             y = position_component.y
 
             texture = sprite_service.get_sprite(sprite_component.sprites[index])
+            if each_subscribed.check_component(Scared) and each_subscribed.get_component(Scared).scared:
+                if (sprite_component.sprite_index) >= len(each_subscribed.get_component(Scared).sprites):
+                    sprite_component.sprite_index = 0
+                index = sprite_component.sprite_index
+                texture = sprite_service.get_sprite(each_subscribed.get_component(Scared).sprites[index])
 
             offset_x = (tile_size - texture.width * scale) / 2
             offset_y = (tile_size - texture.height * scale) / 2

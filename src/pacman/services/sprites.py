@@ -131,7 +131,7 @@ class SpriteService:
             pr.unload_image(image)
 
     def get_sprite(self, sprite: str) -> pr.Image:
-        return self.map[sprite]
+        return self.map[sprite] 
 
 
 if __name__ == "__main__":

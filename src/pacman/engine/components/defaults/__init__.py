@@ -5,6 +5,7 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.map import Map
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.scared import Scared
 from pacman.engine.components.defaults.size import Size
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.target import Target
@@ -18,8 +19,9 @@ __all__ = [
     "KeyHook",
     "Map",
     "Position",
+    "Scared",
     "Size",
     "Sprites",
     "Target",
-    "Velocity"
+    "Velocity",
 ]

@@ -9,6 +9,7 @@ from pacman.engine.components.defaults import (
     Sprites,
     Target,
     Velocity,
+    Scared,
 )
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
@@ -194,6 +195,7 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
+        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             1 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
         )
@@ -212,6 +214,7 @@ class PacmanGame:
 
         inky = Entity("inky")
 
+        inky.add_component(scared)
         inky.add_component(p)
         inky.add_component(v)
         inky.add_component(col)
@@ -232,6 +235,7 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
+        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             1 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
         )
@@ -251,6 +255,7 @@ class PacmanGame:
         clyde = Entity("clyde")
 
         clyde.add_component(p)
+        clyde.add_component(scared)
         clyde.add_component(v)
         clyde.add_component(col)
         clyde.add_component(spr)
@@ -270,6 +275,7 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
+        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             14 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
         )
@@ -289,6 +295,7 @@ class PacmanGame:
         blinky = Entity("blinky")
 
         blinky.add_component(p)
+        blinky.add_component(scared)
         blinky.add_component(v)
         blinky.add_component(col)
         blinky.add_component(spr)
@@ -309,6 +316,7 @@ class PacmanGame:
         maze = self.map_service.map
         maze_size = (self.map_width, self.map_height)
 
+        scared = Scared(["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"])
         p = Position(
             14 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
         )
@@ -327,6 +335,7 @@ class PacmanGame:
 
         pinky = Entity("pinky")
 
+        pinky.add_component(scared)
         pinky.add_component(p)
         pinky.add_component(v)
         pinky.add_component(col)

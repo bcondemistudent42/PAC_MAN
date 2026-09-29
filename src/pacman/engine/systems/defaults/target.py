@@ -1,6 +1,7 @@
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.scared import Scared
 from pacman.engine.components.defaults.target import Target
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
@@ -21,12 +22,15 @@ class TargetSystem(System):
 
             import time
             end = time.time()
+            # to replace with component scared check if present for entity
+            # and then check, do it also for the sprites stuff
             print(self.start - end)
-            if end - self.start < 15:
-                road = behavior.find_pacman()
-            else:
+            if self.start - end < -10:
+                each_subscriber.get_component(Scared).scared = True
+            if each_subscriber.get_component(Scared).scared:
                 road = behavior.scared_behavior()
-
+            else:
+                road = behavior.find_pacman()
             self.change_direction(
                 each_subscriber,
                 road,
