@@ -127,7 +127,7 @@ class PacmanGame:
     def create_pacman(self):
         tile_size = 8 * self.settings.scale
         p = Position(16 * tile_size, 16 * tile_size)
-        v = Velocity(1 * self.settings.scale)
+        v = Velocity(1.1 * self.settings.scale)
         spr = Sprites(["pacman-right-1", "pacman-right-2", "pacman-right-3"], 0.10)
         hitbox = Hitbox(13 * self.settings.scale, 13 * self.settings.scale)
         direction_sprites_map = {
