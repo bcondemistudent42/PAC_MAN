@@ -25,218 +25,104 @@ class GhostFactory:
         maze_size: tuple[int, int],
         map_size: tuple[int, int],
     ) -> None:
-
         self.SCALE = scale
         self.maze = maze
         self.maze_size = maze_size
         self.pac_man = pacman
         self.engine = engine
-        self.cell_size = map_size[0] * self.SCALE
-        self.tile_size = 8 * self.SCALE * 3
-
+        self.cell_size = map_size[0] * scale
+        self.tile_size = 24 * scale
+        self.blinky: Entity | None = None
         self.scared_ghost_spr = [
             "blue-ghost-1",
             "blue-ghost-2",
             "white-ghost-1",
-            "white-ghost-2"
+            "white-ghost-2",
         ]
 
+    def create_all(self) -> None:
+        """Create all ghosts in the order required by their behaviors."""
+        self.create("clyde")
+        self.create("blinky")
+        self.create("inky")
+        self.create("pinky")
+
     def create(self, name: str) -> Entity:
+        ghost_data = {
+            "blinky": (
+                (self.maze_size[0] - 1, 1),
+                "blinky",
+                BlinkyBehavior,
+            ),
+            "inky": (
+                (1, self.maze_size[1] - 1),
+                "inky",
+                InkyBehavior,
+            ),
+            "clyde": ((1, 1), "clyde", ClydeBehavior),
+            "pinky": (
+                (self.maze_size[0] - 1, self.maze_size[1] - 1),
+                "pinky",
+                PinkyBehavior,
+            ),
+        }
+        if name not in ghost_data:
+            raise ValueError(f"Unknown ghost: {name}")
+        if name == "inky" and self.blinky is None:
+            raise RuntimeError("Blinky must be created before Inky")
+
+        (tile_x, tile_y), sprite_name, behavior_type = ghost_data[name]
         ghost = Entity(name)
-
-        # to handle the +8 and all hardcoded value
-        if name == "blinky":
-
-            self.blinky = ghost
-            position = Position(
-                14 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
+        position = Position(
+            tile_x * self.tile_size + 8 * self.SCALE,
+            tile_y * self.tile_size + 8 * self.SCALE,
+        )
+        direction_sprites = {
+            direction: [
+                f"{sprite_name}-{suffix}-1",
+                f"{sprite_name}-{suffix}-2",
+            ]
+            for direction, suffix in (
+                (Dir.RIGHT, "right"),
+                (Dir.LEFT, "left"),
+                (Dir.UP, "top"),
+                (Dir.DOWN, "bottom"),
             )
+        }
+        ghost.add_component(
+            [
+                Scared(self.scared_ghost_spr),
+                position,
+                Velocity(self.SCALE),
+                Direction(Dir.DOWN, direction_sprites),
+                Intention(Dir.DOWN),
+                Collision("ghost"),
+                Sprites([f"{sprite_name}-right-1"], 0.1),
+                Hitbox(13 * self.SCALE, 13 * self.SCALE),
+            ]
+        )
 
-            scared = Scared(self.scared_ghost_spr)
-            velocity = Velocity(1 * self.SCALE)
-            collision = Collision("ghost", {})
-            sprite = Sprites(["blinky-right-1"], 0.1)
-            hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-            direction_sprites_map = {
-                Dir.RIGHT: ["blinky-right-1", "blinky-right-2"],
-                Dir.LEFT: ["blinky-left-1", "blinky-left-2"],
-                Dir.UP: ["blinky-top-1", "blinky-top-2"],
-                Dir.DOWN: ["blinky-bottom-1", "blinky-bottom-2"],
-            }
-
-            intention = Intention(Dir.DOWN)
-            direction = Direction(Dir.DOWN, direction_sprites_map)
-
-            ghost.add_component(
-                [
-                    scared,
-                    position,
-                    velocity,
-                    direction,
-                    intention,
-                    collision,
-                    sprite,
-                    hitbox
-                ]
-            )
-
-            behavior = BlinkyBehavior(
-                ghost,
-                self.pac_man,
-                self.cell_size,
-                self.maze_size,
-                self.maze
-            )
-
-            target = Target(
-                self.pac_man,
-                self.maze_size,
-                self.maze,
-                behavior
-            )
-            ghost.add_component(target)
-
-        elif name == "inky":
-            scared = Scared(self.scared_ghost_spr)
-
-            position = Position(
-                1 * self.tile_size + 8 * self.SCALE, 14 * self.tile_size + 8 * self.SCALE
-            )
-
-            velocity = Velocity(1 * self.SCALE)
-            collision = Collision("ghost", {})
-            sprite = Sprites(["inky-right-1"], 0.1)
-            hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-            direction_sprites_map = {
-                Dir.RIGHT: ["inky-right-1", "inky-right-2"],
-                Dir.LEFT: ["inky-left-1", "inky-left-2"],
-                Dir.UP: ["inky-top-1", "inky-top-2"],
-                Dir.DOWN: ["inky-bottom-1", "inky-bottom-2"],
-            }
-
-            direction = Direction(Dir.DOWN, direction_sprites_map)
-            intention = Intention(Dir.DOWN)
-
-            ghost.add_component(
-                        [
-                            scared,
-                            position,
-                            velocity,
-                            direction,
-                            intention,
-                            collision,
-                            sprite,
-                            hitbox
-                        ]
-                    )
-
-            behavior = InkyBehavior(
+        if name == "inky":
+            assert self.blinky is not None
+            behavior = behavior_type(
                 ghost,
                 self.blinky,
                 self.pac_man,
                 self.cell_size,
                 self.maze_size,
-                self.maze
+                self.maze,
             )
-
-            target = Target(self.pac_man, self.maze_size, self.maze, behavior)
-            ghost.add_component(target)
-
-        elif name == "clyde":
-            scared = Scared(self.scared_ghost_spr)
-
-            position = Position(
-                1 * self.tile_size + 8 * self.SCALE, 1 * self.tile_size + 8 * self.SCALE
-            )
-            # to see the *1
-
-            velocity = Velocity(1 * self.SCALE)
-            collision = Collision("ghost", {})
-            sprite = Sprites(["clyde-right-1"], 0.1)
-            hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-            direction_sprites_map = {
-                Dir.RIGHT: ["clyde-right-1", "clyde-right-2"],
-                Dir.LEFT: ["clyde-left-1", "clyde-left-2"],
-                Dir.UP: ["clyde-top-1", "clyde-top-2"],
-                Dir.DOWN: ["clyde-bottom-1", "clyde-bottom-2"],
-            }
-
-            direction = Direction(Dir.DOWN, direction_sprites_map)
-            intention = Intention(Dir.DOWN)
-
-            ghost.add_component(
-                    [
-                        scared,
-                        position,
-                        velocity,
-                        direction,
-                        intention,
-                        collision,
-                        sprite,
-                        hitbox
-                    ]
-                )
-
-            behavior = ClydeBehavior(
+        else:
+            behavior = behavior_type(
                 ghost,
                 self.pac_man,
                 self.cell_size,
                 self.maze_size,
-                self.maze
+                self.maze,
             )
 
-            target = Target(self.pac_man, self.maze_size, self.maze, behavior)
-            ghost.add_component(target)
-
-        elif name == "pinky":
-            scared = Scared(self.scared_ghost_spr)
-
-            position = Position(
-                (self.maze_size[0] - 1) * self.tile_size + 8 * self.SCALE,
-                (self.maze_size[0] - 1)* self.tile_size + 8 * self.SCALE
-            )
-
-            velocity = Velocity(1 * self.SCALE)
-            collision = Collision("ghost", {})
-            sprite = Sprites(["pinky-right-1"], 0.1)
-            hitbox = Hitbox(13 * self.SCALE, 13 * self.SCALE)
-
-            direction_sprites_map = {
-                Dir.RIGHT: ["pinky-right-1", "pinky-right-2"],
-                Dir.LEFT: ["pinky-left-1", "pinky-left-2"],
-                Dir.UP: ["pinky-top-1", "pinky-top-2"],
-                Dir.DOWN: ["pinky-bottom-1", "pinky-bottom-2"],
-            }
-
-            intention = Intention(Dir.DOWN)
-            direction = Direction(Dir.DOWN, direction_sprites_map)
-
-            ghost.add_component(
-                [
-                    scared,
-                    position,
-                    velocity,
-                    direction,
-                    intention,
-                    collision,
-                    sprite,
-                    hitbox
-                ]
-            )
-
-            behavior = PinkyBehavior(
-                ghost,
-                self.pac_man,
-                self.cell_size,
-                self.maze_size,
-                self.maze
-            )
-
-            target   = Target(self.pac_man, self.maze_size, self.maze, behavior)
-            ghost.add_component(target)
-
+        ghost.add_component(Target(self.pac_man, self.maze_size, self.maze, behavior))
         self.engine.add_entities(ghost)
+        if name == "blinky":
+            self.blinky = ghost
         return ghost
