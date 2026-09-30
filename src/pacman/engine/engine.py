@@ -44,12 +44,15 @@ class GameEngine:
             for e in entity:
                 self.add_single_entity(e)
         else:
-            raise TypeError("Cannot add this in entities to adapt add entities")
+            raise TypeError(
+                "Cannot add this in entities to adapt add entities")
 
     def add_single_entity(self, entity: Entity) -> None:
         self.entities.append(entity)
 
         for system in self.systems:
+            if not system.required_components:
+                return
             if all(
                 required in entity.components for required in system.required_components
             ):

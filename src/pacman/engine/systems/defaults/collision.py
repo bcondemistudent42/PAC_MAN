@@ -61,7 +61,8 @@ class CollisionSystem(System):
                     and m_pos.y <= s_pos.y + s_hit.padding_y + s_hit.height
                 ):
                     self.events.push(
-                        CollisionEvent(entities={s_col.tag: s_sub, m_col.tag: m_sub})
+                        CollisionEvent(
+                            entities={s_col.tag: s_sub, m_col.tag: m_sub})
                     )
 
         for first, second in itertools.combinations(movers, 2):
@@ -78,5 +79,6 @@ class CollisionSystem(System):
                 and f_pos.y <= s_pos.y + s_hit.padding_y + s_hit.height
             ):
                 self.events.push(
-                    CollisionEvent(entities={s_col.tag: s_sub, f_col.tag: f_sub})
+                    CollisionEvent(
+                        entities={s_col.tag: s_sub, f_col.tag: f_sub})
                 )

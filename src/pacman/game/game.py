@@ -8,6 +8,7 @@ from pacman.engine.systems.defaults import (
     SpriteSystem,
 )
 from pacman.engine.systems.defaults.death import DeathSystem
+from pacman.engine.systems.defaults.score import ScoreSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.ressources import Ressources
@@ -24,7 +25,8 @@ class PacmanGame:
             window_width=engine.window_width,
             window_height=engine.window_height,
         )
-        self.ressources = Ressources(self.engine.events, scale=self.settings.scale)
+        self.ressources = Ressources(
+            self.engine.events, scale=self.settings.scale)
         self.map_service = PacmanMap(
             self.engine,
             self.settings.scale,
@@ -44,7 +46,8 @@ class PacmanGame:
 
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
-        self.sprite_service.add_spritesheet("sprites/creeper.png", config_spritesheet_2)
+        self.sprite_service.add_spritesheet(
+            "sprites/creeper.png", config_spritesheet_2)
         collision_system = CollisionSystem(self.ressources)
         movement_system = MovementSystem(self.ressources)
         sprite_system = SpriteSystem(self.ressources)
@@ -52,21 +55,25 @@ class PacmanGame:
         pacman_intention_system = PacmanIntentionSystem(self.ressources)
         target_sys = TargetSystem(self.ressources)
         death_system = DeathSystem(self.ressources)
+        score_sys = ScoreSystem(self.ressources)
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
         self.system[CollisionSystem] = collision_system
         self.system[KeySystem] = keys_system
         self.system[PacmanIntentionSystem] = pacman_intention_system
         self.system[TargetSystem] = target_sys
+        self.system[ScoreSystem] = score_sys
+
         self.engine.add_system(
             [
+                keys_system,
+                collision_system,
                 movement_system,
                 sprite_system,
-                collision_system,
-                keys_system,
                 pacman_intention_system,
                 target_sys,
                 death_system,
+                score_sys
             ]
         )
 
@@ -84,7 +91,8 @@ class PacmanGame:
             pacman=pacman,
             engine=self.engine,
             maze_size=(self.settings.map_width, self.settings.map_height),
-            map_size=(self.settings.cell_width_px, self.settings.cell_height_px),
+            map_size=(self.settings.cell_width_px,
+                      self.settings.cell_height_px),
         ).create_all()
 
     def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:

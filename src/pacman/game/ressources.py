@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 from pacman.engine.events.queue import EventsQueue
+from pacman.services.parser import Parser, parse
 
 if TYPE_CHECKING:
     from pacman.engine.components.defaults.position import Position
@@ -19,3 +20,4 @@ class Ressources:
     pos_to_cell: Callable[[Position], tuple[int, int]] | None = None
     sprite_service: SpriteService | None = None
     scale: float = 1.0
+    data_score: Parser = field(default_factory=parse)

@@ -15,6 +15,7 @@ class DeathSystem(System):
         self.events = self.ressources.events
 
     def run(self) -> None:
+
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
@@ -23,8 +24,6 @@ class DeathSystem(System):
                 pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
                 pacman.get_component(Velocity).speed = 0
 
-                self.events.events.remove(event)
-
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):
@@ -32,5 +31,3 @@ class DeathSystem(System):
                 cell.get_component(Sprites).sprites = ["no-pacgum-cell"]
                 cell.components.pop(Collision, None)
                 cell.components.pop(Hitbox, None)
-
-                self.events.events.remove(event)
