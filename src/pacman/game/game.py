@@ -10,6 +10,7 @@ from pacman.engine.systems.defaults import (
 )
 from pacman.engine.systems.defaults.death import DeathSystem
 from pacman.engine.systems.defaults.score import ScoreSystem
+from pacman.engine.systems.defaults.time import TimeSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.ressources import Ressources
@@ -56,6 +57,7 @@ class PacmanGame:
         pacman_intention_system = PacmanIntentionSystem(self.ressources)
         target_sys = TargetSystem(self.ressources)
         death_system = DeathSystem(self.ressources)
+        time_sys = TimeSystem(self.ressources)
         self.death_sys = death_system
         score_sys = ScoreSystem(self.ressources)
         self.system[SpriteSystem] = sprite_system
@@ -65,6 +67,7 @@ class PacmanGame:
         self.system[PacmanIntentionSystem] = pacman_intention_system
         self.system[TargetSystem] = target_sys
         self.system[ScoreSystem] = score_sys
+        self.system[TimeSystem] = time_sys
 
         self.engine.add_system(
             [
@@ -75,7 +78,8 @@ class PacmanGame:
                 pacman_intention_system,
                 target_sys,
                 death_system,
-                score_sys
+                score_sys,
+                time_sys
             ]
         )
 
