@@ -22,7 +22,7 @@ class PacmanFactory:
         tile_size = 8 * self.SCALE
         pacman = Entity("pac_man")
         # to adapt the correct respawn and position of pacman
-        pacman.add_component(Respawn(16 * tile_size, 16 * tile_size))
+        pacman.add_component(Respawn(16 * tile_size, 16 * tile_size, 1.1 * self.SCALE))
         pacman.add_component(Position(16 * tile_size, 16 * tile_size))
         pacman.add_component(Velocity(1.1 * self.SCALE))
         pacman.add_component(

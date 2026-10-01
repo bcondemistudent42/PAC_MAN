@@ -103,7 +103,7 @@ class GhostFactory:
                 Collision("ghost"),
                 Sprites([f"{sprite_name}-right-1"], 0.1),
                 Hitbox(13 * self.SCALE, 13 * self.SCALE),
-                Respawn(resp_x, resp_y)
+                Respawn(resp_x, resp_y, self.SCALE)
             ]
         )
 

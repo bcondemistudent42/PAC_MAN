@@ -20,11 +20,10 @@ class ScoreSystem(System):
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
             ):
-                # TODO case when pacman dies
                 self.score += self.ressources.data_score.point_per_ghosts
 
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):
                 self.score += self.ressources.data_score.point_per_pacgum
-        pr.draw_text(f"Score: {self.score}", 1700, 250, 20, pr.WHITE)
+        pr.draw_text(f"Score: {self.score}", 1700, 250, 100, pr.WHITE)
