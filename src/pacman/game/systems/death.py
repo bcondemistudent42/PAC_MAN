@@ -50,6 +50,7 @@ class DeathSystem(System):
                     entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
                     entt.get_component(Position).x = entt.get_component(Respawn).x
                     entt.get_component(Position).y = entt.get_component(Respawn).y
+                    entt.get_component(Sprites).sprites = entt.get_component(Direction).sprite_map[Dir.RIGHT]
 
                 self.lives -= 1
                 return
