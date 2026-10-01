@@ -1,6 +1,7 @@
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
+from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
@@ -35,8 +36,9 @@ class DeathSystem(System):
                     for entt in self.entt_to_resp:
                         entt.get_component(Velocity).speed = 0
                     return
-                pacman.get_component(Direction).direction = Dir.RIGHT
                 pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]
+                pacman.get_component(Direction).direction = Dir.RIGHT
+                pacman.get_component(Intention).direction = Dir.RIGHT
                 pacman.get_component(Sprites).sprite_index = 0
                 for entt in self.entt_to_resp:
                     entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
@@ -46,7 +48,6 @@ class DeathSystem(System):
                 if check:
                     self.lives -= 1
                     check = False
-
 
                 # handle death properly, freeze all ghost and make pacman_respawn at center
                 # make respawn all ghost at their corners
