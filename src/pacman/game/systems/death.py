@@ -2,6 +2,7 @@ from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
+from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.position import Position
 from pacman.game.components.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
@@ -33,7 +34,11 @@ class DeathSystem(System):
                     raise ValueError("Oh NO NO NO NO NO you LOOSED")
                 if (index < len(DeathSprites().PACMAN) - 1):
                     for entt in self.entt_to_resp:
+                        if not entt.check_component(KeyHook):
+                            entt.get_component(Sprites).sprites = []
                         entt.get_component(Velocity).speed = 0
+
+
                     return
 
                 pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]

@@ -14,8 +14,8 @@ class GameSettings:
         cls,
         window_width: int,
         window_height: int,
-        map_width: int = 15,
-        map_height: int = 15,
+        map_width: int = 9,
+        map_height: int = 9,
         cell_width_px: int = 24,
         cell_height_px: int = 24,
     ) -> GameSettings:

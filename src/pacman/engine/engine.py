@@ -3,7 +3,6 @@ import pyray as pr
 from pacman.engine.components import Entity
 from pacman.engine.events.queue import EventsQueue
 from pacman.engine.systems import System
-from pacman.game.services.parser import parse
 
 
 class GameEngine:
@@ -14,8 +13,6 @@ class GameEngine:
         monitor_h = int(pr.get_monitor_height(my_monitor) / 4) * 3
         pr.set_window_size(monitor_w, monitor_h)
         pr.set_target_fps(60)
-
-        self.data_user = parse()
 
         return self
 

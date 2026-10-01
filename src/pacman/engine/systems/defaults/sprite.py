@@ -23,6 +23,9 @@ class SpriteSystem(System):
             sprite_component = each_subscribed.get_component(Sprites)
             position_component = each_subscribed.get_component(Position)
 
+            if len(sprite_component.sprites) <= 0:
+                continue
+
             sprite_component.frame += pr.get_frame_time()
 
             if sprite_component.cooldown and sprite_component.frame >= sprite_component.cooldown:
