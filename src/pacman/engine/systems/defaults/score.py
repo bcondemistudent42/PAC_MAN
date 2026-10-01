@@ -5,6 +5,7 @@ from pacman.engine.components.defaults.scared import Scared
 from pacman.engine.systems.defaults.collision import CollisionEvent, CollisionSystem
 from pacman.engine.systems.system import System
 from pacman.game.ressources import Ressources
+from pacman.services.death import DeathSprites
 
 
 class ScoreSystem(System):
@@ -20,8 +21,9 @@ class ScoreSystem(System):
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
             ):
-                self.score += self.ressources.data_score.point_per_ghosts
-
+                pacman = event.entities["pacman"]
+                if pacman.get_component(Sprites).sprites != DeathSprites().PACMAN:
+                    return
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):

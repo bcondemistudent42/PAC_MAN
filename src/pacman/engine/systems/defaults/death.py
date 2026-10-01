@@ -49,10 +49,6 @@ class DeathSystem(System):
                     self.lives -= 1
                     check = False
 
-                # handle death properly, freeze all ghost and make pacman_respawn at center
-                # make respawn all ghost at their corners
-                # to see the choices depending on the self.lives rest
-
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):

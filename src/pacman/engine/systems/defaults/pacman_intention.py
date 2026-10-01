@@ -12,6 +12,8 @@ class PacmanIntentionSystem(System):
         self.ressources = ressources
 
     def subscribe(self, entity: Entity):
+        if self.required_components is None:
+            return
         for component in self.required_components:
             if not component in entity.components:
                 raise ValueError("A definir")
