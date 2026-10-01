@@ -96,7 +96,6 @@ class GhostFactory:
         ghost.add_component(
             [
                 Scared(self.scared_ghost_spr),
-                Respawn(resp_x, resp_y),
                 position,
                 Velocity(self.settings.scale),
                 Direction(Dir.DOWN, direction_sprites),
@@ -107,7 +106,7 @@ class GhostFactory:
                     13 * self.settings.scale,
                     13 * self.settings.scale,
                 ),
-                Respawn(resp_x, resp_y, self.SCALE)
+                Respawn(resp_x, resp_y, self.settings.scale)
             ]
         )
 

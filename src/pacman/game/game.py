@@ -20,6 +20,8 @@ from pacman.game.services.sprites import (
     config,
     config_spritesheet_2,
 )
+from pacman.engine.systems.defaults import TargetSystem
+
 
 
 class PacmanGame:
@@ -50,8 +52,6 @@ class PacmanGame:
         self.engine.run()
 
     def system_init(self):
-        from pacman.engine.systems.defaults import TargetSystem
-
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
         self.sprite_service.add_spritesheet(
