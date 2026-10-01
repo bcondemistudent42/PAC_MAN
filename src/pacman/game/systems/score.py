@@ -3,14 +3,14 @@ import pyray as pr
 from pacman.engine.components.defaults import Sprites
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
-from pacman.services.death import DeathSprites
+from pacman.game.resources import resources
+from pacman.game.services.death import DeathSprites
 
 
 class ScoreSystem(System):
-    def __init__(self, ressources: Ressources):
-        self.ressources = ressources
-        self.events = ressources.events
+    def __init__(self, resources: resources):
+        self.resources = resources
+        self.events = resources.events
         self.required_components = None
         self.score = 0
 
@@ -27,4 +27,4 @@ class ScoreSystem(System):
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):
-                self.score += self.ressources.data_score.point_per_pacgum
+                self.score += self.resources.data_score.point_per_pacgum

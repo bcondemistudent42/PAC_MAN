@@ -1,6 +1,6 @@
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
-from pacman.services.ghosts_behavior.behavior import Behavior
+from pacman.game.services.ghosts_behavior.behavior import Behavior
 
 
 # when a lot of pacgum is eaten, passing a thresholds to add velocity to the ghost

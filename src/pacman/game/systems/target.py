@@ -1,26 +1,25 @@
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
-from pacman.engine.components.defaults.scared import Scared
-from pacman.engine.components.defaults.target import Target
+from pacman.game.components.scared import Scared
+from pacman.game.components.target import Target
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
+from pacman.game.resources import resources
+import time
+
 
 
 class TargetSystem(System):
-    def __init__(self, ressources: Ressources):
+    def __init__(self, resources: resources):
         super().__init__([Target, Position, Intention, Direction])
-        self.ressources = ressources
-        import time
+        self.resources = resources
         self.start = time.time()
 
     def run(self):
         # to delete later
         for each_subscriber in self.subscribers:
             behavior = each_subscriber.get_component(Target).behavior
-
-            import time
             end = time.time()
             # to replace with component scared check if present for entity
             # and then check, do it also for the sprites stuff

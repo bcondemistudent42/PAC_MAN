@@ -3,26 +3,20 @@ from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.defaults.key import KeyPressEvent
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
+from pacman.game.resources import resources
 
 
 class PacmanIntentionSystem(System):
-    def __init__(self, ressources: Ressources):
+    def __init__(self, resources: resources):
         super().__init__([Intention, KeyHook])
-        self.ressources = ressources
+        self.resources = resources
 
     def subscribe(self, entity: Entity):
-        if self.required_components is None:
-            return
-        for component in self.required_components:
-            if not component in entity.components:
-                raise ValueError("A definir")
-
-        if entity.id == "pac_man":
+        if entity.check_component(KeyHook):
             self.subscribers.append(entity)
 
     def run(self) -> None:
-        for event in self.ressources.events.events:
+        for event in self.resources.events.events:
             if not isinstance(event, KeyPressEvent):
                 continue
 

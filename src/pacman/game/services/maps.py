@@ -8,6 +8,8 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.entity import Entity
+import random
+
 
 
 class PacmanCell(Enum):
@@ -25,7 +27,7 @@ class PacmanMap:
         )
 
         self.TILE_SIZE = 8 * scale
-
+        self.scale = scale
         self.engine = engine
         self.map = []
 
@@ -33,9 +35,6 @@ class PacmanMap:
         self.logic_matrix = []
 
     def break_dead_ends(self, maze: list[list[int]]) -> list[list[int]]:
-
-        import random
-
         height = len(maze)
         if height == 0:
             return maze
@@ -378,10 +377,7 @@ class PacmanMap:
                     sprite_val = self.sprite_matrix[y][x]
                     wall = Entity(f"wall_{x}_{y}")
                     wall.add_component(Position(base_x, base_y))
-                    wall.add_component(Sprites([sprite_val], 999999999999999999999999))
-                    wall.add_component(Hitbox(self.TILE_SIZE, self.TILE_SIZE))
-                    col = Collision(sprite_val)
-                    wall.add_component(col)
+                    wall.add_component(Sprites([sprite_val]))
 
                     self.engine.add_single_entity(wall)
 
@@ -389,10 +385,10 @@ class PacmanMap:
                     pacgum = Entity(f"pacgum_{x}_{y}")
                     pacgum.add_component(Position(base_x, base_y))
                     pacgum.add_component(
-                        Sprites(["pacgum-cell"], 999999999999999999999999)
+                        Sprites(["pacgum-cell"])
                     )
                     col = Collision("pacgum")
-                    hb = Hitbox(2, 2, 3, 3)  # Add scale
+                    hb = Hitbox(2 * self.scale, 2 * self.scale, 3 * self.scale, 3 * self.scale)
 
                     pacgum.add_component(col)
                     pacgum.add_component(hb)

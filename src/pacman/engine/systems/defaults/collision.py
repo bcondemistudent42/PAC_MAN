@@ -5,7 +5,7 @@ from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.events.event import Event
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
+from pacman.game.resources import resources
 
 
 class CollisionEvent(Event):
@@ -14,20 +14,21 @@ class CollisionEvent(Event):
 
 
 class CollisionSystem(System):
-    def __init__(self, ressources: Ressources):
+    def __init__(self, resources: resources):
         super().__init__([Position, Collision, Hitbox])
-        self.ressources = ressources
-        self.events = self.ressources.events
+        self.resources = resources
+        self.events = self.resources.events
 
     def run(self) -> None:
         movers = []
         statics = []
+        to_remove = []
 
         for subscriber in self.subscribers:
             if not (
                 Collision in subscriber.components and Hitbox in subscriber.components
             ):
-                self.subscribers.remove(subscriber)
+                to_remove.append(subscriber)
                 continue
 
             if subscriber.check_component(Velocity):
@@ -82,3 +83,6 @@ class CollisionSystem(System):
                     CollisionEvent(
                         entities={s_col.tag: s_sub, f_col.tag: f_sub})
                 )
+
+        for elem in to_remove:
+            self.subscribers.remove(elem)
