@@ -3,6 +3,7 @@ from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.respawn import Respawn
 from pacman.engine.components.defaults.scared import Scared
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.target import Target
@@ -40,28 +41,30 @@ class GhostFactory:
             "white-ghost-2",
         ]
 
-    def create_all(self) -> None:
+    def create_all(self) -> list[Entity]:
         """Create all ghosts in the order required by their behaviors."""
-        self.create("clyde")
-        self.create("blinky")
-        self.create("inky")
-        self.create("pinky")
+        return [
+            self.create("clyde"),
+            self.create("blinky"),
+            self.create("inky"),
+            self.create("pinky")
+        ]
 
     def create(self, name: str) -> Entity:
         ghost_data = {
             "blinky": (
-                (self.maze_size[0] - 1, 1),
+                (self.maze_size[0] - 1, 0),
                 "blinky",
                 BlinkyBehavior,
             ),
             "inky": (
-                (1, self.maze_size[1] - 1),
+                (0, self.maze_size[0] - 1),
                 "inky",
                 InkyBehavior,
             ),
-            "clyde": ((1, 1), "clyde", ClydeBehavior),
+            "clyde": ((0, 0), "clyde", ClydeBehavior),
             "pinky": (
-                (self.maze_size[0] - 1, self.maze_size[1] - 1),
+                (self.maze_size[1] - 1, self.maze_size[0] - 1),
                 "pinky",
                 PinkyBehavior,
             ),
@@ -89,6 +92,7 @@ class GhostFactory:
                 (Dir.DOWN, "bottom"),
             )
         }
+        resp_x, resp_y = (tile_x * self.tile_size + 8 * self.SCALE, tile_y * self.tile_size + 8 * self.SCALE)
         ghost.add_component(
             [
                 Scared(self.scared_ghost_spr),
@@ -99,6 +103,7 @@ class GhostFactory:
                 Collision("ghost"),
                 Sprites([f"{sprite_name}-right-1"], 0.1),
                 Hitbox(13 * self.SCALE, 13 * self.SCALE),
+                Respawn(resp_x, resp_y)
             ]
         )
 

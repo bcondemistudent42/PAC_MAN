@@ -1,5 +1,7 @@
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.hitbox import Hitbox
+from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.defaults.collision import CollisionEvent
@@ -13,6 +15,8 @@ class DeathSystem(System):
         super().__init__([Collision, Hitbox])
         self.ressources = ressources
         self.events = self.ressources.events
+        self.lives = ressources.data_score.lives
+        self.entt_to_resp = []
 
     def run(self) -> None:
 
@@ -22,7 +26,25 @@ class DeathSystem(System):
             ):
                 pacman = event.entities["pacman"]
                 pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
-                pacman.get_component(Velocity).speed = 0
+                index = pacman.get_component(Sprites).sprite_index
+                self.lives -= 1
+                if (index < len(DeathSprites().PACMAN) - 1):
+                    for entt in self.entt_to_resp:
+                        entt.get_component(Velocity).speed = 0
+                    return
+                else:
+                    pass
+                if self.lives == 0:
+                    raise ValueError("Oh NO NO NO NO NO you LOOSED")
+                for entt in self.entt_to_resp:
+                    entt.get_component(Velocity).speed = 0
+                    entt.get_component(Position).x = entt.get_component(Respawn).x
+                    entt.get_component(Position).y = entt.get_component(Respawn).y
+
+
+                # handle death properly, freeze all ghost and make pacman_respawn at center
+                # make respawn all ghost at their corners
+                # to see the choices depending on the self.lives rest
 
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]

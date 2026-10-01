@@ -6,6 +6,7 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
@@ -20,6 +21,8 @@ class PacmanFactory:
     def create(self) -> Entity:
         tile_size = 8 * self.SCALE
         pacman = Entity("pac_man")
+        # to adapt the correct respawn and position of pacman
+        pacman.add_component(Respawn(16 * tile_size, 16 * tile_size))
         pacman.add_component(Position(16 * tile_size, 16 * tile_size))
         pacman.add_component(Velocity(1.1 * self.SCALE))
         pacman.add_component(

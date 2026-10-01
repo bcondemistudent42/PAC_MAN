@@ -1,4 +1,5 @@
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
 from pacman.engine.systems.defaults import (
     CollisionSystem,
@@ -55,6 +56,7 @@ class PacmanGame:
         pacman_intention_system = PacmanIntentionSystem(self.ressources)
         target_sys = TargetSystem(self.ressources)
         death_system = DeathSystem(self.ressources)
+        self.death_sys = death_system
         score_sys = ScoreSystem(self.ressources)
         self.system[SpriteSystem] = sprite_system
         self.system[MovementSystem] = movement_system
@@ -81,11 +83,13 @@ class PacmanGame:
         self.system_init()
         self.map_service.generate_map()
         self.matrix = self.map_service.get_map_matrix()
-        self.create_movable_entities()
+        ghosts = self.create_movable_entities()
+        self.add_ghost_to_death(ghosts)
 
-    def create_movable_entities(self):
+    def create_movable_entities(self) -> list[Entity]:
         pacman = PacmanFactory(self.settings.scale, self.engine).create()
-        GhostFactory(
+        self.pacman = pacman
+        return GhostFactory(
             scale=self.settings.scale,
             maze=self.map_service.map,
             pacman=pacman,
@@ -98,3 +102,7 @@ class PacmanGame:
     def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
         tile_size = 8 * self.settings.scale
         return (round(position.x / tile_size), round(position.y / tile_size))
+
+    def add_ghost_to_death(self, ghosts: list[Entity]):
+        self.death_sys.entt_to_resp.extend(ghosts)
+        self.death_sys.entt_to_resp.append(self.pacman)
