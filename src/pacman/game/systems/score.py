@@ -1,8 +1,7 @@
 import pyray as pr
 
-from pacman.engine.components.defaults import Position, Sprites
-from pacman.game.components.scared import Scared
-from pacman.engine.systems.defaults.collision import CollisionEvent, CollisionSystem
+from pacman.engine.components.defaults import Sprites
+from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
 from pacman.game.resources import resources
 from pacman.game.services.death import DeathSprites

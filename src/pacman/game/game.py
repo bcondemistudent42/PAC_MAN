@@ -8,20 +8,21 @@ from pacman.engine.systems.defaults import (
     PacmanIntentionSystem,
     SpriteSystem,
 )
-from pacman.game.systems.death import DeathSystem
-from pacman.game.systems.score import ScoreSystem
+from pacman.engine.systems.defaults.time import TimeSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.resources import resources
-from pacman.game.settings import GameSettings
 from pacman.game.services.maps import PacmanMap
 from pacman.game.services.sprites import (
     SpriteService,
     config,
     config_spritesheet_2,
 )
-from pacman.engine.systems.defaults import TargetSystem
-
+from pacman.game.settings import GameSettings
+from pacman.game.systems.death import DeathSystem
+from pacman.game.systems.pacgum import PacgumSystem
+from pacman.game.systems.score import ScoreSystem
+from pacman.game.systems.target import TargetSystem
 
 
 class PacmanGame:
@@ -63,6 +64,8 @@ class PacmanGame:
         pacman_intention_system = PacmanIntentionSystem(self.resources)
         target_sys = TargetSystem(self.resources)
         death_system = DeathSystem(self.resources)
+        pacgum_system = PacgumSystem(self.resources)
+        time_sys = TimeSystem(self.resources)
         self.death_sys = death_system
         score_sys = ScoreSystem(self.resources)
         self.system[SpriteSystem] = sprite_system
@@ -71,18 +74,22 @@ class PacmanGame:
         self.system[KeySystem] = keys_system
         self.system[PacmanIntentionSystem] = pacman_intention_system
         self.system[TargetSystem] = target_sys
+        self.system[PacgumSystem] = pacgum_system
         self.system[ScoreSystem] = score_sys
+        self.system[TimeSystem] = time_sys
 
         self.engine.add_system(
             [
                 keys_system,
                 collision_system,
+                pacgum_system,
                 movement_system,
                 sprite_system,
                 pacman_intention_system,
                 target_sys,
                 death_system,
                 score_sys,
+                time_sys
             ]
         )
 

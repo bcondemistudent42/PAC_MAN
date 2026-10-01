@@ -21,8 +21,6 @@ class DeathSystem(System):
         self.entt_to_resp = []
 
     def run(self) -> None:
-
-        check = True
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
@@ -30,30 +28,23 @@ class DeathSystem(System):
                 pacman = event.entities["pacman"]
                 pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
                 index = pacman.get_component(Sprites).sprite_index
+
                 if self.lives == 0:
                     raise ValueError("Oh NO NO NO NO NO you LOOSED")
                 if (index < len(DeathSprites().PACMAN) - 1):
                     for entt in self.entt_to_resp:
                         entt.get_component(Velocity).speed = 0
                     return
+
                 pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]
                 pacman.get_component(Direction).direction = Dir.RIGHT
                 pacman.get_component(Intention).direction = Dir.RIGHT
                 pacman.get_component(Sprites).sprite_index = 0
+
                 for entt in self.entt_to_resp:
                     entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
                     entt.get_component(Position).x = entt.get_component(Respawn).x
                     entt.get_component(Position).y = entt.get_component(Respawn).y
 
-                if check:
-                    self.lives -= 1
-                    check = False
-
-            elif isinstance(event, CollisionEvent) and all(
-                e in event.entities for e in ["pacman", "pacgum"]
-            ):
-                cell = event.entities["pacgum"]
-                cell.get_component(Sprites).sprites = ["no-pacgum-cell"]
-                cell.components.pop(Collision, None)
-                cell.components.pop(Hitbox, None)
-
+                self.lives -= 1
+                return

@@ -1,0 +1,24 @@
+from pacman.engine.components.defaults.collision import Collision
+from pacman.engine.components.defaults.hitbox import Hitbox
+from pacman.engine.components.defaults.sprites import Sprites
+from pacman.engine.systems.defaults.collision import CollisionEvent
+from pacman.engine.systems.system import System
+from pacman.game.resources import resources
+
+
+class PacgumSystem(System):
+    def __init__(self, resources: resources):
+        super().__init__([Collision, Hitbox])
+        self.resources = resources
+        self.events = self.resources.events
+
+    def run(self) -> None:
+        for event in self.events.events:
+            if isinstance(event, CollisionEvent) and all(
+                e in event.entities for e in ["pacman", "pacgum"]
+            ):
+                cell = event.entities["pacgum"]
+                cell.get_component(Sprites).sprites = ["no-pacgum-cell"]
+                cell.components.pop(Collision, None)
+                cell.components.pop(Hitbox, None)
+
