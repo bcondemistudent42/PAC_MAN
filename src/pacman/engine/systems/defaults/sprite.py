@@ -1,22 +1,22 @@
 import pyray as pr
 
 from pacman.engine.components.defaults import Position, Sprites
-from pacman.engine.components.defaults.scared import Scared
+from pacman.game.components.scared import Scared
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
+from pacman.game.resources import resources
 
 
 class SpriteSystem(System):
-    def __init__(self, ressources: Ressources):
+    def __init__(self, resources: resources):
         super().__init__([Position, Sprites])
-        self.ressources = ressources
+        self.resources = resources
 
     def run(self):
-        sprite_service = self.ressources.sprite_service
+        sprite_service = self.resources.sprite_service
         if sprite_service is None:
             raise RuntimeError("Sprite service is not initialized")
 
-        scale = self.ressources.scale
+        scale = self.resources.scale
         tile_size = 8 * scale
 
         for each_subscribed in self.subscribers:
@@ -25,7 +25,7 @@ class SpriteSystem(System):
 
             sprite_component.frame += pr.get_frame_time()
 
-            if sprite_component.frame >= sprite_component.cooldown:
+            if sprite_component.cooldown and sprite_component.frame >= sprite_component.cooldown:
                 if sprite_component.sprite_index < len(sprite_component.sprites) - 1:
                     sprite_component.sprite_index += 1
                 else:

@@ -2,7 +2,7 @@ from pacman.engine.components.defaults.direction import Dir
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
-from pacman.services.ghosts_behavior.behavior import Behavior
+from pacman.game.services.ghosts_behavior.behavior import Behavior
 
 
 class PinkyBehavior(Behavior):

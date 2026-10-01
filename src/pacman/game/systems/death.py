@@ -1,21 +1,21 @@
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.position import Position
-from pacman.engine.components.defaults.respawn import Respawn
+from pacman.game.components.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
-from pacman.services.death import DeathSprites
+from pacman.game.resources import resources
+from pacman.game.services.death import DeathSprites
 
 
 class DeathSystem(System):
-    def __init__(self, ressources: Ressources):
+    def __init__(self, resources: resources):
         super().__init__([Collision, Hitbox])
-        self.ressources = ressources
-        self.events = self.ressources.events
-        self.lives = ressources.data_score.lives
+        self.resources = resources
+        self.events = self.resources.events
+        self.lives = resources.data_score.lives
         self.entt_to_resp = []
 
     def run(self) -> None:

@@ -3,7 +3,7 @@ import pyray as pr
 from pacman.engine.components import Entity
 from pacman.engine.events.queue import EventsQueue
 from pacman.engine.systems import System
-from pacman.services.parser import parse
+from pacman.game.services.parser import parse
 
 
 class GameEngine:
@@ -52,7 +52,7 @@ class GameEngine:
 
         for system in self.systems:
             if not system.required_components:
-                return
+                continue
             if all(
                 required in entity.components for required in system.required_components
             ):

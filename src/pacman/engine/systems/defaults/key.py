@@ -3,7 +3,7 @@ import pyray as pr
 from pacman.engine.components.defaults import KeyHook
 from pacman.engine.events.event import Event
 from pacman.engine.systems.system import System
-from pacman.game.ressources import Ressources
+from pacman.game.resources import resources
 
 
 class KeyPressEvent(Event):
@@ -12,9 +12,9 @@ class KeyPressEvent(Event):
 
 
 class KeySystem(System):
-    def __init__(self, ressources: Ressources):
+    def __init__(self, resources: resources):
         super().__init__([KeyHook])
-        self.ressources = ressources
+        self.resources = resources
 
     def run(self) -> None:
         for subscriber in self.subscribers:
@@ -22,4 +22,4 @@ class KeySystem(System):
 
             for key in key_hook.keys:
                 if pr.is_key_pressed(key):
-                    self.ressources.events.push(KeyPressEvent(key))
+                    self.resources.events.push(KeyPressEvent(key))

@@ -3,36 +3,35 @@ from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
-from pacman.engine.components.defaults.respawn import Respawn
-from pacman.engine.components.defaults.scared import Scared
+from pacman.game.components.respawn import Respawn
+from pacman.game.components.scared import Scared
 from pacman.engine.components.defaults.sprites import Sprites
-from pacman.engine.components.defaults.target import Target
+from pacman.game.components.target import Target
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
-from pacman.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
-from pacman.services.ghosts_behavior.clydebehavior import ClydeBehavior
-from pacman.services.ghosts_behavior.inkybehavior import InkyBehavior
-from pacman.services.ghosts_behavior.pinkybehavior import PinkyBehavior
+from pacman.game.settings import GameSettings
+from pacman.game.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
+from pacman.game.services.ghosts_behavior.clydebehavior import ClydeBehavior
+from pacman.game.services.ghosts_behavior.inkybehavior import InkyBehavior
+from pacman.game.services.ghosts_behavior.pinkybehavior import PinkyBehavior
 
 
 class GhostFactory:
     def __init__(
         self,
-        scale: float,
+        settings: GameSettings,
         maze: list[list[int]],
         pacman: Entity,
         engine: GameEngine,
-        maze_size: tuple[int, int],
-        map_size: tuple[int, int],
     ) -> None:
-        self.SCALE = scale
+        self.settings = settings
         self.maze = maze
-        self.maze_size = maze_size
+        self.maze_size = (settings.map_width, settings.map_height)
         self.pac_man = pacman
         self.engine = engine
-        self.cell_size = map_size[0] * scale
-        self.tile_size = 24 * scale
+        self.cell_size = settings.cell_width_px * settings.scale
+        self.tile_size = settings.cell_width_px * settings.scale
         self.blinky: Entity | None = None
         self.scared_ghost_spr = [
             "blue-ghost-1",
@@ -77,8 +76,8 @@ class GhostFactory:
         (tile_x, tile_y), sprite_name, behavior_type = ghost_data[name]
         ghost = Entity(name)
         position = Position(
-            tile_x * self.tile_size + 8 * self.SCALE,
-            tile_y * self.tile_size + 8 * self.SCALE,
+            tile_x * self.tile_size + 8 * self.settings.scale,
+            tile_y * self.tile_size + 8 * self.settings.scale,
         )
         direction_sprites = {
             direction: [
@@ -92,18 +91,22 @@ class GhostFactory:
                 (Dir.DOWN, "bottom"),
             )
         }
-        resp_x, resp_y = (tile_x * self.tile_size + 8 * self.SCALE, tile_y * self.tile_size + 8 * self.SCALE)
+        resp_x = tile_x * self.tile_size + 8 * self.settings.scale
+        resp_y = tile_y * self.tile_size + 8 * self.settings.scale
         ghost.add_component(
             [
                 Scared(self.scared_ghost_spr),
+                Respawn(resp_x, resp_y),
                 position,
-                Velocity(self.SCALE),
+                Velocity(self.settings.scale),
                 Direction(Dir.DOWN, direction_sprites),
                 Intention(Dir.DOWN),
                 Collision("ghost"),
                 Sprites([f"{sprite_name}-right-1"], 0.1),
-                Hitbox(13 * self.SCALE, 13 * self.SCALE),
-                Respawn(resp_x, resp_y)
+                Hitbox(
+                    13 * self.settings.scale,
+                    13 * self.settings.scale,
+                ),
             ]
         )
 
@@ -126,7 +129,9 @@ class GhostFactory:
                 self.maze,
             )
 
-        ghost.add_component(Target(self.pac_man, self.maze_size, self.maze, behavior))
+        ghost.add_component(
+            Target(self.pac_man, self.maze_size, self.maze, behavior)
+        )
         self.engine.add_entities(ghost)
         if name == "blinky":
             self.blinky = ghost

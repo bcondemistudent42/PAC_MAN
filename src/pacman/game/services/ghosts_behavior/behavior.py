@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
-from pacman.services.ghosts_behavior.astar import Astar
+from pacman.game.services.ghosts_behavior.astar import Astar
 
 
 class Behavior(ABC):
