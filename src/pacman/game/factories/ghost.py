@@ -107,6 +107,7 @@ class GhostFactory:
                     13 * self.settings.scale,
                     13 * self.settings.scale,
                 ),
+                Respawn(resp_x, resp_y, self.SCALE)
             ]
         )
 
