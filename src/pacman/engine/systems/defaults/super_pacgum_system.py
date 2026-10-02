@@ -22,8 +22,10 @@ class SuperPacugumSystem(System):
                 e in event.entities for e in ["pacman", "super_pacgum"]
             ):
                 self.last_time_eaten = time.time()
-                # to do check with time later
                 for entt in self.entt_adapt_behavior:
                     entt.get_component(Scared).scared = True
+            if time.time() - self.last_time_eaten > self.cooldown:
+                for entt in self.entt_adapt_behavior:
+                    entt.get_component(Scared).scared = False
 
 
