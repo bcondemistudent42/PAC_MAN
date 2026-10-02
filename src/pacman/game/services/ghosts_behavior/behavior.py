@@ -28,7 +28,7 @@ class Behavior(ABC):
 
 
     @abstractmethod
-    def find_pacman(self) -> list | None:
+    def find_pacman(self, scared: bool = False) -> list | None:
         pass
 
     @staticmethod

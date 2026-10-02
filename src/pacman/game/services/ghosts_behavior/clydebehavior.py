@@ -24,8 +24,9 @@ class ClydeBehavior(Behavior):
         )
         self.margin = 8
 
-    def find_pacman(self) -> list | None:
-
+    def find_pacman(self, scared: bool = False) -> list | None:
+        if scared:
+            return self.scared_behavior()
 
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y

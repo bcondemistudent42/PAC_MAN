@@ -15,7 +15,7 @@ class GameSettings:
         window_width: int,
         window_height: int,
         map_width: int = 9,
-        map_height: int = 9,
+        map_height: int =9,
         cell_width_px: int = 24,
         cell_height_px: int = 24,
     ) -> GameSettings:
@@ -33,3 +33,5 @@ class GameSettings:
             cell_height_px=cell_height_px,
             scale=scale,
         )
+
+# BUG WHEN map_width or map_height is too small

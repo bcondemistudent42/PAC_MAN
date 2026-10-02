@@ -24,7 +24,9 @@ class PinkyBehavior(Behavior):
             ( maze_size[0] - 1, 0)
         )
 
-    def find_pacman(self):
+    def find_pacman(self, scared: bool = False) -> list | None:
+        if scared:
+            return self.scared_behavior()
 
         preshot_dist = 4
         pacman_intention = self.pacman.get_component(Intention).direction

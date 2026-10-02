@@ -28,7 +28,9 @@ class InkyBehavior(Behavior):
         self.blinky = blinky
         # to use for scared behavior to se implementation later
 
-    def find_pacman(self) -> list | None:
+    def find_pacman(self, scared: bool = False) -> list | None:
+        if scared:
+            return self.scared_behavior()
 
         preshot_dist = 2
         pacman_intention = self.pacman.get_component(Intention).direction

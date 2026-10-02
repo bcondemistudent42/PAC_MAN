@@ -23,7 +23,9 @@ class BlinkyBehavior(Behavior):
             (0, 0)
         )
 
-    def find_pacman(self) -> list | None:
+    def find_pacman(self, scared: bool = False) -> list | None:
+        if scared:
+            return self.scared_behavior()
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(

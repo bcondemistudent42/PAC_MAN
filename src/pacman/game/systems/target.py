@@ -1,34 +1,27 @@
+import time
+
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
-from pacman.game.components.scared import Scared
-from pacman.game.components.target import Target
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
+from pacman.game.components.scared import Scared
+from pacman.game.components.target import Target
 from pacman.game.resources import resources
-import time
-
 
 
 class TargetSystem(System):
     def __init__(self, resources: resources):
-        super().__init__([Target, Position, Intention, Direction])
+        super().__init__([Target, Position, Intention, Direction, Scared])
         self.resources = resources
         self.start = time.time()
 
     def run(self):
         # to delete later
         for each_subscriber in self.subscribers:
+            actualy_scared = each_subscriber.get_component(Scared).scared
             behavior = each_subscriber.get_component(Target).behavior
-            end = time.time()
-            # to replace with component scared check if present for entity
-            # and then check, do it also for the sprites stuff
-            # if self.start - end < -10:
-                # each_subscriber.get_component(Scared).scared = True
-            if each_subscriber.get_component(Scared).scared:
-                road = behavior.scared_behavior()
-            else:
-                road = behavior.find_pacman()
+            road = behavior.find_pacman(actualy_scared)
             self.change_direction(
                 each_subscriber,
                 road,

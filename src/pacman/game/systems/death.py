@@ -4,11 +4,11 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.position import Position
-from pacman.game.components.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
+from pacman.game.components.respawn import Respawn
 from pacman.game.resources import resources
 from pacman.game.services.death import DeathSprites
 
@@ -20,6 +20,8 @@ class DeathSystem(System):
         self.events = self.resources.events
         self.lives = resources.data_score.lives
         self.entt_to_resp = []
+
+# TODO BUG when pressing keys in the death animation of pac_man
 
     def run(self) -> None:
         for event in self.events.events:
@@ -37,8 +39,6 @@ class DeathSystem(System):
                         if not entt.check_component(KeyHook):
                             entt.get_component(Sprites).sprites = []
                         entt.get_component(Velocity).speed = 0
-
-
                     return
 
                 pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]
