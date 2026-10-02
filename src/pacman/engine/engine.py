@@ -58,7 +58,7 @@ class GameEngine:
     def run(self):
         while not pr.window_should_close():
             pr.begin_drawing()
-            pr.draw_fps(1000, 10)
+            pr.draw_fps(1900, 900)
             pr.clear_background(pr.BLACK)
 
             for system in self.systems:

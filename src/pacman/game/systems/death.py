@@ -24,6 +24,7 @@ class DeathSystem(System):
 # TODO BUG when pressing keys in the death animation of pac_man
 
     def run(self) -> None:
+
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
@@ -32,7 +33,7 @@ class DeathSystem(System):
                 pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
                 index = pacman.get_component(Sprites).sprite_index
 
-                if self.lives == 0:
+                if self.lives == 1:
                     raise ValueError("Oh NO NO NO NO NO you LOOSED")
                 if (index < len(DeathSprites().PACMAN) - 1):
                     for entt in self.entt_to_resp:
@@ -40,17 +41,16 @@ class DeathSystem(System):
                             entt.get_component(Sprites).sprites = []
                         entt.get_component(Velocity).speed = 0
                     return
+                else:
+                    pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]
+                    pacman.get_component(Direction).direction = Dir.RIGHT
+                    pacman.get_component(Intention).direction = Dir.RIGHT
+                    pacman.get_component(Sprites).sprite_index = 0
 
-                pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]
-                pacman.get_component(Direction).direction = Dir.RIGHT
-                pacman.get_component(Intention).direction = Dir.RIGHT
-                pacman.get_component(Sprites).sprite_index = 0
+                    for entt in self.entt_to_resp:
+                        entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
+                        entt.get_component(Position).x = entt.get_component(Respawn).x
+                        entt.get_component(Position).y = entt.get_component(Respawn).y
+                        entt.get_component(Sprites).sprites = entt.get_component(Direction).sprite_map[Dir.RIGHT]
 
-                for entt in self.entt_to_resp:
-                    entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
-                    entt.get_component(Position).x = entt.get_component(Respawn).x
-                    entt.get_component(Position).y = entt.get_component(Respawn).y
-                    entt.get_component(Sprites).sprites = entt.get_component(Direction).sprite_map[Dir.RIGHT]
-
-                self.lives -= 1
-                return
+                    self.lives -= 1
