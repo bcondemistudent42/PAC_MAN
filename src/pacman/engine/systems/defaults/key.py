@@ -1,11 +1,11 @@
 import pyray as pr
 
 from pacman.engine.components.defaults import KeyHook
+from pacman.engine.components.defaults.is_dying import Isdying
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.events.event import Event
 from pacman.engine.systems.system import System
 from pacman.game.resources import resources
-from pacman.game.services.death import DeathSprites
 
 
 class KeyPressEvent(Event):
@@ -20,7 +20,7 @@ class KeySystem(System):
 
     def run(self) -> None:
         for subscriber in self.subscribers:
-            if subscriber.get_component(Sprites).sprites == DeathSprites().PACMAN:
+            if subscriber.get_component(Isdying).dying:
                 return
             key_hook = subscriber.get_component(KeyHook)
 

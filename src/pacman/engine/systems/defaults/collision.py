@@ -1,6 +1,7 @@
 import itertools
 
 from pacman.engine.components.defaults import Collision, Hitbox, Position
+from pacman.engine.components.defaults.is_dying import Isdying
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.events.event import Event
@@ -24,6 +25,10 @@ class CollisionSystem(System):
         statics = []
         to_remove = []
 
+        # to check if pacman is dying stop completely the Colisions system
+        for subscriber in self.subscribers:
+            if subscriber.id == "pacman" and subscriber.check_component(Isdying) and subscriber.get_component(Isdying).dying:
+                return
         for subscriber in self.subscribers:
             if not (
                 Collision in subscriber.components and Hitbox in subscriber.components

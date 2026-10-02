@@ -4,13 +4,14 @@ from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
+from pacman.engine.components.defaults.is_dying import Isdying
 from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.position import Position
-from pacman.game.components.respawn import Respawn
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
+from pacman.game.components.respawn import Respawn
 from pacman.game.settings import GameSettings
 
 
@@ -22,6 +23,7 @@ class PacmanFactory:
     def create(self) -> Entity:
         tile_size = 8 * self.settings.scale
         pacman = Entity("pac_man")
+        pacman.add_component(Isdying())
         # to adapt the correct respawn and position of pacman
         pacman.add_component(Respawn(16 * tile_size, 16 * tile_size, 1.1 * self.settings.scale))
         pacman.add_component(Position(16 * tile_size, 16 * tile_size))
