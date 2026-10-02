@@ -27,7 +27,7 @@ class CollisionSystem(System):
 
         # to check if pacman is dying stop completely the Colisions system
         for subscriber in self.subscribers:
-            if subscriber.id == "pacman" and subscriber.check_component(Isdying) and subscriber.get_component(Isdying).dying:
+            if subscriber.id == "pac_man" and subscriber.check_component(Isdying) and subscriber.get_component(Isdying).dying:
                 return
         for subscriber in self.subscribers:
             if not (

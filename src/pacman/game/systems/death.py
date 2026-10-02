@@ -27,37 +27,39 @@ class DeathSystem(System):
 
     def run(self) -> None:
 
+
+        if self.first_go is False:
+            index = self.pacman.get_component(Sprites).sprite_index
+            if (index < len(DeathSprites().PACMAN) - 1):
+                self.pacman.get_component(Isdying).dying = True
+                return
+            self.pacman.get_component(Isdying).dying = False
+            if self.lives == 1:
+                raise ValueError("Oh NO NO NO NO NO you LOOSED")
+
+            self.pacman.get_component(Sprites).sprites = self.pacman.get_component(Direction).sprite_map[Dir.RIGHT]
+            self.pacman.get_component(Direction).direction = Dir.RIGHT
+            self.pacman.get_component(Intention).direction = Dir.RIGHT
+            self.pacman.get_component(Sprites).sprite_index = 0
+            for entt in self.entt_to_resp:
+                entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
+                entt.get_component(Position).x = entt.get_component(Respawn).x
+                entt.get_component(Position).y = entt.get_component(Respawn).y
+                entt.get_component(Sprites).sprites = entt.get_component(Direction).sprite_map[Dir.RIGHT]
+            self.lives -= 1
+            self.first_go = True
+            self.pacman.get_component(Isdying).dying = False
+
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
             ):
                 pacman = event.entities["pacman"]
-                pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
-                index = pacman.get_component(Sprites).sprite_index
-
-                if self.lives == 1:
-                    raise ValueError("Oh NO NO NO NO NO you LOOSED")
-                if (index < len(DeathSprites().PACMAN) - 1):
-                    pacman.get_component(Isdying).dying = True
-                    if self.first_go:
-                        for entt in self.entt_to_resp:
-                            if not entt.check_component(KeyHook):
-                                entt.get_component(Sprites).sprites = []
-                            entt.get_component(Velocity).speed = 0
-                    self.first_go = False
-                    return
-
-                self.first_go = True
-                pacman.get_component(Sprites).sprites = pacman.get_component(Direction).sprite_map[Dir.RIGHT]
-                pacman.get_component(Direction).direction = Dir.RIGHT
-                pacman.get_component(Intention).direction = Dir.RIGHT
-                pacman.get_component(Sprites).sprite_index = 0
-                pacman.get_component(Isdying).dying = False
-
+                self.pacman = pacman
                 for entt in self.entt_to_resp:
-                    entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
-                    entt.get_component(Position).x = entt.get_component(Respawn).x
-                    entt.get_component(Position).y = entt.get_component(Respawn).y
-                    entt.get_component(Sprites).sprites = entt.get_component(Direction).sprite_map[Dir.RIGHT]
-
-                self.lives -= 1
+                    if not entt.check_component(KeyHook):
+                        entt.get_component(Sprites).sprites = []
+                    entt.get_component(Velocity).speed = 0
+                pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
+                pacman.get_component(Isdying).dying = True
+                self.first_go = False
