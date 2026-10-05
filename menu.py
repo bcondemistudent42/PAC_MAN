@@ -6,7 +6,6 @@ def menu():
 
     pr.init_window(800, 600, "Afficher une image avec pyray")
 
-    # 2. Récupérer les dimensions exactes du moniteur
     my_monitor = pr.get_current_monitor()
     monitor_w = int(pr.get_monitor_width(my_monitor) * 0.75)
     monitor_h = int(pr.get_monitor_height(my_monitor) * 0.75)
