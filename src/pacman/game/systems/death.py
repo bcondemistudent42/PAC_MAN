@@ -23,10 +23,7 @@ class DeathSystem(System):
         self.entt_to_resp = []
         self.first_go = True
 
-# TODO BUG when pressing keys in the death animation of pac_man
-
     def run(self) -> None:
-
 
         if self.first_go is False:
             index = self.pacman.get_component(Sprites).sprite_index
