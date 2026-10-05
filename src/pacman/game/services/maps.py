@@ -390,7 +390,7 @@ class PacmanMap:
                     end = (self.settings.map_width * 3) - 2
                     if (x == end or x == start) and (y == start or y == end):
                         pacgum.add_component(
-                            Sprites(["super-pacgum-cell"])
+                            Sprites(["super-pacgum-cell", "no-pacgum-cell"], 0.2)
                         )
                         col = Collision("super_pacgum")
                     else:
