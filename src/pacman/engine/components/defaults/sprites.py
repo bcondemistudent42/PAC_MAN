@@ -7,3 +7,4 @@ class Sprites(Component):
         self.sprite_index = 0
         self.frame: float = 0
         self.cooldown = cooldown
+        self.display = True

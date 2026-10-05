@@ -1,11 +1,11 @@
 import itertools
 
 from pacman.engine.components.defaults import Collision, Hitbox, Position
-from pacman.engine.components.defaults.is_dying import Isdying
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.events.event import Event
 from pacman.engine.systems.system import System
+from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 
 
@@ -27,7 +27,7 @@ class CollisionSystem(System):
 
         # to check if pacman is dying stop completely the Colisions system
         for subscriber in self.subscribers:
-            if subscriber.id == "pac_man" and subscriber.check_component(Isdying) and subscriber.get_component(Isdying).dying:
+            if subscriber.id == "pac_man" and subscriber.check_component(Dead) and subscriber.get_component(Dead).dead:
                 return
         for subscriber in self.subscribers:
             if not (

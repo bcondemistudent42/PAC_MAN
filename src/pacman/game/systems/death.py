@@ -1,19 +1,18 @@
+
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
-from pacman.engine.components.defaults.is_dying import Isdying
 from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
+from pacman.game.components.dead import Dead
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
-from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
-from pacman.game.services.death import DeathSprites
 
 
 class DeathSystem(System):
@@ -29,10 +28,9 @@ class DeathSystem(System):
 
         if self.first_go is False:
             index = self.pacman.get_component(Sprites).sprite_index
-            if (index < len(DeathSprites().PACMAN) - 1):
-                self.pacman.get_component(Isdying).dying = True
+            if index < len(self.pacman.get_component(Sprites).sprites) - 1:
                 return
-            self.pacman.get_component(Isdying).dying = False
+            self.pacman.get_component(Dead).dead = False
             if self.lives == 1:
                 raise ValueError("Oh NO NO NO NO NO you LOOSED")
 
@@ -44,10 +42,10 @@ class DeathSystem(System):
                 entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
                 entt.get_component(Position).x = entt.get_component(Respawn).x
                 entt.get_component(Position).y = entt.get_component(Respawn).y
-                entt.get_component(Sprites).sprites = entt.get_component(Direction).sprite_map[Dir.RIGHT]
+                entt.get_component(Sprites).display = True
             self.lives -= 1
             self.first_go = True
-            self.pacman.get_component(Isdying).dying = False
+            self.pacman.get_component(Dead).dead = False
 
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
@@ -59,16 +57,11 @@ class DeathSystem(System):
                 if scared:
                     ghost = event.entities["ghost"]
                     ghost.get_component(Sprites).sprite_index = 0
-                    ghost.get_component(Sprites).sprites = ghost.get_component(Dead).sprites
-
-                    # event.entities["ghost"].get_component(Scared).scared = False
-                    # ghost.get_component(Velocity).speed = 0
 
                 if not scared:
+                    pacman.get_component(Dead).dead = True
                     for entt in self.entt_to_resp:
                         if not entt.check_component(KeyHook):
-                            entt.get_component(Sprites).sprites = []
+                            entt.get_component(Sprites).display = False
                         entt.get_component(Velocity).speed = 0
-                    pacman.get_component(Sprites).sprites = DeathSprites().PACMAN
-                    pacman.get_component(Isdying).dying = True
                     self.first_go = False

@@ -23,7 +23,7 @@ class SpriteSystem(System):
             sprite_component = each_subscribed.get_component(Sprites)
             position_component = each_subscribed.get_component(Position)
 
-            if len(sprite_component.sprites) <= 0:
+            if len(sprite_component.sprites) <= 0 or not sprite_component.display:
                 continue
 
             sprite_component.frame += pr.get_frame_time()

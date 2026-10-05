@@ -4,13 +4,13 @@ from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
-from pacman.engine.components.defaults.is_dying import Isdying
 from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
+from pacman.game.components.dead import Dead
 from pacman.game.components.respawn import Respawn
 from pacman.game.settings import GameSettings
 
@@ -23,9 +23,28 @@ class PacmanFactory:
     def create(self) -> Entity:
         tile_size = 8 * self.settings.scale
         pacman = Entity("pac_man")
-        pacman.add_component(Isdying())
-        # to adapt the correct respawn and position of pacman
-        pacman.add_component(Respawn(16 * tile_size, 16 * tile_size, 1.1 * self.settings.scale))
+        death_sprites = [
+            "pacman-dead-1",
+            "pacman-dead-2",
+            "pacman-dead-3",
+            "pacman-dead-4",
+            "pacman-dead-5",
+            "pacman-dead-6",
+            "pacman-dead-7",
+            "pacman-dead-8",
+            "pacman-dead-9",
+            "pacman-dead-10",
+            "pacman-dead-11",
+        ]
+
+        pacman.add_component(Dead({
+            Dir.LEFT: death_sprites,
+            Dir.RIGHT: death_sprites,
+            Dir.UP: death_sprites,
+            Dir.DOWN: death_sprites,
+        }))
+        pacman.add_component(
+            Respawn(16 * tile_size, 16 * tile_size, 1.1 * self.settings.scale))
         pacman.add_component(Position(16 * tile_size, 16 * tile_size))
         pacman.add_component(Velocity(1.1 * self.settings.scale))
         pacman.add_component(
