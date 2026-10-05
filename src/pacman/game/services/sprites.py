@@ -58,6 +58,10 @@ config = {
     "pinky-top-2": SpriteSheetPos(x=536, y=80, width=16, height=16),
     "pinky-bottom-1": SpriteSheetPos(x=552, y=80, width=16, height=16),
     "pinky-bottom-2": SpriteSheetPos(x=568, y=80, width=16, height=16),
+    "ghost-eyes-right": SpriteSheetPos(x=584, y=80, width=16, height=16),
+    "ghost-eyes-left": SpriteSheetPos(x=600, y=80, width=16, height=16),
+    "ghost-eyes-top": SpriteSheetPos(x=516, y=80, width=16, height=16),
+    "ghost-eyes-bottom": SpriteSheetPos(x=532, y=80, width=16, height=16),
     "inky-right-1": SpriteSheetPos(x=456, y=96, width=16, height=16),
     "inky-right-2": SpriteSheetPos(x=472, y=96, width=16, height=16),
     "inky-left-1": SpriteSheetPos(x=488, y=96, width=16, height=16),
@@ -74,8 +78,6 @@ config = {
     "clyde-top-2": SpriteSheetPos(x=536, y=113, width=16, height=16),
     "clyde-bottom-1": SpriteSheetPos(x=552, y=113, width=16, height=16),
     "clyde-bottom-2": SpriteSheetPos(x=568, y=113, width=16, height=16),
-    "ghost-eyes-right": SpriteSheetPos(x=584, y=84, width=9, height=4),
-    "ghost-eyes-left": SpriteSheetPos(x=602, y=65, width=9, height=4),
     "left-top-map-corner": SpriteSheetPos(x=0, y=0, width=8, height=8),
     "left-bottom-map-corner": SpriteSheetPos(x=0, y=240, width=8, height=8),
     "right-top-map-corner": SpriteSheetPos(x=216, y=0, width=8, height=8),
@@ -153,7 +155,7 @@ class SpriteService:
             pr.unload_image(image)
 
     def get_sprite(self, sprite: str) -> pr.Image:
-        return self.map[sprite] 
+        return self.map[sprite]
 
 
 if __name__ == "__main__":
