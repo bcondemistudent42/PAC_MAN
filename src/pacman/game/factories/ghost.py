@@ -10,6 +10,7 @@ from pacman.game.components.target import Target
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
+from pacman.game.dead import Dead
 from pacman.game.settings import GameSettings
 from pacman.game.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
 from pacman.game.services.ghosts_behavior.clydebehavior import ClydeBehavior
@@ -132,6 +133,7 @@ class GhostFactory:
         ghost.add_component(
             Target(self.pac_man, self.maze_size, self.maze, behavior)
         )
+        ghost.add_component(Dead(["ghost-eyes-left", "ghost-eyes-right"]))
         self.engine.add_entities(ghost)
         if name == "blinky":
             self.blinky = ghost

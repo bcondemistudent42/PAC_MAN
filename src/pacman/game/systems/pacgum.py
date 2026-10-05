@@ -22,3 +22,11 @@ class PacgumSystem(System):
                 cell.components.pop(Collision, None)
                 cell.components.pop(Hitbox, None)
 
+            elif isinstance(event, CollisionEvent) and all(
+                e in event.entities for e in ["pacman", "super_pacgum"]
+            ):
+                cell = event.entities["super_pacgum"]
+                cell.get_component(Sprites).sprite_index = 0
+                cell.get_component(Sprites).sprites = ["no-pacgum-cell"]
+                cell.components.pop(Collision, None)
+                cell.components.pop(Hitbox, None)

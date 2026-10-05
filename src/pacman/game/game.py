@@ -8,7 +8,7 @@ from pacman.engine.systems.defaults import (
     PacmanIntentionSystem,
     SpriteSystem,
 )
-from pacman.engine.systems.defaults.super_pacgum_system import SuperPacugumSystem
+from pacman.game.systems.super_pacgum_system import SuperPacugumSystem
 from pacman.engine.systems.defaults.time import TimeSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory

@@ -7,6 +7,7 @@ from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
 from pacman.game.components.scared import Scared
 from pacman.game.components.target import Target
+from pacman.game.dead import Dead
 from pacman.game.resources import resources
 
 
@@ -20,8 +21,12 @@ class TargetSystem(System):
         # to delete later
         for each_subscriber in self.subscribers:
             actualy_scared = each_subscriber.get_component(Scared).scared
+            actualy_dead = each_subscriber.get_component(Dead).dead
+            check = False
+            if actualy_scared or actualy_dead:
+                check = True
             behavior = each_subscriber.get_component(Target).behavior
-            road = behavior.find_pacman(actualy_scared)
+            road = behavior.find_pacman(check)
             self.change_direction(
                 each_subscriber,
                 road,
