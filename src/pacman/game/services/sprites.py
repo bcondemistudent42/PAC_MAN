@@ -93,6 +93,7 @@ config = {
     "corner-jonction-bottom-right": SpriteSheetPos(x=152, y=72, width=8, height=8),
     "corner-jonction-top-right": SpriteSheetPos(x=104, y=152, width=8, height=8),
     "pacgum-cell": SpriteSheetPos(x=8, y=8, width=8, height=8),
+    "super-pacgum-cell": SpriteSheetPos(x=8, y=24, width=8, height=8),
     "no-pacgum-cell": SpriteSheetPos(x=232, y=20, width=8, height=8),
 }
 

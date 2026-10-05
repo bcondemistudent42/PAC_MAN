@@ -39,12 +39,7 @@ class PacmanGame:
             self.engine.events,
             scale=self.settings.scale,
         )
-        self.map_service = PacmanMap(
-            self.engine,
-            self.settings.scale,
-            self.settings.map_width,
-            self.settings.map_height,
-        )
+        self.map_service = PacmanMap(self.engine, self.settings)
 
     def start_game(self):
         self.resources.matrix = self.matrix

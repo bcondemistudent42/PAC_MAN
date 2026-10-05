@@ -1,3 +1,4 @@
+import random
 from enum import Enum
 
 from mazegenerator import MazeGenerator
@@ -8,8 +9,7 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.entity import Entity
-import random
-
+from pacman.game.settings import GameSettings
 
 
 class PacmanCell(Enum):
@@ -19,17 +19,18 @@ class PacmanCell(Enum):
 
 
 class PacmanMap:
-    def __init__(
-        self, engine: GameEngine, scale: float, map_width: int, map_height: int
-    ) -> None:
+    def __init__(self, engine: GameEngine, settings: GameSettings) -> None:
         self.generator = MazeGenerator(
-            size=(map_width, map_height), perfect=True, seed=48515
+            size=(settings.map_width, settings.map_height),
+            perfect=True,
+            seed=48515,
         )
 
-        self.TILE_SIZE = 8 * scale
-        self.scale = scale
+        self.TILE_SIZE = 8 * settings.scale
+        self.scale = settings.scale
         self.engine = engine
         self.map = []
+        self.settings = settings
 
         self.sprite_matrix = []
         self.logic_matrix = []
@@ -384,13 +385,27 @@ class PacmanMap:
                 elif cell_type == PacmanCell.PACGUM:
                     pacgum = Entity(f"pacgum_{x}_{y}")
                     pacgum.add_component(Position(base_x, base_y))
-                    pacgum.add_component(
-                        Sprites(["pacgum-cell"])
-                    )
-                    col = Collision("pacgum")
+
+                    start = 1
+                    end = (self.settings.map_width * 3) - 2
+                    if (x == end or x == start) and (y == start or y == end):
+                        pacgum.add_component(
+                            Sprites(["super-pacgum-cell"])
+                        )
+                        col = Collision("super_pacgum")
+                    else:
+                        pacgum.add_component(
+                            Sprites(["pacgum-cell"])
+                        )
+                        col = Collision("pacgum")
+
                     hb = Hitbox(2 * self.scale, 2 * self.scale, 3 * self.scale, 3 * self.scale)
 
                     pacgum.add_component(col)
                     pacgum.add_component(hb)
 
                     self.engine.add_single_entity(pacgum)
+
+    def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
+        tile_size = 8 * self.settings.scale
+        return (round(position.x / tile_size), round(position.y / tile_size))
