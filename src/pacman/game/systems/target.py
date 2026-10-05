@@ -21,9 +21,10 @@ class TargetSystem(System):
         # to delete later
         for each_subscriber in self.subscribers:
             actualy_scared = each_subscriber.get_component(Scared).scared
+            actualy_ending_scared = each_subscriber.get_component(Scared).end_scared
             actualy_dead = each_subscriber.get_component(Dead).dead
             check = False
-            if actualy_scared or actualy_dead:
+            if actualy_scared or actualy_dead or actualy_ending_scared:
                 check = True
             behavior = each_subscriber.get_component(Target).behavior
             road = behavior.find_pacman(check)

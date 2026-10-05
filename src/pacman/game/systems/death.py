@@ -43,6 +43,7 @@ class DeathSystem(System):
                 entt.get_component(Position).x = entt.get_component(Respawn).x
                 entt.get_component(Position).y = entt.get_component(Respawn).y
                 entt.get_component(Sprites).display = True
+                entt.get_component(Sprites).sprite_index = 0
             self.lives -= 1
             self.first_go = True
             self.pacman.get_component(Dead).dead = False
@@ -54,14 +55,16 @@ class DeathSystem(System):
                 pacman = event.entities["pacman"]
                 self.pacman = pacman
                 scared = event.entities["ghost"].get_component(Scared).scared
+                end_scared = event.entities["ghost"].get_component(Scared).end_scared
                 if scared:
                     ghost = event.entities["ghost"]
                     ghost.get_component(Sprites).sprite_index = 0
 
-                if not scared:
+                if not scared and not end_scared:
                     pacman.get_component(Dead).dead = True
                     for entt in self.entt_to_resp:
                         if not entt.check_component(KeyHook):
                             entt.get_component(Sprites).display = False
+                            entt.get_component(Sprites).sprite_index = 0
                         entt.get_component(Velocity).speed = 0
                     self.first_go = False
