@@ -67,7 +67,7 @@ class MovementSystem(System):
                     if direction.direction != intention.direction:
                         sprites = subscriber.get_component(Sprites)
                         sprites.sprite_index = 0
-                        sprites.sprites = direction.sprite_map[intention.direction]
+
                     direction.direction = intention.direction
 
                 curr_dx, curr_dy = self.direction_map[direction.direction]

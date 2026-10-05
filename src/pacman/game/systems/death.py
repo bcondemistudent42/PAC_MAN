@@ -11,7 +11,7 @@ from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
-from pacman.game.dead import Dead
+from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 from pacman.game.services.death import DeathSprites
 

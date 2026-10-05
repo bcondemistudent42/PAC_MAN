@@ -6,7 +6,7 @@ from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
 from pacman.game.components.scared import Scared
-from pacman.game.dead import Dead
+from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 
 
