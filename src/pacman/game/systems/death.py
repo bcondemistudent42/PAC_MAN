@@ -1,4 +1,6 @@
 
+import time
+
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
@@ -48,7 +50,6 @@ class DeathSystem(System):
                     entt.get_component(Scared).end_scared = False
                     entt.get_component(Scared).scared = False
 
-                entt.get_component(Sprites).sprite_index = 0
             self.lives -= 1
             self.first_go = True
             self.pacman.get_component(Dead).dead = False
@@ -66,9 +67,9 @@ class DeathSystem(System):
                     continue
                 if scared or end_scared:
                     ghost.get_component(Dead).dead = True
+                    ghost.get_component(Dead).dead_time = time.time()
                     ghost.get_component(Scared).scared = False
                     ghost.get_component(Scared).end_scared = False
-                    # to see how to find a solution
 
                 if not scared and not end_scared:
                     pacman.get_component(Dead).dead = True

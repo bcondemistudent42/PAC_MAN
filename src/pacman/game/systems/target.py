@@ -5,9 +5,9 @@ from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
+from pacman.game.components.dead import Dead
 from pacman.game.components.scared import Scared
 from pacman.game.components.target import Target
-from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 
 
@@ -55,7 +55,3 @@ class TargetSystem(System):
             entity.get_component(Intention).direction = Dir.DOWN
         if y_diff == 1:
             entity.get_component(Intention).direction = Dir.UP
-
-# TODO bug identified, when ghost in mid of two cases,
-# it's not going anymore in the if diff
-# because it's one case ahead
