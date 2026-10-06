@@ -13,12 +13,11 @@ class DirectionSpriteSystem(System):
     def run(self) -> None:
         for sub in self.subscribers:
             if sub.check_component(Dead) and sub.get_component(Dead).dead:
-                if sub.get_component(Sprites).sprites != sub.get_component(Dead).sprites[
-                                    sub.get_component(Direction).direction]:
-                                    sub.get_component(Sprites).sprite_index = 0
-                                    sub.get_component(Sprites).sprites = sub.get_component(Dead).sprites[
-                                    sub.get_component(Direction).direction
-                                ]
+                if (
+                        sub.get_component(Sprites).sprites != sub.get_component(Dead).sprites[sub.get_component(Direction).direction]
+                        ):
+                            sub.get_component(Sprites).sprite_index = 0
+                            sub.get_component(Sprites).sprites = sub.get_component(Dead).sprites[sub.get_component(Direction).direction]
             elif sub.check_component(Scared) and sub.get_component(Scared).end_scared:
                 if sub.get_component(Sprites).sprites != sub.get_component(
                     Scared).sprites:

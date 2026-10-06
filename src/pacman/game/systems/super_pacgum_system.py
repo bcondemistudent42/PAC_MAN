@@ -1,12 +1,9 @@
 
 import time
 
-from pacman.engine.components.defaults.direction import Dir
-from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
 from pacman.game.components.scared import Scared
-from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 
 
@@ -31,7 +28,7 @@ class SuperPacugumSystem(System):
             for entt in self.subscribers:
                 entt.get_component(Scared).scared = False
                 entt.get_component(Scared).end_scared = False
-        elif time.time() - self.last_time_eaten > 2:
+        elif time.time() - self.last_time_eaten > 6:
            for entt in self.subscribers:
                 entt.get_component(Scared).end_scared = True
                 entt.get_component(Scared).scared = False

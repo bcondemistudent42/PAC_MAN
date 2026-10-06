@@ -56,9 +56,12 @@ class DeathSystem(System):
                 self.pacman = pacman
                 scared = event.entities["ghost"].get_component(Scared).scared
                 end_scared = event.entities["ghost"].get_component(Scared).end_scared
-                if scared:
-                    ghost = event.entities["ghost"]
-                    ghost.get_component(Sprites).sprite_index = 0
+                ghost = event.entities["ghost"]
+                if scared and not ghost.get_component(Dead).dead:
+                    ghost.get_component(Dead).dead = True
+                    ghost.get_component(Scared).scared = False
+                    ghost.get_component(Scared).end_scared = False
+                    # to see how to find a solution
 
                 if not scared and not end_scared:
                     pacman.get_component(Dead).dead = True
