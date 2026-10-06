@@ -10,7 +10,7 @@ import pyray as pr
 
 class MenuChoice(Enum):
     SCORES = "SCORES"
-    PLAY = "PLAYS"
+    PLAY = "PLAY"
     QUIT = "QUIT"
 
 
@@ -77,17 +77,23 @@ class MenuScene(Scene):
             pr.WHITE
         )
 
+        font_size = self.settings.window_height // 16
         mult = 1
+
         for key, color in choices_colors.items():
+            text_width = pr.measure_text(key.value, font_size)
+
+            base_x = (self.settings.window_width // 6) * mult
+            final_x = base_x - (text_width // 2)
+
             pr.draw_text(
                 key.value,
-                (self.settings.window_width // 6) * mult,
+                final_x,
                 (self.settings.window_height // 8) * 4,
-                (self.settings.window_height // 16),
+                font_size,
                 color
             )
-            mult *= 2
-
+            mult += 2
 
     def exit(self):
         if self.texture:
