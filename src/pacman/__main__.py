@@ -15,9 +15,10 @@ def main():
     )
 
     scene = MenuScene(settings)
-    with GameEngine(MenuScene(settings)) as engine:
+    with GameEngine(scene) as engine:
         game = PacmanGame(engine, settings)
         game.make_full_setup()
+        scene.sprite_service = game.sprite_service
         game.start_game()
 
 

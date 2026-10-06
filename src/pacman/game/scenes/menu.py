@@ -1,17 +1,24 @@
-from enum import Enum
+import io
 import sys
+from enum import Enum
+from PIL import Image
 
+import pyray as pr
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.scenes.game import GameScene
 from pacman.game.settings import GameSettings
-import pyray as pr
 
 
 class MenuChoice(Enum):
     SCORES = "SCORES"
     PLAY = "PLAY"
     QUIT = "QUIT"
+
+
+class MenuState(Enum):
+    SELECTING = "SELECTING"
+    EXPLODING = "EXPLODING"
 
 
 class MenuScene(Scene):
@@ -24,39 +31,77 @@ class MenuScene(Scene):
         self.status = MenuChoice.PLAY
         self.texture = None
 
-        self.toggle_right = {
+        self.toggle_down = {
             MenuChoice.SCORES: MenuChoice.PLAY,
             MenuChoice.PLAY: MenuChoice.QUIT,
             MenuChoice.QUIT: MenuChoice.SCORES
         }
-        self.toggle_left = {
+        self.toggle_up = {
             MenuChoice.SCORES: MenuChoice.QUIT,
             MenuChoice.QUIT: MenuChoice.PLAY,
             MenuChoice.PLAY: MenuChoice.SCORES,
         }
 
+        self.state = MenuState.SELECTING
+        self.anim_index = 0
+        self.anim_timer = 0.0
+
+        self.idle_frames = ["pacman-right-1", "pacman-right-2", "pacman-right-3", "pacman-right-2"]
+        self.dead_frames = [f"pacman-dead-{i}" for i in range(1, 12)]
+
     def enter(self):
-        img = pr.load_image("sprites/logo.png")
-        pr.image_resize(
-            img,
-            self.settings.window_width // 2,
-            self.settings.window_height // 4
-        )
+        pil_img = Image.open("sprites/logo.png").convert("RGBA")
+
+        target_width = self.settings.window_width // 2
+        ratio = pil_img.height / float(pil_img.width)
+        target_height = int(target_width * ratio)
+
+        pil_img = pil_img.resize((target_width, target_height), Image.Resampling.LANCZOS)
+
+        bytes_arr = io.BytesIO()
+        pil_img.save(bytes_arr, format="PNG")
+        raw_img = bytes_arr.getvalue()
+
+        img = pr.load_image_from_memory(".png", raw_img, len(raw_img))
         self.texture = pr.load_texture_from_image(img)
+        pr.unload_image(img)
+
+        pr.set_texture_filter(self.texture, pr.TextureFilter.TEXTURE_FILTER_BILINEAR)
 
     def update(self) -> Scene | None:
-        if pr.is_key_pressed(pr.KeyboardKey.KEY_LEFT):
-            self.status = self.toggle_left[self.status]
-        elif pr.is_key_pressed(pr.KeyboardKey.KEY_RIGHT):
-            self.status = self.toggle_right[self.status]
-        elif pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
-            if self.status == MenuChoice.PLAY:
-                return GameScene(self.settings)
-            elif self.status == MenuChoice.QUIT:
-                self.exit()
-                sys.exit(0)
-            else:
-                print("Not implemented yet")
+        self.anim_timer += pr.get_frame_time()
+
+        if self.state == MenuState.SELECTING:
+            if self.anim_timer > 0.1:
+                self.anim_index = (self.anim_index + 1) % len(self.idle_frames)
+                self.anim_timer = 0.0
+
+            if pr.is_key_pressed(pr.KeyboardKey.KEY_UP):
+                self.status = self.toggle_up[self.status]
+            elif pr.is_key_pressed(pr.KeyboardKey.KEY_DOWN):
+                self.status = self.toggle_down[self.status]
+            elif pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
+                self.state = MenuState.EXPLODING
+                self.anim_index = 0
+                self.anim_timer = 0.0
+
+        elif self.state == MenuState.EXPLODING:
+            if self.anim_timer > 0.04:
+                self.anim_index += 1
+                self.anim_timer = 0.0
+
+                if self.anim_index >= len(self.dead_frames):
+                    if self.status == MenuChoice.PLAY:
+                        return GameScene(self.settings)
+                    elif self.status == MenuChoice.QUIT:
+                        self.exit()
+                        sys.exit(0)
+                    else:
+                        print("Scores not implemented yet")
+                        self.state = MenuState.SELECTING
+                        self.anim_index = 0
+
+        return None
 
     def render(self, engine: GameEngine) -> None:
         if not self.texture:
@@ -70,30 +115,52 @@ class MenuScene(Scene):
 
         choices_colors[self.status] = pr.YELLOW
 
+        logo_x = (self.settings.window_width - self.texture.width) // 2
+        logo_y = int(self.settings.window_height * 0.10)
+
         pr.draw_texture(
             self.texture,
-            self.settings.window_width // 4,
-            self.settings.window_height // 4,
+            logo_x,
+            logo_y,
             pr.WHITE
         )
 
         font_size = self.settings.window_height // 16
-        mult = 1
+        start_y = self.settings.window_height // 2
+        spacing_y = int(font_size * 1.5)
 
-        for key, color in choices_colors.items():
+        for index, (key, color) in enumerate(choices_colors.items()):
             text_width = pr.measure_text(key.value, font_size)
 
-            base_x = (self.settings.window_width // 6) * mult
-            final_x = base_x - (text_width // 2)
+            final_x = (self.settings.window_width - text_width) // 2
+            final_y = start_y + (index * spacing_y)
+
+            if key == self.status and hasattr(self, 'sprite_service'):
+                if self.state == MenuState.SELECTING:
+                    sprite_name = self.idle_frames[self.anim_index]
+                else:
+                    safe_index = min(self.anim_index, len(self.dead_frames) - 1)
+                    sprite_name = self.dead_frames[safe_index]
+
+                pacman_sprite = self.sprite_service.get_sprite(sprite_name)
+                pacman_scale = font_size / pacman_sprite.height
+                pac_x = final_x - (pacman_sprite.width * pacman_scale) - 20
+
+                pr.draw_texture_ex(
+                    pacman_sprite,
+                    pr.Vector2(pac_x, final_y),
+                    0.0,
+                    pacman_scale,
+                    pr.WHITE
+                )
 
             pr.draw_text(
                 key.value,
-                final_x,
-                (self.settings.window_height // 8) * 4,
+                int(final_x),
+                int(final_y),
                 font_size,
                 color
             )
-            mult += 2
 
     def exit(self):
         if self.texture:
