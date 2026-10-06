@@ -3,6 +3,7 @@ import time
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
+from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
 from pacman.game.components.dead import Dead
@@ -18,7 +19,6 @@ class TargetSystem(System):
         self.start = time.time()
 
     def run(self):
-        # to delete later
         for each_subscriber in self.subscribers:
             actualy_scared = each_subscriber.get_component(Scared).scared
             actualy_ending_scared = each_subscriber.get_component(Scared).end_scared
@@ -35,6 +35,10 @@ class TargetSystem(System):
             )
             if behavior.ghost_coord == behavior.corner and actualy_dead:
                 each_subscriber.get_component(Dead).ready_respawn = True
+                each_subscriber.get_component(Position).x = behavior.corner[0]
+                each_subscriber.get_component(Position).y = behavior.corner[1]
+                each_subscriber.get_component(Velocity).speed = 0
+                # have to use matrix to pixel to find the function
 
     def change_direction(
         self,
