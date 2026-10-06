@@ -61,7 +61,7 @@ config = {
     "ghost-eyes-right": SpriteSheetPos(x=584, y=80, width=16, height=16),
     "ghost-eyes-left": SpriteSheetPos(x=600, y=80, width=16, height=16),
     "ghost-eyes-top": SpriteSheetPos(x=616, y=80, width=16, height=16),
-    "ghost-eyes-bottom": SpriteSheetPos(x=532, y=80, width=16, height=16),
+    "ghost-eyes-bottom": SpriteSheetPos(x=632, y=80, width=16, height=16),
     "inky-right-1": SpriteSheetPos(x=456, y=96, width=16, height=16),
     "inky-right-2": SpriteSheetPos(x=472, y=96, width=16, height=16),
     "inky-left-1": SpriteSheetPos(x=488, y=96, width=16, height=16),
