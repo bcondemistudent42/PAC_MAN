@@ -45,10 +45,6 @@ class DeathSystem(System):
                 entt.get_component(Position).x = entt.get_component(Respawn).x
                 entt.get_component(Position).y = entt.get_component(Respawn).y
                 entt.get_component(Sprites).display = True
-                if entt.check_component(Dead) and entt.check_component(Scared):
-                    entt.get_component(Dead).dead = False
-                    entt.get_component(Scared).end_scared = False
-                    entt.get_component(Scared).scared = False
 
             self.lives -= 1
             self.first_go = True
@@ -67,7 +63,6 @@ class DeathSystem(System):
                     continue
                 if scared or end_scared:
                     ghost.get_component(Dead).dead = True
-                    ghost.get_component(Dead).dead_time = time.time()
                     ghost.get_component(Scared).scared = False
                     ghost.get_component(Scared).end_scared = False
 

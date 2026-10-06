@@ -55,18 +55,18 @@ class GhostFactory:
     def create(self, name: str) -> Entity:
         ghost_data = {
             "blinky": (
-                (self.maze_size[0] - 1, 0),
+                (0, 0),
                 "blinky",
                 BlinkyBehavior,
             ),
             "inky": (
-                (0, self.maze_size[0] - 1),
+                (0, self.maze_size[1] - 1),
                 "inky",
                 InkyBehavior,
             ),
-            "clyde": ((0, 0), "clyde", ClydeBehavior),
+            "clyde": ((self.maze_size[0] - 1, self.maze_size[1] - 1), "clyde", ClydeBehavior),
             "pinky": (
-                (self.maze_size[1] - 1, self.maze_size[0] - 1),
+                (self.maze_size[0] - 1, 0),
                 "pinky",
                 PinkyBehavior,
             ),

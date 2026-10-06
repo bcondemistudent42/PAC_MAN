@@ -21,7 +21,7 @@ class PinkyBehavior(Behavior):
             cell_size,
             maze_size,
             maze,
-            ( maze_size[0] - 1, 0)
+            (maze_size[0] - 1, 0)
         )
 
     def find_pacman(self, scared: bool = False) -> list | None:

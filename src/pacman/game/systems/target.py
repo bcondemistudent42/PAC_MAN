@@ -33,6 +33,8 @@ class TargetSystem(System):
                 road,
                 behavior.ghost_coord
             )
+            if behavior.ghost_coord == behavior.corner and actualy_dead:
+                each_subscriber.get_component(Dead).ready_respawn = True
 
     def change_direction(
         self,
