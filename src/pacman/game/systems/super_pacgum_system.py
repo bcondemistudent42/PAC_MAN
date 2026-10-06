@@ -3,6 +3,7 @@ import time
 
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
+from pacman.game.components.dead import Dead
 from pacman.game.components.scared import Scared
 from pacman.game.resources import resources
 
@@ -22,7 +23,8 @@ class SuperPacugumSystem(System):
             ):
                 self.last_time_eaten = time.time()
                 for entt in self.subscribers:
-                    entt.get_component(Scared).scared = True
+                    if not entt.get_component(Dead).dead:
+                        entt.get_component(Scared).scared = True
 
         if time.time() - self.last_time_eaten > self.cooldown:
             for entt in self.subscribers:
