@@ -57,7 +57,9 @@ class DeathSystem(System):
                 scared = event.entities["ghost"].get_component(Scared).scared
                 end_scared = event.entities["ghost"].get_component(Scared).end_scared
                 ghost = event.entities["ghost"]
-                if scared and not ghost.get_component(Dead).dead:
+                if ghost.get_component(Dead).dead:
+                    return
+                if scared:
                     ghost.get_component(Dead).dead = True
                     ghost.get_component(Scared).scared = False
                     ghost.get_component(Scared).end_scared = False
