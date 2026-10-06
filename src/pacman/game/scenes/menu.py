@@ -3,6 +3,7 @@ import sys
 from enum import Enum
 from PIL import Image
 
+from pacman.game.scenes.score import ScoreScene
 import pyray as pr
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
@@ -97,9 +98,10 @@ class MenuScene(Scene):
                         self.exit()
                         sys.exit(0)
                     else:
-                        print("Scores not implemented yet")
                         self.state = MenuState.SELECTING
                         self.anim_index = 0
+                        self.anim_timer = 0.0
+                        return ScoreScene(self.settings, self)
 
         return None
 
