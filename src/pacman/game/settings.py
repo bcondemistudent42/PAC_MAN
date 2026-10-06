@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class GameSettings:
+    window_width: int
+    window_height: int
     map_width: int = 15
     map_height: int = 15
     cell_width_px: int = 24
@@ -32,6 +34,6 @@ class GameSettings:
             cell_width_px=cell_width_px,
             cell_height_px=cell_height_px,
             scale=scale,
+            window_width=window_width,
+            window_height=window_height
         )
-
-# BUG WHEN map_width or map_height is too small

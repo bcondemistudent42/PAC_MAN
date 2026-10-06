@@ -28,14 +28,11 @@ from pacman.game.systems.target import TargetSystem
 
 
 class PacmanGame:
-    def __init__(self, engine: GameEngine):
+    def __init__(self, engine: GameEngine, settings: GameSettings):
         self.engine = engine
         self.system = {}
         self.pacman: Entity | None = None
-        self.settings = GameSettings.from_window(
-            window_width=engine.window_width,
-            window_height=engine.window_height,
-        )
+        self.settings = settings
         self.resources = resources(
             self.engine.events,
             scale=self.settings.scale,
