@@ -24,12 +24,17 @@ class GameEngine:
     def __exit__(self, exc_type, exc_val, exc_tb):
         pr.close_window()
 
-    def __init__(self, scene: Scene):
+    def __init__(
+        self,
+        scene: Scene,
+        window_width: int,
+        window_height: int
+    ):
         self.entities: list[Entity] = []
         self.systems: list[System] = []
         self.events = EventsQueue()
-        self.window_width = 1350
-        self.window_height = 800
+        self.window_width = window_width
+        self.window_height = window_height
         self.scene = scene
 
     def add_system(self, system: list[System] | System) -> None:
@@ -48,7 +53,8 @@ class GameEngine:
                 self.add_single_entity(e)
         else:
             raise TypeError(
-                "Cannot add this in entities to adapt add entities")
+                "Cannot add this in entities to adapt add entities"
+            )
 
     def add_single_entity(self, entity: Entity) -> None:
         self.entities.append(entity)
