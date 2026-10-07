@@ -11,6 +11,8 @@ from pacman.game.scenes.game import GameScene
 from pacman.game.scenes.score import ScoreScene
 from pacman.game.services.sprites import SpriteService
 from pacman.game.settings import GameSettings
+import random
+
 
 
 class MenuChoice(Enum):
@@ -117,6 +119,17 @@ class MenuScene(Scene):
     def render(self, engine: GameEngine) -> None:
         if not self.texture or not self.sprite_service:
             return
+
+        if not hasattr(self, "stars"):
+            self.stars = []
+            for _ in range(200):
+                x = random.randint(0, self.settings.window_width)
+                y = random.randint(0, self.settings.window_height)
+                radius = random.choice([1.5, 2, 2.5])  # Légères variations de taille
+                self.stars.append((x, y, radius))
+
+        for x, y, radius in self.stars:
+            pr.draw_circle(int(x), int(y), radius, pr.LIGHTGRAY)
 
         choices_colors = {
             MenuChoice.SCORES: pr.WHITE,
