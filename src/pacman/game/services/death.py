@@ -1,6 +1,3 @@
-from pacman.engine.components.defaults.sprites import Sprites
-from pacman.engine.components.defaults.velocity import Velocity
-from pacman.engine.components.entity import Entity
 
 
 class DeathSprites:

@@ -1,8 +1,8 @@
-from pacman.engine.scenes.scene import Scene
 import pyray as pr
 
 from pacman.engine.components import Entity
 from pacman.engine.events.queue import EventsQueue
+from pacman.engine.scenes.scene import Scene
 from pacman.engine.systems import System
 
 

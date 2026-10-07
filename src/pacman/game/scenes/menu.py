@@ -1,13 +1,14 @@
 import io
 import sys
 from enum import Enum
+
+import pyray as pr
 from PIL import Image
 
-from pacman.game.scenes.score import ScoreScene
-import pyray as pr
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.scenes.game import GameScene
+from pacman.game.scenes.score import ScoreScene
 from pacman.game.settings import GameSettings
 
 

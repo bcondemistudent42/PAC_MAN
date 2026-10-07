@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
-from pydantic import BaseModel, RootModel, TypeAdapter
 import pyray as pr
+from pydantic import BaseModel, TypeAdapter
 
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene

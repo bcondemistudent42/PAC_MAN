@@ -1,6 +1,5 @@
 import time
 
-from pacman.engine.components.defaults.direction import Direction
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity

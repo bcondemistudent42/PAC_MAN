@@ -3,12 +3,12 @@ from enum import Enum
 
 from mazegenerator import MazeGenerator
 
-from pacman.engine.engine import GameEngine
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.entity import Entity
+from pacman.engine.engine import GameEngine
 from pacman.game.settings import GameSettings
 
 

@@ -2,7 +2,6 @@ import pyray as pr
 
 from pacman.engine.components.defaults import Position, Sprites
 from pacman.engine.systems.system import System
-from pacman.game.components.scared import Scared
 from pacman.game.resources import resources
 
 

@@ -1,9 +1,9 @@
-from pacman.game.settings import GameSettings
 import pyray as pr
 
 from pacman.engine.engine import GameEngine
 from pacman.game.game import PacmanGame
 from pacman.game.scenes.menu import MenuScene
+from pacman.game.settings import GameSettings
 
 pr.set_trace_log_level(pr.LOG_NONE)
 

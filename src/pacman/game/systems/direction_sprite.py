@@ -1,5 +1,5 @@
 from pacman.engine.components.defaults import Sprites
-from pacman.engine.components.defaults.direction import Dir, Direction
+from pacman.engine.components.defaults.direction import Direction
 from pacman.engine.systems import System
 from pacman.game.components.dead import Dead
 from pacman.game.components.scared import Scared

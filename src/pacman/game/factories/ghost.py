@@ -1,23 +1,22 @@
-from tkinter.constants import BOTTOM
 
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
-from pacman.game.components.respawn import Respawn
-from pacman.game.components.scared import Scared
 from pacman.engine.components.defaults.sprites import Sprites
-from pacman.game.components.target import Target
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
 from pacman.game.components.dead import Dead
-from pacman.game.settings import GameSettings
+from pacman.game.components.respawn import Respawn
+from pacman.game.components.scared import Scared
+from pacman.game.components.target import Target
 from pacman.game.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
 from pacman.game.services.ghosts_behavior.clydebehavior import ClydeBehavior
 from pacman.game.services.ghosts_behavior.inkybehavior import InkyBehavior
 from pacman.game.services.ghosts_behavior.pinkybehavior import PinkyBehavior
+from pacman.game.settings import GameSettings
 
 
 class GhostFactory:

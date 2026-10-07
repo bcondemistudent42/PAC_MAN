@@ -1,5 +1,4 @@
 
-import time
 
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction

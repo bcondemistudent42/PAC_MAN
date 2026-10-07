@@ -1,10 +1,7 @@
-from enum import Enum
-import sys
 
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.settings import GameSettings
-import pyray as pr
 
 
 class GameScene(Scene):

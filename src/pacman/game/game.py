@@ -8,9 +8,6 @@ from pacman.engine.systems.defaults import (
     PacmanIntentionSystem,
     SpriteSystem,
 )
-from pacman.game.systems.direction_sprite import DirectionSpriteSystem
-from pacman.game.systems.respawn_ghost import RespawnGhostSystem
-from pacman.game.systems.super_pacgum_system import SuperPacugumSystem
 from pacman.engine.systems.defaults.time import TimeSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
@@ -23,8 +20,11 @@ from pacman.game.services.sprites import (
 )
 from pacman.game.settings import GameSettings
 from pacman.game.systems.death import DeathSystem
+from pacman.game.systems.direction_sprite import DirectionSpriteSystem
 from pacman.game.systems.pacgum import PacgumSystem
+from pacman.game.systems.respawn_ghost import RespawnGhostSystem
 from pacman.game.systems.score import ScoreSystem
+from pacman.game.systems.super_pacgum_system import SuperPacugumSystem
 from pacman.game.systems.target import TargetSystem
 
 
