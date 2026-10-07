@@ -90,10 +90,18 @@ config = {
     "corner-top-right": SpriteSheetPos(x=40, y=16, width=8, height=8),
     "corner-bottom-left": SpriteSheetPos(x=16, y=32, width=8, height=8),
     "corner-bottom-right": SpriteSheetPos(x=40, y=32, width=8, height=8),
-    "corner-jonction-bottom-left": SpriteSheetPos(x=64, y=72, width=8, height=8),
-    "corner-jonction-top-left": SpriteSheetPos(x=112, y=152, width=8, height=8),
-    "corner-jonction-bottom-right": SpriteSheetPos(x=152, y=72, width=8, height=8),
-    "corner-jonction-top-right": SpriteSheetPos(x=104, y=152, width=8, height=8),
+    "corner-jonction-bottom-left": SpriteSheetPos(
+        x=64, y=72, width=8, height=8
+    ),
+    "corner-jonction-top-left": SpriteSheetPos(
+        x=112, y=152, width=8, height=8
+    ),
+    "corner-jonction-bottom-right": SpriteSheetPos(
+        x=152, y=72, width=8, height=8
+    ),
+    "corner-jonction-top-right": SpriteSheetPos(
+        x=104, y=152, width=8, height=8
+    ),
     "pacgum-cell": SpriteSheetPos(x=8, y=8, width=8, height=8),
     "super-pacgum-cell": SpriteSheetPos(x=8, y=24, width=8, height=8),
     "no-pacgum-cell": SpriteSheetPos(x=232, y=20, width=8, height=8),
@@ -114,7 +122,9 @@ config_spritesheet_2 = {
 
 
 class SpriteService:
-    def __init__(self, spritesheet: str, map: dict[str, SpriteSheetPos]) -> None:
+    def __init__(
+        self, spritesheet: str, map: dict[str, SpriteSheetPos]
+    ) -> None:
         self.spritesheet = spritesheet
         self.config_map = map
         self.img = Image.open(spritesheet).convert("RGBA")
@@ -123,7 +133,9 @@ class SpriteService:
 
         self.init_sprites()
 
-    def add_spritesheet(self, spritesheet: str, map: dict[str, SpriteSheetPos]) -> None:
+    def add_spritesheet(
+        self, spritesheet: str, map: dict[str, SpriteSheetPos]
+    ) -> None:
         self.spritesheet = spritesheet
         self.config_map = map
         self.img = Image.open(spritesheet).convert("RGBA")

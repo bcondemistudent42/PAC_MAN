@@ -25,4 +25,6 @@ class PacmanIntentionSystem(System):
                 target_direction = key_hook.keys.get(event.key)
 
                 if target_direction is not None:
-                    subscriber.get_component(Intention).direction = target_direction
+                    subscriber.get_component(
+                        Intention
+                    ).direction = target_direction

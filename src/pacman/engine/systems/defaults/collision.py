@@ -24,10 +24,10 @@ class CollisionSystem(System):
         statics = []
         to_remove = []
 
-
         for subscriber in self.subscribers:
             if not (
-                Collision in subscriber.components and Hitbox in subscriber.components
+                Collision in subscriber.components
+                and Hitbox in subscriber.components
             ):
                 to_remove.append(subscriber)
                 continue
@@ -64,7 +64,8 @@ class CollisionSystem(System):
                 ):
                     self.events.push(
                         CollisionEvent(
-                            entities={s_col.tag: s_sub, m_col.tag: m_sub})
+                            entities={s_col.tag: s_sub, m_col.tag: m_sub}
+                        )
                     )
 
         for first, second in itertools.combinations(movers, 2):
@@ -82,7 +83,8 @@ class CollisionSystem(System):
             ):
                 self.events.push(
                     CollisionEvent(
-                        entities={s_col.tag: s_sub, f_col.tag: f_sub})
+                        entities={s_col.tag: s_sub, f_col.tag: f_sub}
+                    )
                 )
 
         for elem in to_remove:

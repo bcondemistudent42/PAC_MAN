@@ -24,12 +24,7 @@ class GameEngine:
     def __exit__(self, exc_type, exc_val, exc_tb):
         pr.close_window()
 
-    def __init__(
-        self,
-        scene: Scene,
-        window_width: int,
-        window_height: int
-    ):
+    def __init__(self, scene: Scene, window_width: int, window_height: int):
         self.entities: list[Entity] = []
         self.systems: list[System] = []
         self.events = EventsQueue()
@@ -63,13 +58,13 @@ class GameEngine:
             if not system.required_components:
                 continue
             if all(
-                required in entity.components for required in system.required_components
+                required in entity.components
+                for required in system.required_components
             ):
                 system.subscribe(entity)
 
     def run(self):
         while not pr.window_should_close():
-
             new_scene = self.scene.update()
 
             if new_scene:

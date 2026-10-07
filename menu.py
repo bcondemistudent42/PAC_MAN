@@ -20,12 +20,27 @@ def menu() -> NoReturn:
         pr.begin_drawing()
         pr.clear_background(pr.BLACK)
         pr.draw_texture(texture, monitor_w // 4, monitor_h // 4, pr.WHITE)
-        pr.draw_text("SCORES", monitor_w // 6, (monitor_h // 8)
-                     * 4, (monitor_h // 16), pr.WHITE)
-        pr.draw_text("PLAY", ((monitor_w // 6) * 2) + (monitor_w // 8),
-                     (monitor_h // 8) * 4, (monitor_h // 16), pr.WHITE)
-        pr.draw_text("QUIT", ((monitor_w // 6) * 4) + (monitor_w // 16),
-                     (monitor_h // 8) * 4, (monitor_h // 16), pr.WHITE)
+        pr.draw_text(
+            "SCORES",
+            monitor_w // 6,
+            (monitor_h // 8) * 4,
+            (monitor_h // 16),
+            pr.WHITE,
+        )
+        pr.draw_text(
+            "PLAY",
+            ((monitor_w // 6) * 2) + (monitor_w // 8),
+            (monitor_h // 8) * 4,
+            (monitor_h // 16),
+            pr.WHITE,
+        )
+        pr.draw_text(
+            "QUIT",
+            ((monitor_w // 6) * 4) + (monitor_w // 16),
+            (monitor_h // 8) * 4,
+            (monitor_h // 16),
+            pr.WHITE,
+        )
         pr.end_drawing()
 
     pr.close_window()

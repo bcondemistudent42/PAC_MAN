@@ -38,7 +38,8 @@ class PacmanGame:
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
         self.sprite_service.add_spritesheet(
-            "sprites/creeper.png", config_spritesheet_2)
+            "sprites/creeper.png", config_spritesheet_2
+        )
 
     def make_full_setup(self):
         self.services_init()

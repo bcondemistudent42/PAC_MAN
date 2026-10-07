@@ -18,5 +18,5 @@ __all__ = [
     "Scared",
     "Sprites",
     "Target",
-    "Velocity"
+    "Velocity",
 ]

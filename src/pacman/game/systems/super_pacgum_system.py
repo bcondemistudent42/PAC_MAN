@@ -1,4 +1,3 @@
-
 import time
 
 from pacman.engine.systems.defaults.collision import CollisionEvent
@@ -14,7 +13,7 @@ class SuperPacugumSystem(System):
         self.resources = resources
         self.events = self.resources.events
         self.last_time_eaten = 0
-        self.cooldown = 6  #arbitrary value to adapt
+        self.cooldown = 6  # arbitrary value to adapt
 
     def run(self) -> None:
         for event in self.events.events:
@@ -32,7 +31,6 @@ class SuperPacugumSystem(System):
                 entt.get_component(Scared).scared = False
                 entt.get_component(Scared).end_scared = False
         elif time.time() - self.last_time_eaten > 4:
-           for entt in self.subscribers:
+            for entt in self.subscribers:
                 entt.get_component(Scared).end_scared = True
                 entt.get_component(Scared).scared = False
-

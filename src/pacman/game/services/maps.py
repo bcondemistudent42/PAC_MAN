@@ -59,7 +59,11 @@ class PacmanMap:
             if not (maze[y][x] & 2):
                 return False
             return not (
-                (y > 0 and x < width - 1 and count_2x2_walls(y - 1, x) <= min_walls)
+                (
+                    y > 0
+                    and x < width - 1
+                    and count_2x2_walls(y - 1, x) <= min_walls
+                )
                 or (
                     y < height - 1
                     and x < width - 1
@@ -73,7 +77,11 @@ class PacmanMap:
             if not (maze[y][x] & 4):
                 return False
             return not (
-                (x > 0 and y < height - 1 and count_2x2_walls(y, x - 1) <= min_walls)
+                (
+                    x > 0
+                    and y < height - 1
+                    and count_2x2_walls(y, x - 1) <= min_walls
+                )
                 or (
                     x < width - 1
                     and y < height - 1
@@ -140,7 +148,8 @@ class PacmanMap:
     def maze_to_matrix(self) -> None:
         """Génère la matrice visuelle et la matrice logique dans l'instance."""
         self.sprite_matrix = [
-            ["" for _ in range(len(self.map[0]) * 3)] for _ in range(len(self.map) * 3)
+            ["" for _ in range(len(self.map[0]) * 3)]
+            for _ in range(len(self.map) * 3)
         ]
 
         for y, line in enumerate(self.map):
@@ -179,7 +188,9 @@ class PacmanMap:
 
                 # Coins
                 if nord and ouest:
-                    self.sprite_matrix[y * 3][x * 3] = "corner-jonction-top-left"
+                    self.sprite_matrix[y * 3][x * 3] = (
+                        "corner-jonction-top-left"
+                    )
                 elif nord:
                     self.sprite_matrix[y * 3][x * 3] = "wall-top"
                 elif ouest:
@@ -187,7 +198,9 @@ class PacmanMap:
 
                 # Haut-droit : Nord & Est
                 if nord and est:
-                    self.sprite_matrix[y * 3][x * 3 + 2] = "corner-jonction-top-right"
+                    self.sprite_matrix[y * 3][x * 3 + 2] = (
+                        "corner-jonction-top-right"
+                    )
                 elif nord:
                     self.sprite_matrix[y * 3][x * 3 + 2] = "wall-top"
                 elif est:
@@ -195,7 +208,9 @@ class PacmanMap:
 
                 # Bas-gauche : Sud & Ouest
                 if sud and ouest:
-                    self.sprite_matrix[y * 3 + 2][x * 3] = "corner-jonction-bottom-left"
+                    self.sprite_matrix[y * 3 + 2][x * 3] = (
+                        "corner-jonction-bottom-left"
+                    )
                 elif sud:
                     self.sprite_matrix[y * 3 + 2][x * 3] = "wall-bottom"
                 elif ouest:
@@ -221,13 +236,17 @@ class PacmanMap:
 
                 if x > 0 and nord and not self.map[y][x - 1] & 1:
                     if self.map[y][x - 1] & (1 << 1):
-                        self.sprite_matrix[y * 3][x * 3] = "corner-jonction-top-left"
+                        self.sprite_matrix[y * 3][x * 3] = (
+                            "corner-jonction-top-left"
+                        )
                     elif self.map[y - 1][x - 1] & (1 << 1):
                         self.sprite_matrix[y * 3][x * 3] = "wall-top"
                     else:
                         # On met le mur NORD jusqu'au bout, on décale le coin dans la case voisine
                         self.sprite_matrix[y * 3][x * 3] = "wall-top"
-                        self.sprite_matrix[y * 3][x * 3 - 1] = "corner-bottom-left"
+                        self.sprite_matrix[y * 3][x * 3 - 1] = (
+                            "corner-bottom-left"
+                        )
 
                 if x > 0 and sud and not self.map[y][x - 1] & (1 << 2):
                     if self.map[y][x - 1] & (1 << 1):
@@ -238,7 +257,9 @@ class PacmanMap:
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-bottom"
                     else:
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-bottom"
-                        self.sprite_matrix[y * 3 + 2][x * 3 - 1] = "corner-top-left"
+                        self.sprite_matrix[y * 3 + 2][x * 3 - 1] = (
+                            "corner-top-left"
+                        )
 
                 if x < last_x and nord and not self.map[y][x + 1] & 1:
                     if self.map[y][x + 1] & (1 << 3):
@@ -249,7 +270,9 @@ class PacmanMap:
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-top"
                     else:
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-top"
-                        self.sprite_matrix[y * 3][x * 3 + 3] = "corner-bottom-right"
+                        self.sprite_matrix[y * 3][x * 3 + 3] = (
+                            "corner-bottom-right"
+                        )
 
                 if x < last_x and sud and not self.map[y][x + 1] & (1 << 2):
                     if self.map[y][x + 1] & (1 << 3):
@@ -257,10 +280,16 @@ class PacmanMap:
                             "corner-jonction-bottom-right"
                         )
                     elif self.map[y + 1][x + 1] & (1 << 3):
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-bottom"
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                            "wall-bottom"
+                        )
                     else:
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-bottom"
-                        self.sprite_matrix[y * 3 + 2][x * 3 + 3] = "corner-top-right"
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                            "wall-bottom"
+                        )
+                        self.sprite_matrix[y * 3 + 2][x * 3 + 3] = (
+                            "corner-top-right"
+                        )
 
                 # ==========================================
                 # Fermeture des murs verticaux (est/ouest)
@@ -268,12 +297,16 @@ class PacmanMap:
 
                 if y > 0 and ouest and not self.map[y - 1][x] & (1 << 3):
                     if self.map[y - 1][x] & (1 << 2):
-                        self.sprite_matrix[y * 3][x * 3] = "corner-jonction-top-left"
+                        self.sprite_matrix[y * 3][x * 3] = (
+                            "corner-jonction-top-left"
+                        )
                     elif self.map[y - 1][x - 1] & (1 << 2):
                         self.sprite_matrix[y * 3][x * 3] = "wall-left"
                     else:
                         self.sprite_matrix[y * 3][x * 3] = "wall-left"
-                        self.sprite_matrix[y * 3 - 1][x * 3] = "corner-top-right"
+                        self.sprite_matrix[y * 3 - 1][x * 3] = (
+                            "corner-top-right"
+                        )
 
                 if y > 0 and est and not self.map[y - 1][x] & (1 << 1):
                     if self.map[y - 1][x] & (1 << 2):
@@ -284,7 +317,9 @@ class PacmanMap:
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-right"
                     else:
                         self.sprite_matrix[y * 3][x * 3 + 2] = "wall-right"
-                        self.sprite_matrix[y * 3 - 1][x * 3 + 2] = "corner-top-left"
+                        self.sprite_matrix[y * 3 - 1][x * 3 + 2] = (
+                            "corner-top-left"
+                        )
 
                 if y < last_y and ouest and not self.map[y + 1][x] & (1 << 3):
                     if self.map[y + 1][x] & 1:
@@ -295,7 +330,9 @@ class PacmanMap:
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-left"
                     else:
                         self.sprite_matrix[y * 3 + 2][x * 3] = "wall-left"
-                        self.sprite_matrix[y * 3 + 3][x * 3] = "corner-bottom-right"
+                        self.sprite_matrix[y * 3 + 3][x * 3] = (
+                            "corner-bottom-right"
+                        )
 
                 if y < last_y and est and not self.map[y + 1][x] & (1 << 1):
                     if self.map[y + 1][x] & 1:
@@ -306,7 +343,9 @@ class PacmanMap:
                         self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-right"
                     else:
                         self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "wall-right"
-                        self.sprite_matrix[y * 3 + 3][x * 3 + 2] = "corner-bottom-left"
+                        self.sprite_matrix[y * 3 + 3][x * 3 + 2] = (
+                            "corner-bottom-left"
+                        )
                 if (
                     not sud
                     and not ouest
@@ -326,7 +365,9 @@ class PacmanMap:
                     and self.map[y][x + 1] & (1 << 2)
                     and self.map[y + 1][x] & (1 << 1)
                 ):
-                    self.sprite_matrix[y * 3 + 2][x * 3 + 2] = "corner-top-left"
+                    self.sprite_matrix[y * 3 + 2][x * 3 + 2] = (
+                        "corner-top-left"
+                    )
 
                 # Raccord Haut-Gauche
                 if (
@@ -390,16 +431,21 @@ class PacmanMap:
                     end = (self.settings.map_width * 3) - 2
                     if (x == end or x == start) and (y == start or y == end):
                         pacgum.add_component(
-                            Sprites(["super-pacgum-cell", "no-pacgum-cell"], 0.2)
+                            Sprites(
+                                ["super-pacgum-cell", "no-pacgum-cell"], 0.2
+                            )
                         )
                         col = Collision("super_pacgum")
                     else:
-                        pacgum.add_component(
-                            Sprites(["pacgum-cell"])
-                        )
+                        pacgum.add_component(Sprites(["pacgum-cell"]))
                         col = Collision("pacgum")
 
-                    hb = Hitbox(2 * self.scale, 2 * self.scale, 3 * self.scale, 3 * self.scale)
+                    hb = Hitbox(
+                        2 * self.scale,
+                        2 * self.scale,
+                        3 * self.scale,
+                        3 * self.scale,
+                    )
 
                     pacgum.add_component(col)
                     pacgum.add_component(hb)

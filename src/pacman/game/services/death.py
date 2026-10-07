@@ -1,8 +1,11 @@
-
-
 class DeathSprites:
     def __init__(self) -> None:
-        self.GHOSTS = ["blue-ghost-1", "blue-ghost-2", "white-ghost-1", "white-ghost-2"]
+        self.GHOSTS = [
+            "blue-ghost-1",
+            "blue-ghost-2",
+            "white-ghost-1",
+            "white-ghost-2",
+        ]
         self.PACMAN = [
             "pacman-dead-1",
             "pacman-dead-2",

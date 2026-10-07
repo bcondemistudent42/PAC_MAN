@@ -37,14 +37,19 @@ class PacmanFactory:
             "pacman-dead-11",
         ]
 
-        pacman.add_component(Dead({
-            Dir.LEFT: death_sprites,
-            Dir.RIGHT: death_sprites,
-            Dir.UP: death_sprites,
-            Dir.DOWN: death_sprites,
-        }))
         pacman.add_component(
-            Respawn(16 * tile_size, 16 * tile_size, 1.1 * self.settings.scale))
+            Dead(
+                {
+                    Dir.LEFT: death_sprites,
+                    Dir.RIGHT: death_sprites,
+                    Dir.UP: death_sprites,
+                    Dir.DOWN: death_sprites,
+                }
+            )
+        )
+        pacman.add_component(
+            Respawn(16 * tile_size, 16 * tile_size, 1.1 * self.settings.scale)
+        )
         pacman.add_component(Position(16 * tile_size, 16 * tile_size))
         pacman.add_component(Velocity(1.1 * self.settings.scale))
         pacman.add_component(

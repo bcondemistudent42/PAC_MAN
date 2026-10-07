@@ -20,7 +20,7 @@ class ClydeBehavior(Behavior):
             cell_size,
             maze_size,
             maze,
-            (maze_size[0] - 1, maze_size[1] - 1)
+            (maze_size[0] - 1, maze_size[1] - 1),
         )
         self.margin = 3
 
@@ -32,19 +32,22 @@ class ClydeBehavior(Behavior):
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
             (x_ghost, y_ghost), self.cell_size
-            )
+        )
 
         self.ghost_coord = (x_ghost_graph, y_ghost_graph)
         x_pacman = self.pacman.get_component(Position).x
         y_pacman = self.pacman.get_component(Position).y
 
-        x_pacman_graph, y_pacman_graph = (self.pixel_to_matrix(
-            (x_pacman, y_pacman),
-            self.cell_size)
+        x_pacman_graph, y_pacman_graph = self.pixel_to_matrix(
+            (x_pacman, y_pacman), self.cell_size
         )
 
         target = (x_pacman_graph, y_pacman_graph)
-        if abs(x_ghost_graph - x_pacman_graph) + abs(y_ghost_graph - y_pacman_graph) <= self.margin:
+        if (
+            abs(x_ghost_graph - x_pacman_graph)
+            + abs(y_ghost_graph - y_pacman_graph)
+            <= self.margin
+        ):
             target = self.corner
 
         output = self.solver.find_road((x_ghost_graph, y_ghost_graph), target)

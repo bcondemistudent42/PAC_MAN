@@ -10,7 +10,6 @@ class Node:
     total_cost_est: int | None
     coord: tuple[int, int]
 
-
     def __lt__(self, other: Node):
         if not self.total_cost_est or not other.total_cost_est:
             return False
@@ -26,16 +25,18 @@ class Astar:
         self.maze_size = maze_size
         self.maze = maze
 
-
     @staticmethod
     def heuristic(start: tuple[int, int], end: tuple[int, int]):
         return abs(start[0] - end[0]) + abs(start[1] - end[1])
 
-# to pass ghost cord and pacman cord directly in parameter
-# rename them into ghost and target instead, clearer
-# readapt the other behavior to be clean
+    # to pass ghost cord and pacman cord directly in parameter
+    # rename them into ghost and target instead, clearer
+    # readapt the other behavior to be clean
 
-    def find_road(self, ghost_coord: tuple[int, int], pacman_coord: tuple[int, int],
+    def find_road(
+        self,
+        ghost_coord: tuple[int, int],
+        pacman_coord: tuple[int, int],
     ) -> list | None:
 
         visited = set()
@@ -118,7 +119,9 @@ class Astar:
                     (actual_node, actual_node.coord),
                     self.heuristic((new_x, actual_y), goal),
                     actual_node.cost + 1,
-                    self.heuristic((new_x, actual_y), goal) + actual_node.cost + 1,
+                    self.heuristic((new_x, actual_y), goal)
+                    + actual_node.cost
+                    + 1,
                     (new_x, actual_y),
                 )
                 hp.heappush(queu, to_push)

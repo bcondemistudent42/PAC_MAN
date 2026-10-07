@@ -18,7 +18,7 @@ class GameSettings:
         window_width: int,
         window_height: int,
         map_width: int = 9,
-        map_height: int =9,
+        map_height: int = 9,
         cell_width_px: int = 24,
         cell_height_px: int = 24,
     ) -> GameSettings:
@@ -37,5 +37,5 @@ class GameSettings:
             scale=scale,
             window_width=window_width,
             window_height=window_height,
-            tile_size=8 * scale
+            tile_size=8 * scale,
         )

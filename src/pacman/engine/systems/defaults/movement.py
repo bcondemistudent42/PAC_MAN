@@ -46,13 +46,21 @@ class MovementSystem(System):
             if (
                 (is_aligned_x and is_aligned_y)
                 or (
-                    intention.direction == Dir.LEFT and direction.direction == Dir.RIGHT
+                    intention.direction == Dir.LEFT
+                    and direction.direction == Dir.RIGHT
                 )
                 or (
-                    intention.direction == Dir.RIGHT and direction.direction == Dir.LEFT
+                    intention.direction == Dir.RIGHT
+                    and direction.direction == Dir.LEFT
                 )
-                or (intention.direction == Dir.UP and direction.direction == Dir.DOWN)
-                or (intention.direction == Dir.DOWN and direction.direction == Dir.UP)
+                or (
+                    intention.direction == Dir.UP
+                    and direction.direction == Dir.DOWN
+                )
+                or (
+                    intention.direction == Dir.DOWN
+                    and direction.direction == Dir.UP
+                )
             ):
                 position.x = target_x
                 position.y = target_y
@@ -74,7 +82,8 @@ class MovementSystem(System):
                 if (
                     0 <= cell_y + curr_dy < len(matrix)
                     and 0 <= cell_x + curr_dx < len(matrix[0])
-                    and matrix[cell_y + curr_dy][cell_x + curr_dx] == PacmanCell.WALL
+                    and matrix[cell_y + curr_dy][cell_x + curr_dx]
+                    == PacmanCell.WALL
                 ):
                     continue
 

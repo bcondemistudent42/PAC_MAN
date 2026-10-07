@@ -34,13 +34,15 @@ class DeathSystem(System):
             sprites_comp = self.pacman.get_component(Sprites)
             if sprites_comp.sprite_index < len(sprites_comp.sprites) - 1:
                 return
-            
+
             self.pacman.get_component(Dead).dead = False
             if self.lives <= 1:
                 raise ValueError("Oh NO NO NO NO NO you LOOSED")
 
             sprites_comp.sprite_index = 0
-            sprites_comp.sprites = self.pacman.get_component(Direction).sprite_map[Dir.RIGHT]
+            sprites_comp.sprites = self.pacman.get_component(
+                Direction
+            ).sprite_map[Dir.RIGHT]
             self.pacman.get_component(Direction).direction = Dir.RIGHT
             self.pacman.get_component(Intention).direction = Dir.RIGHT
 
@@ -59,14 +61,17 @@ class DeathSystem(System):
         for event in self.events.events:
             if not isinstance(event, CollisionEvent):
                 continue
-            
+
             if not all(e in event.entities for e in ["pacman", "ghost"]):
                 continue
 
             pacman = event.entities["pacman"]
             ghost = event.entities["ghost"]
 
-            if pacman.get_component(Dead).dead or ghost.get_component(Dead).dead:
+            if (
+                pacman.get_component(Dead).dead
+                or ghost.get_component(Dead).dead
+            ):
                 continue
 
             scared = ghost.get_component(Scared).scared

@@ -5,7 +5,7 @@ from pacman.game.game import PacmanGame
 from pacman.game.scenes.menu import MenuScene
 from pacman.game.settings import GameSettings
 
-pr.set_trace_log_level(pr.LOG_NONE) #type: ignore
+pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
 
 
 def main():

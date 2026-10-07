@@ -16,12 +16,7 @@ class PinkyBehavior(Behavior):
     ):
 
         super().__init__(
-            ghost,
-            pacman,
-            cell_size,
-            maze_size,
-            maze,
-            (maze_size[0] - 1, 0)
+            ghost, pacman, cell_size, maze_size, maze, (maze_size[0] - 1, 0)
         )
 
     def find_pacman(self, scared: bool = False) -> list | None:
@@ -34,17 +29,14 @@ class PinkyBehavior(Behavior):
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
-            (x_ghost, y_ghost),
-            self.cell_size
+            (x_ghost, y_ghost), self.cell_size
         )
 
         self.ghost_coord = (x_ghost_graph, y_ghost_graph)
         x_pacman = self.pacman.get_component(Position).x
         y_pacman = self.pacman.get_component(Position).y
 
-        x, y = self.pixel_to_matrix(
-            (x_pacman, y_pacman),
-            self.cell_size)
+        x, y = self.pixel_to_matrix((x_pacman, y_pacman), self.cell_size)
 
         x_before, y_before = x, y
 
@@ -63,6 +55,5 @@ class PinkyBehavior(Behavior):
             good_coord_target = (x, y)
 
         return self.solver.find_road(
-            (x_ghost_graph, y_ghost_graph),
-            good_coord_target
+            (x_ghost_graph, y_ghost_graph), good_coord_target
         )

@@ -14,14 +14,7 @@ class BlinkyBehavior(Behavior):
         maze: list[list[int]],
     ):
 
-        super().__init__(
-            ghost,
-            pacman,
-            cell_size,
-            maze_size,
-            maze,
-            (0, 0)
-        )
+        super().__init__(ghost, pacman, cell_size, maze_size, maze, (0, 0))
 
     def find_pacman(self, scared: bool = False) -> list | None:
         if scared:
@@ -30,18 +23,16 @@ class BlinkyBehavior(Behavior):
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
             (x_ghost, y_ghost), self.cell_size
-            )
+        )
 
         self.ghost_coord = (x_ghost_graph, y_ghost_graph)
         x_pacman = self.pacman.get_component(Position).x
         y_pacman = self.pacman.get_component(Position).y
 
-        x_pacman_graph, y_pacman_graph = (self.pixel_to_matrix(
-            (x_pacman, y_pacman),
-            self.cell_size)
+        x_pacman_graph, y_pacman_graph = self.pixel_to_matrix(
+            (x_pacman, y_pacman), self.cell_size
         )
 
         return self.solver.find_road(
-            (x_ghost_graph, y_ghost_graph),
-            (x_pacman_graph, y_pacman_graph)
+            (x_ghost_graph, y_ghost_graph), (x_pacman_graph, y_pacman_graph)
         )

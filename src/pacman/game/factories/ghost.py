@@ -1,4 +1,3 @@
-
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
@@ -48,7 +47,7 @@ class GhostFactory:
             self.create("clyde"),
             self.create("blinky"),
             self.create("inky"),
-            self.create("pinky")
+            self.create("pinky"),
         ]
 
     def create(self, name: str) -> Entity:
@@ -63,7 +62,11 @@ class GhostFactory:
                 "inky",
                 InkyBehavior,
             ),
-            "clyde": ((self.maze_size[0] - 1, self.maze_size[1] - 1), "clyde", ClydeBehavior),
+            "clyde": (
+                (self.maze_size[0] - 1, self.maze_size[1] - 1),
+                "clyde",
+                ClydeBehavior,
+            ),
             "pinky": (
                 (self.maze_size[0] - 1, 0),
                 "pinky",
@@ -108,7 +111,7 @@ class GhostFactory:
                     13 * self.settings.scale,
                     13 * self.settings.scale,
                 ),
-                Respawn(resp_x, resp_y, self.settings.scale)
+                Respawn(resp_x, resp_y, self.settings.scale),
             ]
         )
 
@@ -123,9 +126,7 @@ class GhostFactory:
                     self.maze,
                 )
             else:
-                raise ValueError(
-                    "..."
-                )
+                raise ValueError("...")
         else:
             behavior = behavior_type(
                 ghost,
@@ -138,12 +139,16 @@ class GhostFactory:
         ghost.add_component(
             Target(self.pac_man, self.maze_size, self.maze, behavior)
         )
-        ghost.add_component(Dead({
-            Dir.LEFT: ["ghost-eyes-left"],
-            Dir.RIGHT: ["ghost-eyes-right"],
-            Dir.UP: ["ghost-eyes-top"],
-            Dir.DOWN: ["ghost-eyes-bottom"]
-        }))
+        ghost.add_component(
+            Dead(
+                {
+                    Dir.LEFT: ["ghost-eyes-left"],
+                    Dir.RIGHT: ["ghost-eyes-right"],
+                    Dir.UP: ["ghost-eyes-top"],
+                    Dir.DOWN: ["ghost-eyes-bottom"],
+                }
+            )
+        )
 
         self.engine.add_entities(ghost)
         if name == "blinky":
@@ -151,4 +156,4 @@ class GhostFactory:
         return ghost
 
     def get_formula(self):
-            return self.tile_size + 8 * self.settings.scale
+        return self.tile_size + 8 * self.settings.scale

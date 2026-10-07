@@ -25,10 +25,7 @@ class MenuState(Enum):
 
 
 class MenuScene(Scene):
-    def __init__(
-        self,
-        settings: GameSettings
-    ):
+    def __init__(self, settings: GameSettings):
         self.settings = settings
         self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
@@ -38,7 +35,7 @@ class MenuScene(Scene):
         self.toggle_down = {
             MenuChoice.SCORES: MenuChoice.PLAY,
             MenuChoice.PLAY: MenuChoice.QUIT,
-            MenuChoice.QUIT: MenuChoice.SCORES
+            MenuChoice.QUIT: MenuChoice.SCORES,
         }
         self.toggle_up = {
             MenuChoice.SCORES: MenuChoice.QUIT,
@@ -50,7 +47,12 @@ class MenuScene(Scene):
         self.anim_index = 0
         self.anim_timer = 0.0
 
-        self.idle_frames = ["pacman-right-1", "pacman-right-2", "pacman-right-3", "pacman-right-2"]
+        self.idle_frames = [
+            "pacman-right-1",
+            "pacman-right-2",
+            "pacman-right-3",
+            "pacman-right-2",
+        ]
         self.dead_frames = [f"pacman-dead-{i}" for i in range(1, 12)]
 
     def enter(self):
@@ -60,7 +62,9 @@ class MenuScene(Scene):
         ratio = pil_img.height / float(pil_img.width)
         target_height = int(target_width * ratio)
 
-        pil_img = pil_img.resize((target_width, target_height), Image.Resampling.LANCZOS)
+        pil_img = pil_img.resize(
+            (target_width, target_height), Image.Resampling.LANCZOS
+        )
 
         bytes_arr = io.BytesIO()
         pil_img.save(bytes_arr, format="PNG")
@@ -70,7 +74,9 @@ class MenuScene(Scene):
         self.texture = pr.load_texture_from_image(img)
         pr.unload_image(img)
 
-        pr.set_texture_filter(self.texture, pr.TextureFilter.TEXTURE_FILTER_BILINEAR)
+        pr.set_texture_filter(
+            self.texture, pr.TextureFilter.TEXTURE_FILTER_BILINEAR
+        )
 
     def update(self) -> Scene | None:
         self.anim_timer += pr.get_frame_time()
@@ -115,7 +121,7 @@ class MenuScene(Scene):
         choices_colors = {
             MenuChoice.SCORES: pr.WHITE,
             MenuChoice.PLAY: pr.WHITE,
-            MenuChoice.QUIT: pr.WHITE
+            MenuChoice.QUIT: pr.WHITE,
         }
 
         choices_colors[self.status] = pr.YELLOW
@@ -123,12 +129,7 @@ class MenuScene(Scene):
         logo_x = (self.settings.window_width - self.texture.width) // 2
         logo_y = int(self.settings.window_height * 0.10)
 
-        pr.draw_texture(
-            self.texture,
-            logo_x,
-            logo_y,
-            pr.WHITE
-        )
+        pr.draw_texture(self.texture, logo_x, logo_y, pr.WHITE)
 
         font_size = self.settings.window_height // 16
         start_y = self.settings.window_height // 2
@@ -140,11 +141,13 @@ class MenuScene(Scene):
             final_x = (self.settings.window_width - text_width) // 2
             final_y = start_y + (index * spacing_y)
 
-            if key == self.status and hasattr(self, 'sprite_service'):
+            if key == self.status and hasattr(self, "sprite_service"):
                 if self.state == MenuState.SELECTING:
                     sprite_name = self.idle_frames[self.anim_index]
                 else:
-                    safe_index = min(self.anim_index, len(self.dead_frames) - 1)
+                    safe_index = min(
+                        self.anim_index, len(self.dead_frames) - 1
+                    )
                     sprite_name = self.dead_frames[safe_index]
 
                 pacman_sprite = self.sprite_service.get_sprite(sprite_name)
@@ -156,15 +159,11 @@ class MenuScene(Scene):
                     pr.Vector2(pac_x, final_y),
                     0.0,
                     pacman_scale,
-                    pr.WHITE
+                    pr.WHITE,
                 )
 
             pr.draw_text(
-                key.value,
-                int(final_x),
-                int(final_y),
-                font_size,
-                color
+                key.value, int(final_x), int(final_y), font_size, color
             )
 
     def exit(self):

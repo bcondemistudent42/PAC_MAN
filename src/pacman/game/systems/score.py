@@ -22,7 +22,10 @@ class ScoreSystem(System):
                 e in event.entities for e in ["pacman", "ghost"]
             ):
                 pacman = event.entities["pacman"]
-                if pacman.get_component(Sprites).sprites != DeathSprites().PACMAN:
+                if (
+                    pacman.get_component(Sprites).sprites
+                    != DeathSprites().PACMAN
+                ):
                     return
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]

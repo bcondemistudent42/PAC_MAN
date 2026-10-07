@@ -21,19 +21,20 @@ class SystemFactory:
         self.engine = engine
 
     def create_all(self) -> None:
-        self.engine.add_system([
-            CollisionSystem(self.resources),
-            MovementSystem(self.resources),
-            SpriteSystem(self.resources),
-            KeySystem(self.resources),
-            PacmanIntentionSystem(self.resources),
-            TargetSystem(self.resources),
-            DeathSystem(self.resources),
-            PacgumSystem(self.resources),
-            TimeSystem(self.resources),
-            SuperPacugumSystem(self.resources),
-            DirectionSpriteSystem(self.resources),
-            RespawnGhostSystem(self.resources),
-            ScoreSystem(self.resources)
-        ])
-
+        self.engine.add_system(
+            [
+                CollisionSystem(self.resources),
+                MovementSystem(self.resources),
+                SpriteSystem(self.resources),
+                KeySystem(self.resources),
+                PacmanIntentionSystem(self.resources),
+                TargetSystem(self.resources),
+                DeathSystem(self.resources),
+                PacgumSystem(self.resources),
+                TimeSystem(self.resources),
+                SuperPacugumSystem(self.resources),
+                DirectionSpriteSystem(self.resources),
+                RespawnGhostSystem(self.resources),
+                ScoreSystem(self.resources),
+            ]
+        )

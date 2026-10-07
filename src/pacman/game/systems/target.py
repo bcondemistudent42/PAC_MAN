@@ -25,18 +25,16 @@ class TargetSystem(System):
     def run(self):
         for each_subscriber in self.subscribers:
             actualy_scared = each_subscriber.get_component(Scared).scared
-            actualy_ending_scared = each_subscriber.get_component(Scared).end_scared
+            actualy_ending_scared = each_subscriber.get_component(
+                Scared
+            ).end_scared
             actualy_dead = each_subscriber.get_component(Dead).dead
             check = False
             if actualy_scared or actualy_dead or actualy_ending_scared:
                 check = True
             behavior = each_subscriber.get_component(Target).behavior
             road = behavior.find_pacman(check)
-            self.change_direction(
-                each_subscriber,
-                road,
-                behavior.ghost_coord
-            )
+            self.change_direction(each_subscriber, road, behavior.ghost_coord)
             if behavior.ghost_coord == behavior.corner and actualy_dead:
                 each_subscriber.get_component(Velocity).speed = 0
                 each_subscriber.get_component(Dead).ready_respawn = True
@@ -50,7 +48,7 @@ class TargetSystem(System):
         self,
         entity: Entity,
         right_way: list | None,
-        ghost_coord: tuple[int, int]
+        ghost_coord: tuple[int, int],
     ):
         if not right_way:
             return

@@ -22,13 +22,22 @@ class SpriteSystem(System):
             sprite_component = each_subscribed.get_component(Sprites)
             position_component = each_subscribed.get_component(Position)
 
-            if len(sprite_component.sprites) <= 0 or not sprite_component.display:
+            if (
+                len(sprite_component.sprites) <= 0
+                or not sprite_component.display
+            ):
                 continue
 
             sprite_component.frame += pr.get_frame_time()
 
-            if sprite_component.cooldown and sprite_component.frame >= sprite_component.cooldown:
-                if sprite_component.sprite_index < len(sprite_component.sprites) - 1:
+            if (
+                sprite_component.cooldown
+                and sprite_component.frame >= sprite_component.cooldown
+            ):
+                if (
+                    sprite_component.sprite_index
+                    < len(sprite_component.sprites) - 1
+                ):
                     sprite_component.sprite_index += 1
                 else:
                     sprite_component.sprite_index = 0
@@ -38,7 +47,9 @@ class SpriteSystem(System):
             x = position_component.x
             y = position_component.y
 
-            texture = sprite_service.get_sprite(sprite_component.sprites[index])
+            texture = sprite_service.get_sprite(
+                sprite_component.sprites[index]
+            )
 
             offset_x = (tile_size - texture.width * scale) / 2
             offset_y = (tile_size - texture.height * scale) / 2

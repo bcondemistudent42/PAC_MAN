@@ -24,7 +24,11 @@ class RespawnGhostSystem(System):
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Velocity).speed = 0
 
-            elif time.time() - sub.get_component(Dead).dead_time >= sub.get_component(Dead).dead_cooldown and sub.get_component(Dead).dead_time != 0:
+            elif (
+                time.time() - sub.get_component(Dead).dead_time
+                >= sub.get_component(Dead).dead_cooldown
+                and sub.get_component(Dead).dead_time != 0
+            ):
                 print("Testing")
                 sub.get_component(Dead).dead_time = 0.0
                 sub.get_component(Scared).scared = False
@@ -34,4 +38,6 @@ class RespawnGhostSystem(System):
 
                 sub.get_component(Position).x = sub.get_component(Respawn).x
                 sub.get_component(Position).y = sub.get_component(Respawn).y
-                sub.get_component(Velocity).speed = sub.get_component(Respawn).speed
+                sub.get_component(Velocity).speed = sub.get_component(
+                    Respawn
+                ).speed
