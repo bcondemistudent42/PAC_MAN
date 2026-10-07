@@ -31,19 +31,16 @@ class SuperPacugumSystem(System):
                     if not entt.get_component(Dead).dead:
                         entt.get_component(Scared).scared = True
                         entt.get_component(Scared).end_scared = False
-                    else:
-                        entt.get_component(Scared).scared = False
-                        entt.get_component(Scared).end_scared = False
 
-        if time.time() - self.last_time_eaten > self.cooldown:
-            for entt in self.subscribers:
+        for entt in self.subscribers:
+            if time.time() - self.last_time_eaten > self.cooldown:
                 entt.get_component(Scared).scared = False
                 entt.get_component(Scared).end_scared = False
-        elif time.time() - self.last_time_eaten > 4:
-            for entt in self.subscribers:
-                if entt.get_component(Dead).dead:
-                    entt.get_component(Scared).scared = False
-                    entt.get_component(Scared).end_scared = False
-                else:
+            elif time.time() - self.last_time_eaten > 4:
+                if entt.get_component(Scared).scared:
                     entt.get_component(Scared).end_scared = True
                     entt.get_component(Scared).scared = False
+
+# bug when a ghost have been eaten right after scared, he still gets the end sacred
+
+# entt.get_component(Dead).dead or entt.get_component(Scared).scared or 
