@@ -4,7 +4,6 @@ from pacman.engine.systems.defaults.key import KeySystem
 from pacman.engine.systems.defaults.movement import MovementSystem
 from pacman.engine.systems.defaults.sprite import SpriteSystem
 from pacman.engine.systems.defaults.time import TimeSystem
-from pacman.engine.systems.system import System
 from pacman.game.resources import resources
 from pacman.game.systems.death import DeathSystem
 from pacman.game.systems.direction_sprite import DirectionSpriteSystem

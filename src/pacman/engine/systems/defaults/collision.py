@@ -5,7 +5,6 @@ from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.events.event import Event
 from pacman.engine.systems.system import System
-from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 
 

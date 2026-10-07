@@ -14,6 +14,7 @@ from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.resources import resources
 
+
 class DeathSystem(System):
     def __init__(self, resources: resources):
         super().__init__(

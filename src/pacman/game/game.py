@@ -1,14 +1,5 @@
-from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
-from pacman.engine.systems.defaults import (
-    CollisionSystem,
-    KeySystem,
-    MovementSystem,
-    PacmanIntentionSystem,
-    SpriteSystem,
-)
-from pacman.engine.systems.defaults.time import TimeSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.factories.system import SystemFactory
@@ -20,13 +11,6 @@ from pacman.game.services.sprites import (
     config_spritesheet_2,
 )
 from pacman.game.settings import GameSettings
-from pacman.game.systems.death import DeathSystem
-from pacman.game.systems.direction_sprite import DirectionSpriteSystem
-from pacman.game.systems.pacgum import PacgumSystem
-from pacman.game.systems.respawn_ghost import RespawnGhostSystem
-from pacman.game.systems.score import ScoreSystem
-from pacman.game.systems.super_pacgum_system import SuperPacugumSystem
-from pacman.game.systems.target import TargetSystem
 
 
 class PacmanGame:
