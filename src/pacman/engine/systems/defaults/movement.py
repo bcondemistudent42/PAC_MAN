@@ -18,6 +18,9 @@ class MovementSystem(System):
             Dir.UP: (0, -1),
             Dir.DOWN: (0, 1),
         }
+        if resources.navigation_service is None:
+            raise RuntimeError("Navigation service must be initialized before systems")
+        self.navigation = resources.navigation_service
 
     def run(self):
         matrix = self.resources.matrix
@@ -66,12 +69,7 @@ class MovementSystem(System):
                 position.y = target_y
 
                 intent_dx, intent_dy = self.direction_map[intention.direction]
-                if (
-                    0 <= cell_y + intent_dy < len(matrix)
-                    and 0 <= cell_x + intent_dx < len(matrix[0])
-                    and matrix[cell_y + intent_dy][cell_x + intent_dx]
-                    != PacmanCell.WALL
-                ):
+                if self.navigation.is_walkable(cell_x + intent_dx, cell_y + intent_dy):
                     if direction.direction != intention.direction:
                         sprites = subscriber.get_component(Sprites)
                         sprites.sprite_index = 0
