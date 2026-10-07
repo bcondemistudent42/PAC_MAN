@@ -34,10 +34,11 @@ class TargetSystem(System):
                 behavior.ghost_coord
             )
             if behavior.ghost_coord == behavior.corner and actualy_dead:
-                each_subscriber.get_component(Dead).ready_respawn = True
-                each_subscriber.get_component(Position).x = behavior.corner[0]
-                each_subscriber.get_component(Position).y = behavior.corner[1]
                 each_subscriber.get_component(Velocity).speed = 0
+                each_subscriber.get_component(Dead).ready_respawn = True
+                each_subscriber.get_component(Position).x = behavior.corner[0] * self.factory.get_formula()
+                each_subscriber.get_component(Position).y = behavior.corner[1] * self.factory.get_formula()
+                # to handle this case with bad coordinates
                 # have to use matrix to pixel to find the function
 
     def change_direction(

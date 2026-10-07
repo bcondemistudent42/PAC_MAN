@@ -146,3 +146,6 @@ class GhostFactory:
         if name == "blinky":
             self.blinky = ghost
         return ghost
+
+    def get_formula(self):
+            return self.tile_size + 8 * self.settings.scale

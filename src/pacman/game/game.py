@@ -107,12 +107,13 @@ class PacmanGame:
 
     def create_movable_entities(self) -> list[Entity]:
         self.pacman = PacmanFactory(self.settings, self.engine).create()
-        return GhostFactory(
+        self.system[TargetSystem].factory = GhostFactory(
             settings=self.settings,
             maze=self.map_service.map,
             pacman=self.pacman,
             engine=self.engine,
-        ).create_all()
+        )
+        return self.system[TargetSystem].factory.create_all()
 
     def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
         tile_size = 8 * self.settings.scale
