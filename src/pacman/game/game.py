@@ -11,6 +11,7 @@ from pacman.engine.systems.defaults import (
 from pacman.engine.systems.defaults.time import TimeSystem
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
+from pacman.game.factories.system import SystemFactory
 from pacman.game.resources import resources
 from pacman.game.services.maps import PacmanMap
 from pacman.game.services.sprites import (
@@ -31,7 +32,6 @@ from pacman.game.systems.target import TargetSystem
 class PacmanGame:
     def __init__(self, engine: GameEngine, settings: GameSettings):
         self.engine = engine
-        self.system = {}
         self.pacman: Entity | None = None
         self.settings = settings
         self.resources = resources(
@@ -42,84 +42,32 @@ class PacmanGame:
 
     def start_game(self):
         self.resources.matrix = self.matrix
-        self.resources.pos_to_cell = self.get_maze_cell_by_position
         self.resources.sprite_service = self.sprite_service
         self.resources.scale = self.settings.scale
         self.engine.run()
 
-    def system_init(self):
+    def systems_init(self) -> None:
+        systems_factory = SystemFactory(self.resources, self.engine)
+        systems_factory.create_all()
+
+    def services_init(self) -> None:
         sprite_sheet = "sprites/spritesheet.png"
         self.sprite_service = SpriteService(sprite_sheet, config)
         self.sprite_service.add_spritesheet(
             "sprites/creeper.png", config_spritesheet_2)
-        collision_system = CollisionSystem(self.resources)
-        movement_system = MovementSystem(self.resources)
-        sprite_system = SpriteSystem(self.resources)
-        keys_system = KeySystem(self.resources)
-        pacman_intention_system = PacmanIntentionSystem(self.resources)
-        target_sys = TargetSystem(self.resources)
-        death_system = DeathSystem(self.resources)
-        pacgum_system = PacgumSystem(self.resources)
-        time_sys = TimeSystem(self.resources)
-        sup_pacgum_sys = SuperPacugumSystem(self.resources)
-        dir_sprite_sys = DirectionSpriteSystem(self.resources)
-        respawn_sys_ghost = RespawnGhostSystem(self.resources)
-
-        self.death_sys = death_system
-        score_sys = ScoreSystem(self.resources)
-        self.system[SpriteSystem] = sprite_system
-        self.system[MovementSystem] = movement_system
-        self.system[CollisionSystem] = collision_system
-        self.system[KeySystem] = keys_system
-        self.system[PacmanIntentionSystem] = pacman_intention_system
-        self.system[TargetSystem] = target_sys
-        self.system[PacgumSystem] = pacgum_system
-        self.system[ScoreSystem] = score_sys
-        self.system[TimeSystem] = time_sys
-        self.system[SuperPacugumSystem] = sup_pacgum_sys
-        self.system[DirectionSpriteSystem] = dir_sprite_sys
-        self.system[RespawnGhostSystem] = respawn_sys_ghost
-
-        self.engine.add_system(
-            [
-                keys_system,
-                collision_system,
-                pacgum_system,
-                movement_system,
-                sprite_system,
-                pacman_intention_system,
-                target_sys,
-                death_system,
-                score_sys,
-                time_sys,
-                sup_pacgum_sys,
-                dir_sprite_sys,
-                respawn_sys_ghost
-            ]
-        )
 
     def make_full_setup(self):
-        self.system_init()
+        self.services_init()
+        self.systems_init()
         self.map_service.generate_map()
         self.matrix = self.map_service.get_map_matrix()
-        ghosts = self.create_movable_entities()
-        self.add_ghost_to_death(ghosts)
+        self.create_movable_entities()
 
-    def create_movable_entities(self) -> list[Entity]:
-        self.pacman = PacmanFactory(self.settings, self.engine).create()
-        self.system[TargetSystem].factory = GhostFactory(
+    def create_movable_entities(self) -> None:
+        pacman = PacmanFactory(self.settings, self.engine).create()
+        GhostFactory(
             settings=self.settings,
             maze=self.map_service.map,
-            pacman=self.pacman,
+            pacman=pacman,
             engine=self.engine,
-        )
-        return self.system[TargetSystem].factory.create_all()
-
-    def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
-        tile_size = 8 * self.settings.scale
-        return (round(position.x / tile_size), round(position.y / tile_size))
-
-    def add_ghost_to_death(self, ghosts: list[Entity]) -> None:
-        assert self.pacman is not None
-        self.death_sys.entt_to_resp.extend(ghosts)
-        self.death_sys.entt_to_resp.append(self.pacman)
+        ).create_all()

@@ -17,7 +17,6 @@ if TYPE_CHECKING:
 class resources:
     events: EventsQueue
     matrix: list[list[PacmanCell]] = field(default_factory=list)
-    pos_to_cell: Callable[[Position], tuple[int, int]] | None = None
     sprite_service: SpriteService | None = None
     scale: float = 1.0
     data_score: Parser = field(default_factory=parse)

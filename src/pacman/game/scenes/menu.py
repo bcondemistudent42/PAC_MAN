@@ -9,6 +9,7 @@ from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.scenes.game import GameScene
 from pacman.game.scenes.score import ScoreScene
+from pacman.game.services.sprites import SpriteService
 from pacman.game.settings import GameSettings
 
 
@@ -32,6 +33,7 @@ class MenuScene(Scene):
         self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
         self.texture = None
+        self.sprite_service: SpriteService | None = None
 
         self.toggle_down = {
             MenuChoice.SCORES: MenuChoice.PLAY,
@@ -107,7 +109,7 @@ class MenuScene(Scene):
         return None
 
     def render(self, engine: GameEngine) -> None:
-        if not self.texture:
+        if not self.texture or not self.sprite_service:
             return
 
         choices_colors = {

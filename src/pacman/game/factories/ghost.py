@@ -113,15 +113,19 @@ class GhostFactory:
         )
 
         if name == "inky":
-            assert self.blinky is not None
-            behavior = behavior_type(
-                ghost,
-                self.blinky,
-                self.pac_man,
-                self.cell_size,
-                self.maze_size,
-                self.maze,
-            )
+            if self.blinky is not None:
+                behavior = behavior_type(
+                    ghost,
+                    self.blinky,
+                    self.pac_man,
+                    self.cell_size,
+                    self.maze_size,
+                    self.maze,
+                )
+            else:
+                raise ValueError(
+                    "..."
+                )
         else:
             behavior = behavior_type(
                 ghost,

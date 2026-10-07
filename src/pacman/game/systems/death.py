@@ -18,11 +18,12 @@ from pacman.game.resources import resources
 
 class DeathSystem(System):
     def __init__(self, resources: resources):
-        super().__init__([Collision, Hitbox])
+        super().__init__(
+            [Collision, Hitbox, Dead, Respawn, Position, Velocity, Sprites]
+        )
         self.resources = resources
         self.events = self.resources.events
         self.lives = resources.data_score.lives
-        self.entt_to_resp = []
         self.first_go = True
 
     def run(self) -> None:
@@ -39,7 +40,7 @@ class DeathSystem(System):
             self.pacman.get_component(Sprites).sprites = self.pacman.get_component(Direction).sprite_map[Dir.RIGHT]
             self.pacman.get_component(Direction).direction = Dir.RIGHT
             self.pacman.get_component(Intention).direction = Dir.RIGHT
-            for entt in self.entt_to_resp:
+            for entt in self.subscribers:
                 entt.get_component(Velocity).speed = entt.get_component(Respawn).speed
                 entt.get_component(Position).x = entt.get_component(Respawn).x
                 entt.get_component(Position).y = entt.get_component(Respawn).y
@@ -67,7 +68,7 @@ class DeathSystem(System):
 
                 if not scared and not end_scared:
                     pacman.get_component(Dead).dead = True
-                    for entt in self.entt_to_resp:
+                    for entt in self.subscribers:
                         if not entt.check_component(KeyHook):
                             entt.get_component(Sprites).display = False
                             entt.get_component(Sprites).sprite_index = 0
