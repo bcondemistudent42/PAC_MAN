@@ -3,6 +3,7 @@ from pacman.engine.components.defaults.hitbox import Hitbox
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
+from pacman.game.components.dead import Dead
 from pacman.game.resources import resources
 
 
@@ -22,8 +23,10 @@ class PacgumSystem(System):
                 cell.components.pop(Collision, None)
                 cell.components.pop(Hitbox, None)
 
-            elif isinstance(event, CollisionEvent) and all(
-                e in event.entities for e in ["pacman", "super_pacgum"]
+            elif (
+                isinstance(event, CollisionEvent) and
+                all(e in event.entities for e in ["pacman", "super_pacgum"]) and
+                not event.entities["pacman"].get_component(Dead).dead
             ):
                 cell = event.entities["super_pacgum"]
                 cell.get_component(Sprites).sprite_index = 0

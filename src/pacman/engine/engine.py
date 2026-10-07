@@ -14,7 +14,7 @@ class GameEngine:
         moni = pr.get_current_monitor()
         h = pr.get_monitor_height(moni)
         w = pr.get_monitor_width(moni)
-        # pr.set_window_size(monitor_w, monitor_h)
+        pr.set_window_size(w, h)
         pr.set_window_position(w // 8, h // 8)
         pr.set_target_fps(60)
         self.scene.enter()

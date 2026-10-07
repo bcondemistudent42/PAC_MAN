@@ -41,7 +41,7 @@ class TargetSystem(System):
 
                 #1  handle the case colision vent priority t ghost and not pacgum, return if dead
                 # 2 faire le truc abounoua // 2 vitesse
-                # 3 faire respawn normalement
+                # slow down ghot when cared
 
     def change_direction(
         self,

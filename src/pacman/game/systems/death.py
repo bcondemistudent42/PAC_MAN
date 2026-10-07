@@ -27,6 +27,7 @@ class DeathSystem(System):
         self.is_dying = False
 
     def run(self) -> None:
+
         if self.is_dying:
             if self.pacman is None:
                 return

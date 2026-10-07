@@ -16,10 +16,14 @@ class SuperPacugumSystem(System):
         self.cooldown = 6  # arbitrary value to adapt
 
     def run(self) -> None:
+
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "super_pacgum"]
             ):
+                pacman = event.entities["pacman"]
+                if pacman.get_component(Dead).dead:
+                    return
                 self.last_time_eaten = time.time()
                 for entt in self.subscribers:
                     if not entt.get_component(Dead).dead:

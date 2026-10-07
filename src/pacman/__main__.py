@@ -10,12 +10,12 @@ pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
 
 def main():
     settings = GameSettings.from_window(
-        window_width=1350,
-        window_height=800,
+        window_width=2180,
+        window_height=1440,
     )
 
     scene = MenuScene(settings)
-    with GameEngine(scene, 1350, 800) as engine:
+    with GameEngine(scene, 2180, 1440) as engine:
         game = PacmanGame(engine, settings)
         game.make_full_setup()
         scene.sprite_service = game.sprite_service
