@@ -393,7 +393,7 @@ class PacmanMap:
 
                 x += 1
 
-        self.logic_matrix = []
+        self.logic_matrix.clear()
         for y, row in enumerate(self.sprite_matrix):
             logic_row = []
             for x, cell_value in enumerate(row):

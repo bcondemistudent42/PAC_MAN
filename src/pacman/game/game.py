@@ -5,6 +5,7 @@ from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.factories.system import SystemFactory
 from pacman.game.resources import resources
 from pacman.game.services.maps import PacmanMap
+from pacman.game.services.navigation import PacmanNavigationService
 from pacman.game.services.sprites import (
     SpriteService,
     config,
@@ -26,7 +27,6 @@ class PacmanGame:
 
     def start_game(self):
         self.resources.matrix = self.matrix
-        self.resources.sprite_service = self.sprite_service
         self.resources.scale = self.settings.scale
         self.engine.run()
 
@@ -40,6 +40,12 @@ class PacmanGame:
         self.sprite_service.add_spritesheet(
             "sprites/creeper.png", config_spritesheet_2
         )
+        self.navigation_service = PacmanNavigationService(
+            self.map_service.logic_matrix,
+            self.map_service.TILE_SIZE,
+        )
+        self.resources.navigation_service = self.navigation_service
+        self.resources.sprite_service = self.sprite_service
 
     def make_full_setup(self):
         self.services_init()
