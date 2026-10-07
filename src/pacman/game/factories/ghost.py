@@ -75,9 +75,12 @@ class GhostFactory:
             ),
         }
         if name not in ghost_data:
-            raise ValueError(f"Unknown ghost: {name}")
+            supported_ghosts = ", ".join(ghost_data)
+            raise ValueError(
+                f"Unknown ghost {name!r}. Supported ghosts: {supported_ghosts}."
+            )
         if name == "inky" and self.blinky is None:
-            raise RuntimeError("Blinky must be created before Inky")
+            raise RuntimeError("Cannot create Inky before Blinky.")
 
         (tile_x, tile_y), sprite_name, behavior_type = ghost_data[name]
         ghost = Entity(name)
@@ -127,7 +130,7 @@ class GhostFactory:
                     self.maze,
                 )
             else:
-                raise ValueError("...")
+                raise RuntimeError("Cannot create Inky before Blinky.")
         else:
             behavior = behavior_type(
                 ghost,

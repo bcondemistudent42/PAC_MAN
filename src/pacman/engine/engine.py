@@ -29,7 +29,10 @@ class GameEngine:
         elif isinstance(system, list):
             self.systems.extend(system)
         else:
-            raise TypeError("Cannot add this in system to adapt add system")
+            raise TypeError(
+                "add_system() expects a System or a list of Systems, "
+                f"got {type(system).__name__}."
+            )
 
     def add_entities(self, entity: Entity | list[Entity]) -> None:
         if isinstance(entity, Entity):
@@ -39,7 +42,8 @@ class GameEngine:
                 self.add_single_entity(e)
         else:
             raise TypeError(
-                "Cannot add this in entities to adapt add entities"
+                "add_entities() expects an Entity or a list of Entities, "
+                f"got {type(entity).__name__}."
             )
 
     def add_single_entity(self, entity: Entity) -> None:

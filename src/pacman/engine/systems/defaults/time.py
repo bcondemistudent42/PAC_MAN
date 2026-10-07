@@ -23,4 +23,4 @@ class TimeSystem(System):
             f"Time remaining: {self.time_left}", 1700, 550, 100, pr.WHITE
         )
         if self.time_left < 0:
-            raise (ValueError("Time exceeded"))
+            raise TimeoutError("The level time limit has expired.")
