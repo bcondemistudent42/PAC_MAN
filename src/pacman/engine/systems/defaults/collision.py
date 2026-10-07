@@ -25,10 +25,7 @@ class CollisionSystem(System):
         statics = []
         to_remove = []
 
-        # to check if pacman is dying stop completely the Colisions system
-        for subscriber in self.subscribers:
-            if subscriber.id == "pac_man" and subscriber.check_component(Dead) and subscriber.get_component(Dead).dead:
-                return
+
         for subscriber in self.subscribers:
             if not (
                 Collision in subscriber.components and Hitbox in subscriber.components
