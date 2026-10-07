@@ -1,3 +1,4 @@
+
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
@@ -157,3 +158,6 @@ class GhostFactory:
 
     def get_formula(self):
         return self.tile_size + 8 * self.settings.scale
+
+    def get_scale(self):
+            return self.settings.scale

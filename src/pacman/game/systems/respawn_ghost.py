@@ -29,8 +29,7 @@ class RespawnGhostSystem(System):
                 >= sub.get_component(Dead).dead_cooldown
                 and sub.get_component(Dead).dead_time != 0
             ):
-                print("Testing")
-                sub.get_component(Dead).dead_time = 0.0
+                sub.get_component(Dead).dead_time = 0
                 sub.get_component(Scared).scared = False
                 sub.get_component(Scared).end_scared = False
                 sub.get_component(Dead).ready_respawn = False

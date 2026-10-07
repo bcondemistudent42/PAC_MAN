@@ -18,9 +18,6 @@ class TargetSystem(System):
         super().__init__([Target, Position, Intention, Direction, Scared])
         self.resources = resources
         self.start = time.time()
-        self.scale = self.resources.scale
-        self.tile_size = 8 * self.scale
-        self.cell_size = self.tile_size * 3
 
     def run(self):
         for each_subscriber in self.subscribers:
@@ -35,14 +32,16 @@ class TargetSystem(System):
             behavior = each_subscriber.get_component(Target).behavior
             road = behavior.find_pacman(check)
             self.change_direction(each_subscriber, road, behavior.ghost_coord)
-            if behavior.ghost_coord == behavior.corner and actualy_dead:
+            if behavior.ghost_coord == behavior.corner and actualy_dead and each_subscriber.get_component(Velocity).speed != 0:
                 each_subscriber.get_component(Velocity).speed = 0
                 each_subscriber.get_component(Dead).ready_respawn = True
-
                 respawn_comp = each_subscriber.get_component(Respawn)
-
                 each_subscriber.get_component(Position).x = respawn_comp.x
                 each_subscriber.get_component(Position).y = respawn_comp.y
+
+                #1  handle the case colision vent priority t ghost and not pacgum, return if dead
+                # 2 faire le truc abounoua // 2 vitesse
+                # 3 faire respawn normalement
 
     def change_direction(
         self,

@@ -1,5 +1,6 @@
 from pacman.engine.components.defaults import Sprites
 from pacman.engine.components.defaults.direction import Direction
+from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems import System
 from pacman.game.components.dead import Dead
 from pacman.game.components.scared import Scared
@@ -23,6 +24,8 @@ class DirectionSpriteSystem(System):
                     sub.get_component(Sprites).sprites = sub.get_component(
                         Dead
                     ).sprites[sub.get_component(Direction).direction]
+                    if sub.id != "pac_man":
+                        sub.get_component(Velocity).speed = 10
             elif (
                 sub.check_component(Scared)
                 and sub.get_component(Scared).end_scared
