@@ -19,7 +19,7 @@ class MovementSystem(System):
             Dir.DOWN: (0, 1),
         }
         if resources.navigation_service is None:
-            raise RuntimeError("Navigation service must be initialized before systems")
+            raise ValueError("Navigation service must be initialized before systems")
         self.navigation = resources.navigation_service
 
     def run(self):

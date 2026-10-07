@@ -8,15 +8,6 @@ from pacman.engine.systems import System
 
 class GameEngine:
     def __enter__(self):
-        pr.init_window(self.window_width, self.window_height, "PACMAN")
-        self.monitor_w = self.window_width
-        self.monitor_h = self.window_height
-        moni = pr.get_current_monitor()
-        h = pr.get_monitor_height(moni)
-        w = pr.get_monitor_width(moni)
-        # pr.set_window_size(monitor_w, monitor_h)
-        pr.set_window_position(w // 8, h // 8)
-        pr.set_target_fps(60)
         self.scene.enter()
 
         return self
