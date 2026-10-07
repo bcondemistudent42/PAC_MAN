@@ -7,6 +7,7 @@ from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.system import System
 from pacman.game.components.dead import Dead
+from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.components.target import Target
 from pacman.game.resources import resources
@@ -17,6 +18,9 @@ class TargetSystem(System):
         super().__init__([Target, Position, Intention, Direction, Scared])
         self.resources = resources
         self.start = time.time()
+        self.scale = self.resources.scale
+        self.tile_size = 8 * self.scale
+        self.cell_size = self.tile_size * 3
 
     def run(self):
         for each_subscriber in self.subscribers:
@@ -36,10 +40,11 @@ class TargetSystem(System):
             if behavior.ghost_coord == behavior.corner and actualy_dead:
                 each_subscriber.get_component(Velocity).speed = 0
                 each_subscriber.get_component(Dead).ready_respawn = True
-                each_subscriber.get_component(Position).x = behavior.corner[0] * self.factory.get_formula()
-                each_subscriber.get_component(Position).y = behavior.corner[1] * self.factory.get_formula()
-                # to handle this case with bad coordinates
-                # have to use matrix to pixel to find the function
+
+                respawn_comp = each_subscriber.get_component(Respawn)
+
+                each_subscriber.get_component(Position).x = respawn_comp.x
+                each_subscriber.get_component(Position).y = respawn_comp.y
 
     def change_direction(
         self,

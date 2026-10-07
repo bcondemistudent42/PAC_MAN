@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class GameSettings:
     window_width: int
     window_height: int
+    tile_size: float
     map_width: int = 15
     map_height: int = 15
     cell_width_px: int = 24
@@ -35,5 +36,6 @@ class GameSettings:
             cell_height_px=cell_height_px,
             scale=scale,
             window_width=window_width,
-            window_height=window_height
+            window_height=window_height,
+            tile_size=8 * scale
         )
