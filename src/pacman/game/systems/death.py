@@ -37,7 +37,7 @@ class DeathSystem(System):
 
             self.pacman.get_component(Dead).dead = False
             if self.lives <= 1:
-                raise ValueError("Oh NO NO NO NO NO you LOOSED")
+                raise RuntimeError("Game over: Pac-Man has no lives remaining.")
 
             sprites_comp.sprite_index = 0
             sprites_comp.sprites = self.pacman.get_component(

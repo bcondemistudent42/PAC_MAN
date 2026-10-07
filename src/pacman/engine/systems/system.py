@@ -11,9 +11,17 @@ class System(ABC):
     def subscribe(self, entity: Entity):
         if not self.required_components:
             return
-        for component in self.required_components:
-            if not component in entity.components:
-                raise ValueError("A definir")
+        missing_components = [
+            component.__name__
+            for component in self.required_components
+            if component not in entity.components
+        ]
+        if missing_components:
+            missing = ", ".join(missing_components)
+            raise ValueError(
+                f"Cannot subscribe entity {entity.id!r} to "
+                f"{type(self).__name__}: missing required component(s): {missing}."
+            )
 
         self.subscribers.append(entity)
 

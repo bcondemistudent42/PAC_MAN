@@ -13,7 +13,10 @@ class SpriteSystem(System):
     def run(self):
         sprite_service = self.resources.sprite_service
         if sprite_service is None:
-            raise RuntimeError("Sprite service is not initialized")
+            raise RuntimeError(
+                "Sprite service is unavailable. Initialize game services "
+                "before running SpriteSystem."
+            )
 
         scale = self.resources.scale
         tile_size = 8 * scale

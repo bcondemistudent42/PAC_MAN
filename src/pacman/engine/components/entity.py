@@ -17,7 +17,10 @@ class Entity:
             return
 
         if not isinstance(component, Component):
-            raise TypeError(f"Inapropriate value for component: {component}")
+            raise TypeError(
+                "Expected a Component instance or a list of Component instances, "
+                f"got {type(component).__name__}."
+            )
 
         self.components[type(component)] = component
 
