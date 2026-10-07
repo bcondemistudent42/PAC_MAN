@@ -7,5 +7,5 @@ class Dead(Component):
         self.dead = False
         self.ready_respawn = False
         self.dead_time = 0.0
-        self.dead_cooldown = 5.0
+        self.dead_cooldown = 2.0
         self.sprites = sprites

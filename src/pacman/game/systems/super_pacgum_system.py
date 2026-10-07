@@ -1,8 +1,10 @@
 import time
 
+from pacman.engine.components.defaults.position import Position
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
 from pacman.game.components.dead import Dead
+from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.resources import resources
 
@@ -22,12 +24,15 @@ class SuperPacugumSystem(System):
                 e in event.entities for e in ["pacman", "super_pacgum"]
             ):
                 pacman = event.entities["pacman"]
-                if pacman.get_component(Dead).dead:
+                if pacman.get_component(Dead).dead or pacman.get_component(Position).x == pacman.get_component(Respawn).x or pacman.get_component(Position).y == pacman.get_component(Respawn).y:
                     return
                 self.last_time_eaten = time.time()
                 for entt in self.subscribers:
                     if not entt.get_component(Dead).dead:
                         entt.get_component(Scared).scared = True
+                        entt.get_component(Scared).end_scared = False
+                    else:
+                        entt.get_component(Scared).scared = False
                         entt.get_component(Scared).end_scared = False
 
         if time.time() - self.last_time_eaten > self.cooldown:
@@ -36,5 +41,9 @@ class SuperPacugumSystem(System):
                 entt.get_component(Scared).end_scared = False
         elif time.time() - self.last_time_eaten > 4:
             for entt in self.subscribers:
-                entt.get_component(Scared).end_scared = True
-                entt.get_component(Scared).scared = False
+                if entt.get_component(Dead).dead:
+                    entt.get_component(Scared).scared = False
+                    entt.get_component(Scared).end_scared = False
+                else:
+                    entt.get_component(Scared).end_scared = True
+                    entt.get_component(Scared).scared = False
