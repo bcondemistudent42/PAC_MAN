@@ -18,6 +18,9 @@ class KeySystem(System):
         self.resources = resources
 
     def run(self) -> None:
+        if self.resources.frozen:
+            return
+
         for subscriber in self.subscribers:
             key_hook = subscriber.get_component(KeyHook)
 

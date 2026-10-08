@@ -18,6 +18,8 @@ class SuperPacugumSystem(System):
         self.cooldown = 6  # arbitrary value to adapt
 
     def run(self) -> None:
+        if self.resources.frozen:
+            return
 
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
@@ -39,7 +41,7 @@ class SuperPacugumSystem(System):
             elif time.time() - self.last_time_eaten > 4:
                 if entt.get_component(Scared).scared:
                     entt.get_component(Scared).end_scared = True
-                    entt.get_component(Scared).scared = False
+                    entt.get_component(Scared).scared = False 
 
 # bug when a ghost have been eaten right after scared, he still gets the end sacred
 

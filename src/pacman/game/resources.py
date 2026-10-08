@@ -15,6 +15,7 @@ class PacmanResources(Resources):
     data_score: Parser
     pacgum_count: int = 0
     score: int = 0
+    time_left: float = 0.0
     matrix: list[list[PacmanCell]] = field(default_factory=list)
 
     def __post_init__(self) -> None:

@@ -9,3 +9,4 @@ class Dead(Component):
         self.dead_time = 0.0
         self.dead_cooldown = 2.0
         self.sprites = sprites
+        self.eaten = False

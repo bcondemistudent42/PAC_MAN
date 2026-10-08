@@ -14,7 +14,6 @@ from pacman.game.components.dead import Dead
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.resources import PacmanResources
-import pyray as pr 
 
 
 class GameOverEvent(Event):
@@ -33,15 +32,8 @@ class DeathSystem(System):
         self.is_dying = False
 
     def run(self) -> None:
-        if self.resources.sprite_service:
-            for i in range(self.resources.data_score.lives):
-                pr.draw_texture_ex(
-                    self.resources.sprite_service.get_sprite("pacman-right-2"),
-                    pr.Vector2(1600 + 100 * i, 400),
-                    0.0,
-                    self.resources.scale,
-                    pr.WHITE,
-                )
+        if self.resources.frozen:
+            return
 
         if self.is_dying:
             if self.pacman is None:

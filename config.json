@@ -3,6 +3,6 @@
     "lives": 3,
     "level_max_time": 90,
     "point_per_pacgum": 1,
-    "point_per_ghosts": 1000,
-     "points_per_super_pacgum": 500
+    "point_per_ghosts": 999,
+    "points_per_super_pacgum": 1
 }

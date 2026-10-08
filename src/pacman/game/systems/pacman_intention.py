@@ -17,6 +17,9 @@ class PacmanIntentionSystem(System):
             self.subscribers.append(entity)
 
     def run(self) -> None:
+        if self.resources.frozen:
+            return
+
         for event in self.resources.events.events:
             if not isinstance(event, KeyPressEvent):
                 continue

@@ -1,6 +1,7 @@
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
+from pacman.game.components import time
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.factories.system import SystemFactory
@@ -11,6 +12,7 @@ from pacman.game.services.parser import Parser
 from pacman.game.settings import GameSettings
 from pacman.game.resources import PacmanResources
 from pacman.game.systems.death import GameOverEvent
+import time
 
 class GameScene(Scene):
     def __init__(
@@ -24,6 +26,8 @@ class GameScene(Scene):
         self.level = level
         self.sprite_service = sprite_service
         self.game_data = game_data
+        self.freeze_duration = 0
+        self.frozen_at = time.time()
 
     def enter(self, engine: GameEngine) -> None:
         self.map_service = PacmanMap(
@@ -43,6 +47,8 @@ class GameScene(Scene):
             navigation_service=navigation_service,
             pacgum_count=0,
             level_max_time=self.game_data.level_max_time,
+            freeze=self.freeze,
+            frozen=False
         )
 
         SystemFactory(self.resources, engine, self.settings).create_all()
@@ -58,6 +64,9 @@ class GameScene(Scene):
         ).create_all()
 
     def update(self, engine: GameEngine) -> None | Scene:
+        if self.resources.frozen and (time.time() - self.frozen_at > self.freeze_duration):
+            self.frozen = False
+
         try:
             event = next(filter(lambda e: isinstance(e, GameOverEvent), engine.events.events))            
             from pacman.game.scenes.menu import MenuScene
@@ -89,3 +98,8 @@ class GameScene(Scene):
 
     def exit(self, engine: GameEngine) -> None:
         engine.clear()
+
+    def freeze(self, freeze_duration: float) -> None:
+        self.resources.frozen = True
+        self.freeze_duration = freeze_duration
+        self.frozen_at = time.time()

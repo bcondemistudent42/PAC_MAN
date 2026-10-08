@@ -20,6 +20,9 @@ class CollisionSystem(System):
         self.events = self.resources.events
 
     def run(self) -> None:
+        if self.resources.frozen:
+            return
+
         movers = []
         statics = []
         to_remove = []

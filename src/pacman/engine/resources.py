@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Callable
 
 from .events.queue import EventsQueue
 from .services.navigation import NavigationService
@@ -7,6 +8,8 @@ from .services.sprites import SpriteService
 
 @dataclass
 class Resources:
+    freeze: Callable[[float], None]
+    frozen: bool
     events: EventsQueue
     sprite_service: SpriteService
     navigation_service: NavigationService

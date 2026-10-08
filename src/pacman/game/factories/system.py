@@ -7,6 +7,7 @@ from pacman.game.resources import PacmanResources
 from pacman.game.settings import GameSettings
 from pacman.game.systems.death import DeathSystem
 from pacman.game.systems.direction_sprite import DirectionSpriteSystem
+from pacman.game.systems.hud import HUDSystem
 from pacman.game.systems.pacgum import PacgumSystem
 from pacman.game.systems.pacman_intention import PacmanIntentionSystem
 from pacman.game.systems.respawn_ghost import RespawnGhostSystem
@@ -32,7 +33,6 @@ class SystemFactory:
             [
                 CollisionSystem(self.resources),
                 MovementSystem(self.resources),
-                SpriteSystem(self.resources),
                 KeySystem(self.resources),
                 PacmanIntentionSystem(self.resources),
                 TargetSystem(
@@ -47,5 +47,7 @@ class SystemFactory:
                 DirectionSpriteSystem(self.resources),
                 RespawnGhostSystem(self.resources),
                 ScoreSystem(self.resources),
+                SpriteSystem(self.resources),
+                HUDSystem(self.resources, self.settings),
             ]
         )

@@ -16,6 +16,9 @@ class RespawnGhostSystem(System):
         self.resources = resources
 
     def run(self) -> None:
+        if self.resources.frozen:
+            return
+
         for sub in self.subscribers:
             if sub.id == "pac_man":
                 continue
@@ -23,6 +26,7 @@ class RespawnGhostSystem(System):
                 sub.get_component(Dead).dead_time = time.time()
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Velocity).speed = 0
+
 
             elif (
                 time.time() - sub.get_component(Dead).dead_time
@@ -34,7 +38,7 @@ class RespawnGhostSystem(System):
                 sub.get_component(Scared).end_scared = False
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Dead).dead = False
-                self.resources.score += self.resources.data_score.point_per_ghosts
+                sub.get_component(Dead).eaten = True
 
                 sub.get_component(Position).x = sub.get_component(Respawn).x
                 sub.get_component(Position).y = sub.get_component(Respawn).y

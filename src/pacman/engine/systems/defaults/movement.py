@@ -25,6 +25,9 @@ class MovementSystem(System):
         self.navigation = resources.navigation_service
 
     def run(self):
+        if self.resources.frozen:
+            return
+
         scale = self.resources.scale
 
         tile_size = 8 * scale

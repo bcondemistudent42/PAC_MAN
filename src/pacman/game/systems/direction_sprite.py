@@ -8,10 +8,14 @@ from pacman.game.resources import PacmanResources
 
 
 class DirectionSpriteSystem(System):
-    def __init__(self, ressource: PacmanResources) -> None:
+    def __init__(self, resources: PacmanResources) -> None:
         super().__init__([Sprites, Direction])
+        self.resources = resources
 
     def run(self) -> None:
+        if self.resources.frozen:
+            return
+
         for sub in self.subscribers:
             if sub.check_component(Dead) and sub.get_component(Dead).dead:
                 if (

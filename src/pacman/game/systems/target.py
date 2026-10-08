@@ -39,6 +39,9 @@ class TargetSystem(System):
         self.paused_at: float | None = None
 
     def run(self):
+        if self.resources.frozen:
+            return
+
         now = time.time()
         scared_is_active = any(
             subscriber.get_component(Scared).scared
