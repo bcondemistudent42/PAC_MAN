@@ -15,14 +15,14 @@ def main():
     )
 
     scene = MenuScene(settings)
-    pr.init_window(1440, 1440, "PACMAN")
+    pr.init_window(settings.window_width, settings.window_height, "PACMAN")
     moni = pr.get_current_monitor()
     h = pr.get_monitor_height(moni)
     w = pr.get_monitor_width(moni)
     pr.set_window_position(w // 8, h // 8)
     pr.set_target_fps(60)
 
-    with GameEngine(scene, 1440, 1440) as engine:
+    with GameEngine(scene, settings.window_width, settings.window_height) as engine:
         game = PacmanGame(engine, settings)
         game.make_full_setup()
         scene.sprite_service = game.sprite_service
