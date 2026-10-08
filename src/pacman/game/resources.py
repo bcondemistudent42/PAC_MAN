@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class PacmanResources(Resources):
+    score: int = 0
     matrix: list[list[PacmanCell]] = field(default_factory=list)
     data_score: Parser = field(default_factory=parse)
 

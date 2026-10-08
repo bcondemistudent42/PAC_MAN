@@ -7,12 +7,19 @@ from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
+from pacman.engine.events.event import Event
 from pacman.engine.systems.defaults.collision import CollisionEvent
 from pacman.engine.systems.system import System
 from pacman.game.components.dead import Dead
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.resources import PacmanResources
+import pyray as pr 
+
+
+class GameOverEvent(Event):
+    def __init__(self, score: int) -> None:
+        self.score = score
 
 
 class DeathSystem(System):
@@ -27,6 +34,15 @@ class DeathSystem(System):
         self.is_dying = False
 
     def run(self) -> None:
+        if self.resources.sprite_service:
+            for i in range(self.lives):
+                pr.draw_texture_ex(
+                    self.resources.sprite_service.get_sprite("pacman-right-2"),
+                    pr.Vector2(1600 + 100 * i, 400),
+                    0.0,
+                    self.resources.scale,
+                    pr.WHITE,
+                )
 
         if self.is_dying:
             if self.pacman is None:
@@ -37,8 +53,8 @@ class DeathSystem(System):
                 return
 
             self.pacman.get_component(Dead).dead = False
-            if self.lives <= 1:
-                raise RuntimeError("Game over: Pac-Man has no lives remaining.")
+            if self.lives <= 0:
+                self.events.push(GameOverEvent(self.resources.score))
 
             sprites_comp.sprite_index = 0
             sprites_comp.sprites = self.pacman.get_component(
