@@ -27,7 +27,7 @@ class TargetSystem(System):
         self.resources = resources
         self.behavior = GhostState.CHASE
         self.changed_behavior = time.time()
-        self.cooldown = 5
+        self.cooldown = 8
         self.paused_at: float | None = None
 
     def run(self):
