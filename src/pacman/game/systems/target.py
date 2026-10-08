@@ -1,5 +1,6 @@
 import time
 from enum import Enum
+from random import randint
 
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
@@ -24,20 +25,51 @@ class TargetSystem(System):
     def __init__(self, resources: resources):
         super().__init__([Target, Position, Intention, Direction, Scared])
         self.resources = resources
-        self.start = time.time()
         self.behavior = GhostState.CHASE
         self.changed_behavior = time.time()
         self.cooldown = 5
+        self.paused_at: float | None = None
 
     def run(self):
+        now = time.time()
+        scared_is_active = any(
+            subscriber.get_component(Scared).scared
+            or subscriber.get_component(Scared).end_scared
+            for subscriber in self.subscribers
+        )
 
+        if scared_is_active:
+            if self.paused_at is None:
+                self.paused_at = now
+        elif self.paused_at is not None:
+            self.changed_behavior += now - self.paused_at
+            self.paused_at = None
 
-        if self.behavior == GhostState.CHASE and time.time() - self.changed_behavior >= self.cooldown:
+        behavior_changed = False
+        if (
+            not scared_is_active
+            and self.behavior == GhostState.CHASE
+            and now - self.changed_behavior >= self.cooldown
+        ):
             self.behavior = GhostState.SCATTER
-            self.changed_behavior = time.time()
-        elif self.behavior == GhostState.SCATTER and time.time() - self.changed_behavior >= self.cooldown:
+            self.changed_behavior = now
+            behavior_changed = True
+        elif (
+            not scared_is_active
+            and self.behavior == GhostState.SCATTER
+            and now - self.changed_behavior >= self.cooldown
+        ):
             self.behavior = GhostState.CHASE
-            self.changed_behavior = time.time()
+            self.changed_behavior = now
+            behavior_changed = True
+
+        if behavior_changed and not scared_is_active:
+            for subscriber in self.subscribers:
+                target = subscriber.get_component(Target)
+                target.scatter_point = (
+                    randint(0, target.maze_size[0] - 1),
+                    randint(0, target.maze_size[1] - 1),
+                )
 
         for each_subscriber in self.subscribers:
             actualy_scared = each_subscriber.get_component(Scared).scared
@@ -46,10 +78,25 @@ class TargetSystem(System):
             ).end_scared
             actualy_dead = each_subscriber.get_component(Dead).dead
 
-            if actualy_scared or actualy_dead or actualy_ending_scared:
-                self.behavior = GhostState.AFRAID
-            behavior = each_subscriber.get_component(Target).behavior
-            road = behavior.find_pacman(self.behavior)
+            ghost_state = (
+                GhostState.AFRAID
+                if actualy_scared or actualy_dead or actualy_ending_scared
+                else self.behavior
+            )
+            target = each_subscriber.get_component(Target)
+            behavior = target.behavior
+            if ghost_state is GhostState.SCATTER:
+                road = behavior.find_scatter(target.scatter_point)
+                if (
+                    not scared_is_active
+                    and behavior.ghost_coord == target.scatter_point
+                ):
+                    target.scatter_point = (
+                        randint(0, target.maze_size[0] - 1),
+                        randint(0, target.maze_size[1] - 1),
+                    )
+            else:
+                road = behavior.find_pacman(ghost_state)
             self.change_direction(each_subscriber, road, behavior.ghost_coord)
             if behavior.ghost_coord == behavior.corner and actualy_dead and each_subscriber.get_component(Velocity).speed != 0:
                 each_subscriber.get_component(Velocity).speed = 0

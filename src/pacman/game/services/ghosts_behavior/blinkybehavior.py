@@ -20,8 +20,6 @@ class BlinkyBehavior(Behavior):
     def find_pacman(self, state: GhostState) -> list | None:
         if state is GhostState.AFRAID:
             return self.scared_behavior()
-        elif state is GhostState.SCATTER:
-            return self.scatered_behavior() #to add better function to make random later
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(

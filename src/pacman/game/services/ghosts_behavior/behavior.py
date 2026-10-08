@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from random import randint
 
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
@@ -24,7 +23,6 @@ class Behavior(ABC):
         self.cell_size = cell_size
         self.corner = corner
         self.solver = Astar(self.maze_size, self.maze)
-        self.fisrt_scatter = True
 
     @abstractmethod
     def find_pacman(self, state: GhostState) -> list | None:
@@ -50,7 +48,7 @@ class Behavior(ABC):
             (x_ghost_graph, y_ghost_graph), self.corner
         )
 
-    def scatered_behavior(self):
+    def find_scatter(self, scatter_point: tuple[int, int]) -> list | None:
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
@@ -59,12 +57,7 @@ class Behavior(ABC):
 
         self.ghost_coord = (x_ghost_graph, y_ghost_graph)
 
-        if self.fisrt_scatter:
-            self.x_rdn = (randint(0, self.maze_size[0]- 1))
-            self.y_rdn = (randint(0, self.maze_size[0]- 1))
-            self.fisrt_scatter = False
-
         return self.solver.find_road(
-            (x_ghost_graph, y_ghost_graph), (self.x_rdn, self.y_rdn)
+            (x_ghost_graph, y_ghost_graph), scatter_point
         )
 

@@ -23,8 +23,6 @@ class PinkyBehavior(Behavior):
     def find_pacman(self, state: GhostState) -> list | None:
         if state is GhostState.AFRAID:
             return self.scared_behavior()
-        elif state is GhostState.SCATTER:
-            return self.scatered_behavior() #to add better function to make random later
 
         preshot_dist = 4
         pacman_intention = self.pacman.get_component(Intention).direction

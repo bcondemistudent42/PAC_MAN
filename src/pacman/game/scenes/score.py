@@ -6,6 +6,7 @@ from pydantic import BaseModel, TypeAdapter
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.settings import GameSettings
+import random
 
 if TYPE_CHECKING:
     from pacman.game.scenes.menu import MenuScene
@@ -40,6 +41,19 @@ class ScoreScene(Scene):
 
     def render(self, engine: GameEngine) -> None:
         title = "LEADERBOARD"
+
+        if not hasattr(self, "stars"):
+            self.stars = []
+            for _ in range(200):
+                x = random.randint(0, self.settings.window_width)
+                y = random.randint(0, self.settings.window_height)
+                radius = random.choice([1.5, 2, 2.5])  # Légères variations de taille
+                self.stars.append((x, y, radius))
+
+        for x, y, radius in self.stars:
+            pr.draw_circle(int(x), int(y), radius, pr.LIGHTGRAY)
+
+
         title_size = self.settings.window_height // 10
         title_width = pr.measure_text(title, title_size)
         pr.draw_text(

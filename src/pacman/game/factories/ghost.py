@@ -1,4 +1,6 @@
 
+from random import randint
+
 from pacman.engine.components.defaults.collision import Collision
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.hitbox import Hitbox
@@ -140,8 +142,18 @@ class GhostFactory:
                 self.maze,
             )
 
+        scatter_point = (
+            randint(0, self.maze_size[0] - 1),
+            randint(0, self.maze_size[1] - 1),
+        )
         ghost.add_component(
-            Target(self.pac_man, self.maze_size, self.maze, behavior)
+            Target(
+                self.pac_man,
+                self.maze_size,
+                self.maze,
+                behavior,
+                scatter_point,
+            )
         )
         ghost.add_component(
             Dead(

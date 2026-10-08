@@ -9,8 +9,10 @@ class Target(Component):
         maze_size: tuple[int, int],
         maze: list[list[int]],
         behavior,
+        scatter_point: tuple[int, int],
     ):
         self.behavior = behavior
         self.target = target
         self.maze_size = maze_size
         self.maze = maze
+        self.scatter_point = scatter_point
