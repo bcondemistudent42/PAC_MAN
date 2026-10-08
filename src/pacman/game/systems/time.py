@@ -2,25 +2,31 @@ import time
 
 import pyray as pr
 
-from pacman.engine.systems.system import System
-from pacman.game.resources import PacmanResources
+from ...engine.resources import Resources
+from ...engine.systems.system import System
 
 
 class TimeSystem(System):
-    def __init__(self, ressources: PacmanResources):
+    def __init__(self, ressources: Resources):
         self.start_time = time.time()
         self.time_left = 0
         self.ressources = ressources
         self.required_components = None
 
     def run(self) -> None:
+        level_max_time = self.ressources.level_max_time
+        if level_max_time is None:
+            raise RuntimeError(
+                "Level time limit is unavailable. Configure it before "
+                "running TimeSystem."
+            )
+
         self.time_left = round(
-            self.ressources.data_score.level_max_time
-            - abs(self.start_time - time.time()),
+            level_max_time - abs(self.start_time - time.time()),
             2,
         )
         pr.draw_text(
-            f"Time remaining: {self.time_left}", 1700, 550, 100, pr.WHITE
+            f"Time remaining: {self.time_left}", 1600, 200, 50, pr.WHITE
         )
         if self.time_left < 0:
             raise TimeoutError("The level time limit has expired.")

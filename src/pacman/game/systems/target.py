@@ -22,12 +22,20 @@ class GhostState(Enum):
 
 
 class TargetSystem(System):
-    def __init__(self, resources: PacmanResources):
+    def __init__(
+        self,
+        resources: PacmanResources,
+        chase_duration: float = 20.0,
+        scatter_duration: float = 7.0,
+    ):
         super().__init__([Target, Position, Intention, Direction, Scared])
+        if chase_duration <= 0 or scatter_duration <= 0:
+            raise ValueError("Chase and scatter durations must be positive.")
         self.resources = resources
         self.behavior = GhostState.CHASE
         self.changed_behavior = time.time()
-        self.cooldown = 8
+        self.chase_duration = chase_duration
+        self.scatter_duration = scatter_duration
         self.paused_at: float | None = None
 
     def run(self):
@@ -45,23 +53,22 @@ class TargetSystem(System):
             self.changed_behavior += now - self.paused_at
             self.paused_at = None
 
-        behavior_changed = False
-        if (
+        current_duration = (
+            self.chase_duration
+            if self.behavior is GhostState.CHASE
+            else self.scatter_duration
+        )
+        behavior_changed = (
             not scared_is_active
-            and self.behavior == GhostState.CHASE
-            and now - self.changed_behavior >= self.cooldown
-        ):
-            self.behavior = GhostState.SCATTER
+            and now - self.changed_behavior >= current_duration
+        )
+        if behavior_changed:
+            self.behavior = (
+                GhostState.SCATTER
+                if self.behavior is GhostState.CHASE
+                else GhostState.CHASE
+            )
             self.changed_behavior = now
-            behavior_changed = True
-        elif (
-            not scared_is_active
-            and self.behavior == GhostState.SCATTER
-            and now - self.changed_behavior >= self.cooldown
-        ):
-            self.behavior = GhostState.CHASE
-            self.changed_behavior = now
-            behavior_changed = True
 
         if behavior_changed and not scared_is_active:
             for subscriber in self.subscribers:

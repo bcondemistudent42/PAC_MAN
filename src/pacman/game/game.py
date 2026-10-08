@@ -3,11 +3,11 @@ from pacman.engine.engine import GameEngine
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
+from pacman.game.factories.sprites import SpriteFactory
 from pacman.game.factories.system import SystemFactory
 from pacman.game.resources import PacmanResources
 from pacman.game.services.maps import PacmanMap
 from pacman.game.services.navigation import PacmanNavigationService
-from pacman.game.factories.sprites import SpriteFactory
 from pacman.game.settings import GameSettings
 
 
@@ -28,7 +28,9 @@ class PacmanGame:
         self.engine.run()
 
     def systems_init(self) -> None:
-        systems_factory = SystemFactory(self.resources, self.engine)
+        systems_factory = SystemFactory(
+            self.resources, self.engine, self.settings
+        )
         systems_factory.create_all()
 
     def services_init(self) -> None:

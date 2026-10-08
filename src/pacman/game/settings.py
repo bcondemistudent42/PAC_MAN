@@ -11,6 +11,8 @@ class GameSettings:
     cell_width_px: int = 24
     cell_height_px: int = 24
     scale: float = 1.0
+    chase_duration: float = 20.0
+    scatter_duration: float = 7.0
 
     @classmethod
     def from_window(
