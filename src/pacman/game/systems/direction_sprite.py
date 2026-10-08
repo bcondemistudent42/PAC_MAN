@@ -4,11 +4,11 @@ from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems import System
 from pacman.game.components.dead import Dead
 from pacman.game.components.scared import Scared
-from pacman.game.resources import resources
+from pacman.game.resources import PacmanResources
 
 
 class DirectionSpriteSystem(System):
-    def __init__(self, ressource: resources) -> None:
+    def __init__(self, ressource: PacmanResources) -> None:
         super().__init__([Sprites, Direction])
 
     def run(self) -> None:

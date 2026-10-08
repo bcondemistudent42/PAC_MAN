@@ -1,4 +1,4 @@
-from pacman.engine.systems.system import System
+from .system import System
 
 __all__ = [
     "System",

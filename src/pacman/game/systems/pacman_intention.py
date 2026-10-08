@@ -3,11 +3,12 @@ from pacman.engine.components.defaults.keyhook import KeyHook
 from pacman.engine.components.entity import Entity
 from pacman.engine.systems.defaults.key import KeyPressEvent
 from pacman.engine.systems.system import System
-from pacman.game.resources import resources
+from pacman.game.components.dead import Dead
+from pacman.game.resources import PacmanResources
 
 
 class PacmanIntentionSystem(System):
-    def __init__(self, resources: resources):
+    def __init__(self, resources: PacmanResources):
         super().__init__([Intention, KeyHook])
         self.resources = resources
 
@@ -21,6 +22,11 @@ class PacmanIntentionSystem(System):
                 continue
 
             for subscriber in self.subscribers:
+                if (
+                    subscriber.check_component(Dead)
+                    and subscriber.get_component(Dead).dead
+                ):
+                    continue
                 key_hook = subscriber.get_component(KeyHook)
                 target_direction = key_hook.keys.get(event.key)
 

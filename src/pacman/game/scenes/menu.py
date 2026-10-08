@@ -1,18 +1,18 @@
 import io
+import random
 import sys
 from enum import Enum
+from typing import cast
 
 import pyray as pr
 from PIL import Image
 
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
+from pacman.engine.services.sprites import SpriteService
 from pacman.game.scenes.game import GameScene
 from pacman.game.scenes.score import ScoreScene
-from pacman.game.services.sprites import SpriteService
 from pacman.game.settings import GameSettings
-import random
-
 
 
 class MenuChoice(Enum):
@@ -72,7 +72,9 @@ class MenuScene(Scene):
         pil_img.save(bytes_arr, format="PNG")
         raw_img = bytes_arr.getvalue()
 
-        img = pr.load_image_from_memory(".png", raw_img, len(raw_img))
+        img = pr.load_image_from_memory(
+            ".png", cast(str, raw_img), len(raw_img)
+        )
         self.texture = pr.load_texture_from_image(img)
         pr.unload_image(img)
 

@@ -1,13 +1,14 @@
-from abc import ABC, abstractmethod
-
-from pacman.engine.events.queue import EventsQueue
-from pacman.engine.services.navigation import NavigationService
-from pacman.game.services.sprites import SpriteService
 from dataclasses import dataclass
+
+from .events.queue import EventsQueue
+from .services.navigation import NavigationService
+from .services.sprites import SpriteService
 
 
 @dataclass
-class Resources(ABC):
-    sprite_service: SpriteService
-    navigation_service: NavigationService
+class Resources:
     events: EventsQueue
+    sprite_service: SpriteService | None = None
+    navigation_service: NavigationService | None = None
+    scale: float = 1.0
+    level_max_time: float | None = None

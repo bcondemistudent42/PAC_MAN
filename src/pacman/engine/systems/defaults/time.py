@@ -2,21 +2,27 @@ import time
 
 import pyray as pr
 
-from pacman.engine.systems.system import System
-from pacman.game.resources import resources
+from ...resources import Resources
+from ..system import System
 
 
 class TimeSystem(System):
-    def __init__(self, ressources: resources):
+    def __init__(self, ressources: Resources):
         self.start_time = time.time()
         self.time_left = 0
         self.ressources = ressources
         self.required_components = None
 
     def run(self) -> None:
+        level_max_time = self.ressources.level_max_time
+        if level_max_time is None:
+            raise RuntimeError(
+                "Level time limit is unavailable. Configure it before "
+                "running TimeSystem."
+            )
+
         self.time_left = round(
-            self.ressources.data_score.level_max_time
-            - abs(self.start_time - time.time()),
+            level_max_time - abs(self.start_time - time.time()),
             2,
         )
         pr.draw_text(

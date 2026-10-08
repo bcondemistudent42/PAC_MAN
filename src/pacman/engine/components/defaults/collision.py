@@ -1,4 +1,4 @@
-from pacman.engine.components.component import Component
+from ..component import Component
 
 
 class Collision(Component):

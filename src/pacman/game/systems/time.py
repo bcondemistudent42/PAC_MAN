@@ -3,11 +3,11 @@ import time
 import pyray as pr
 
 from pacman.engine.systems.system import System
-from pacman.game.resources import resources
+from pacman.game.resources import PacmanResources
 
 
 class TimeSystem(System):
-    def __init__(self, ressources: resources):
+    def __init__(self, ressources: PacmanResources):
         self.start_time = time.time()
         self.time_left = 0
         self.ressources = ressources

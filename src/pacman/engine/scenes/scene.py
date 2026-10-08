@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pacman.engine.engine import GameEngine
+    from ..engine import GameEngine
 
 
 class Scene(ABC):

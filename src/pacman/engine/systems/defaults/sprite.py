@@ -1,12 +1,12 @@
 import pyray as pr
 
-from pacman.engine.components.defaults import Position, Sprites
-from pacman.engine.systems.system import System
-from pacman.game.resources import resources
+from ...components.defaults import Position, Sprites
+from ...resources import Resources
+from ..system import System
 
 
 class SpriteSystem(System):
-    def __init__(self, resources: resources):
+    def __init__(self, resources: Resources):
         super().__init__([Position, Sprites])
         self.resources = resources
 

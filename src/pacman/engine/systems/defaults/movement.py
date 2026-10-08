@@ -1,15 +1,14 @@
-from pacman.engine.components.defaults.direction import Dir, Direction
-from pacman.engine.components.defaults.intention import Intention
-from pacman.engine.components.defaults.position import Position
-from pacman.engine.components.defaults.sprites import Sprites
-from pacman.engine.components.defaults.velocity import Velocity
-from pacman.engine.systems.system import System
-from pacman.game.resources import resources
-from pacman.game.services.maps import PacmanCell
+from ...components.defaults.direction import Dir, Direction
+from ...components.defaults.intention import Intention
+from ...components.defaults.position import Position
+from ...components.defaults.sprites import Sprites
+from ...components.defaults.velocity import Velocity
+from ...resources import Resources
+from ..system import System
 
 
 class MovementSystem(System):
-    def __init__(self, resources: resources):
+    def __init__(self, resources: Resources):
         super().__init__([Position, Velocity, Direction, Intention])
         self.resources = resources
         self.direction_map = {
@@ -26,7 +25,6 @@ class MovementSystem(System):
         self.navigation = resources.navigation_service
 
     def run(self):
-        matrix = self.resources.matrix
         scale = self.resources.scale
 
         tile_size = 8 * scale
@@ -80,11 +78,8 @@ class MovementSystem(System):
                     direction.direction = intention.direction
 
                 curr_dx, curr_dy = self.direction_map[direction.direction]
-                if (
-                    0 <= cell_y + curr_dy < len(matrix)
-                    and 0 <= cell_x + curr_dx < len(matrix[0])
-                    and matrix[cell_y + curr_dy][cell_x + curr_dx]
-                    == PacmanCell.WALL
+                if not self.navigation.is_walkable(
+                    cell_x + curr_dx, cell_y + curr_dy
                 ):
                     continue
 

@@ -6,11 +6,11 @@ from pacman.engine.systems.system import System
 from pacman.game.components.dead import Dead
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
-from pacman.game.resources import resources
+from pacman.game.resources import PacmanResources
 
 
 class SuperPacugumSystem(System):
-    def __init__(self, resources: resources):
+    def __init__(self, resources: PacmanResources):
         super().__init__([Scared])
         self.resources = resources
         self.events = self.resources.events

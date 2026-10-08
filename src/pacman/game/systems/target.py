@@ -12,7 +12,7 @@ from pacman.game.components.dead import Dead
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.components.target import Target
-from pacman.game.resources import resources
+from pacman.game.resources import PacmanResources
 
 
 class GhostState(Enum):
@@ -22,7 +22,7 @@ class GhostState(Enum):
 
 
 class TargetSystem(System):
-    def __init__(self, resources: resources):
+    def __init__(self, resources: PacmanResources):
         super().__init__([Target, Position, Intention, Direction, Scared])
         self.resources = resources
         self.behavior = GhostState.CHASE

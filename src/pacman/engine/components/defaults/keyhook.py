@@ -1,7 +1,7 @@
 import pyray as pr
 
-from pacman.engine.components.component import Component
-from pacman.engine.components.defaults.direction import Dir
+from ..component import Component
+from .direction import Dir
 
 
 class KeyHook(Component):

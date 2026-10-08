@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pacman.engine.components.component import Component
+from ..component import Component
 
 
 class Dir(Enum):

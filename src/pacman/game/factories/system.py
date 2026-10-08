@@ -4,7 +4,7 @@ from pacman.engine.systems.defaults.key import KeySystem
 from pacman.engine.systems.defaults.movement import MovementSystem
 from pacman.engine.systems.defaults.sprite import SpriteSystem
 from pacman.engine.systems.defaults.time import TimeSystem
-from pacman.game.resources import resources
+from pacman.game.resources import PacmanResources
 from pacman.game.systems.death import DeathSystem
 from pacman.game.systems.direction_sprite import DirectionSpriteSystem
 from pacman.game.systems.pacgum import PacgumSystem
@@ -16,7 +16,7 @@ from pacman.game.systems.target import TargetSystem
 
 
 class SystemFactory:
-    def __init__(self, resources: resources, engine: GameEngine) -> None:
+    def __init__(self, resources: PacmanResources, engine: GameEngine) -> None:
         self.resources = resources
         self.engine = engine
 

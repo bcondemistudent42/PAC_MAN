@@ -1,16 +1,13 @@
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
+from pacman.engine.services.sprites import SpriteService
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.factories.system import SystemFactory
-from pacman.game.resources import resources
+from pacman.game.resources import PacmanResources
 from pacman.game.services.maps import PacmanMap
 from pacman.game.services.navigation import PacmanNavigationService
-from pacman.game.services.sprites import (
-    SpriteService,
-    config,
-    config_spritesheet_2,
-)
+from pacman.game.factories.sprites import SpriteFactory
 from pacman.game.settings import GameSettings
 
 
@@ -19,7 +16,7 @@ class PacmanGame:
         self.engine = engine
         self.pacman: Entity | None = None
         self.settings = settings
-        self.resources = resources(
+        self.resources = PacmanResources(
             self.engine.events,
             scale=self.settings.scale,
         )
@@ -36,9 +33,10 @@ class PacmanGame:
 
     def services_init(self) -> None:
         sprite_sheet = "sprites/spritesheet.png"
-        self.sprite_service = SpriteService(sprite_sheet, config)
+        main_sprites, map_sprites = SpriteFactory().create()
+        self.sprite_service = SpriteService(sprite_sheet, main_sprites)
         self.sprite_service.add_spritesheet(
-            "sprites/creeper.png", config_spritesheet_2
+            "sprites/creeper.png", map_sprites
         )
         self.navigation_service = PacmanNavigationService(
             self.map_service.logic_matrix,

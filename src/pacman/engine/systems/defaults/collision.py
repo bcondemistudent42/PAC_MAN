@@ -1,11 +1,11 @@
 import itertools
 
-from pacman.engine.components.defaults import Collision, Hitbox, Position
-from pacman.engine.components.defaults.velocity import Velocity
-from pacman.engine.components.entity import Entity
-from pacman.engine.events.event import Event
-from pacman.engine.systems.system import System
-from pacman.game.resources import resources
+from ...components.defaults import Collision, Hitbox, Position
+from ...components.defaults.velocity import Velocity
+from ...components.entity import Entity
+from ...events.event import Event
+from ...resources import Resources
+from ..system import System
 
 
 class CollisionEvent(Event):
@@ -14,7 +14,7 @@ class CollisionEvent(Event):
 
 
 class CollisionSystem(System):
-    def __init__(self, resources: resources):
+    def __init__(self, resources: Resources):
         super().__init__([Position, Collision, Hitbox])
         self.resources = resources
         self.events = self.resources.events

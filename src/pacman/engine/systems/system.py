@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from pacman.engine.components import Component, Entity
+from ..components import Component, Entity
 
 
 class System(ABC):
