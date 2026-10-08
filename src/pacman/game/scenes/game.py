@@ -1,18 +1,20 @@
+import time
+from collections.abc import Callable
+
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
-from pacman.game.components import time
 from pacman.game.factories.ghost import GhostFactory
 from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.factories.system import SystemFactory
+from pacman.game.resources import PacmanResources
 from pacman.game.scenes.gameover import GameOverScene
 from pacman.game.services.maps import PacmanMap
 from pacman.game.services.navigation import PacmanNavigationService
 from pacman.game.services.parser import Parser
 from pacman.game.settings import GameSettings
-from pacman.game.resources import PacmanResources
 from pacman.game.systems.death import GameOverEvent
-import time
+
 
 class GameScene(Scene):
     def __init__(
@@ -61,11 +63,16 @@ class GameScene(Scene):
             maze=self.map_service.map,
             pacman=pacman,
             engine=engine,
+            resources=self.resources,
         ).create_all()
 
     def update(self, engine: GameEngine) -> None | Scene:
-        if self.resources.frozen and (time.time() - self.frozen_at > self.freeze_duration):
-            self.frozen = False
+        if (
+            self.resources.frozen
+            and (time.time() - self.frozen_at >= self.freeze_duration)
+        ):
+            self.resources.frozen = False
+            self.freeze_callback()
 
         try:
             event = next(filter(lambda e: isinstance(e, GameOverEvent), engine.events.events))            
@@ -99,7 +106,12 @@ class GameScene(Scene):
     def exit(self, engine: GameEngine) -> None:
         engine.clear()
 
-    def freeze(self, freeze_duration: float) -> None:
+    def freeze(
+        self,
+        freeze_duration: float,
+        callback: Callable
+    ) -> None:
         self.resources.frozen = True
         self.freeze_duration = freeze_duration
         self.frozen_at = time.time()
+        self.freeze_callback = callback

@@ -11,9 +11,11 @@ from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.components.entity import Entity
 from pacman.engine.engine import GameEngine
 from pacman.game.components.dead import Dead
+from pacman.game.components.ghost_score import GhostScore
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.components.target import Target
+from pacman.game.resources import PacmanResources
 from pacman.game.services.ghosts_behavior.blinkybehavior import BlinkyBehavior
 from pacman.game.services.ghosts_behavior.clydebehavior import ClydeBehavior
 from pacman.game.services.ghosts_behavior.inkybehavior import InkyBehavior
@@ -28,12 +30,14 @@ class GhostFactory:
         maze: list[list[int]],
         pacman: Entity,
         engine: GameEngine,
+        resources: PacmanResources,
     ) -> None:
         self.settings = settings
         self.maze = maze
         self.maze_size = (settings.map_width, settings.map_height)
         self.pac_man = pacman
         self.engine = engine
+        self.resources = resources
         self.cell_size = settings.cell_width_px * settings.scale
         self.tile_size = settings.cell_width_px * settings.scale
         self.blinky: Entity | None = None
@@ -108,6 +112,11 @@ class GhostFactory:
             [
                 Scared(self.scared_ghost_spr),
                 position,
+                GhostScore(
+                    str(self.resources.data_score.point_per_ghosts),
+                    position,
+                    False,
+                ),
                 Velocity(self.settings.scale * 0.8),
                 Direction(Dir.DOWN, direction_sprites),
                 Intention(Dir.DOWN),

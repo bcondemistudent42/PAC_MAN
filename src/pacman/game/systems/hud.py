@@ -1,6 +1,7 @@
 import pyray as pr
 
 from pacman.engine.systems.system import System
+from pacman.game.components.ghost_score import GhostScore
 from pacman.game.resources import PacmanResources
 from pacman.game.settings import GameSettings
 
@@ -9,7 +10,7 @@ class HUDSystem(System):
     def __init__(
         self, resources: PacmanResources, settings: GameSettings
     ) -> None:
-        super().__init__([])
+        super().__init__([GhostScore])
         self.resources = resources
         self.settings = settings
 
@@ -58,3 +59,14 @@ class HUDSystem(System):
                 self.resources.scale,
                 pr.WHITE,
             )
+
+        for subscriber in self.subscribers:
+            score = subscriber.get_component(GhostScore)
+            if score.display:
+                pr.draw_text(
+                    f"{score.text}",
+                    int(score.position.x),
+                    int(score.position.y),
+                    40,
+                    pr.Color(0, 225, 225, 255)
+                )

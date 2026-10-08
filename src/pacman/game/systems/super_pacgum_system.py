@@ -9,7 +9,7 @@ from pacman.game.components.scared import Scared
 from pacman.game.resources import PacmanResources
 
 
-class SuperPacugumSystem(System):
+class SuperPacgumSystem(System):
     def __init__(self, resources: PacmanResources):
         super().__init__([Scared])
         self.resources = resources

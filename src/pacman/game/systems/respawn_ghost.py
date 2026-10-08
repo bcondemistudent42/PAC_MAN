@@ -38,7 +38,7 @@ class RespawnGhostSystem(System):
                 sub.get_component(Scared).end_scared = False
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Dead).dead = False
-                sub.get_component(Dead).eaten = True
+                sub.get_component(Dead).eaten = False
 
                 sub.get_component(Position).x = sub.get_component(Respawn).x
                 sub.get_component(Position).y = sub.get_component(Respawn).y

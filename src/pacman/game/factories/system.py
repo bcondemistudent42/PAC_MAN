@@ -12,7 +12,7 @@ from pacman.game.systems.pacgum import PacgumSystem
 from pacman.game.systems.pacman_intention import PacmanIntentionSystem
 from pacman.game.systems.respawn_ghost import RespawnGhostSystem
 from pacman.game.systems.score import ScoreSystem
-from pacman.game.systems.super_pacgum_system import SuperPacugumSystem
+from pacman.game.systems.super_pacgum_system import SuperPacgumSystem
 from pacman.game.systems.target import TargetSystem
 from pacman.game.systems.time import TimeSystem
 
@@ -43,7 +43,7 @@ class SystemFactory:
                 DeathSystem(self.resources),
                 PacgumSystem(self.resources),
                 TimeSystem(self.resources),
-                SuperPacugumSystem(self.resources),
+                SuperPacgumSystem(self.resources),
                 DirectionSpriteSystem(self.resources),
                 RespawnGhostSystem(self.resources),
                 ScoreSystem(self.resources),

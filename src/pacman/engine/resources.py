@@ -8,7 +8,7 @@ from .services.sprites import SpriteService
 
 @dataclass
 class Resources:
-    freeze: Callable[[float], None]
+    freeze: Callable[[float, Callable], None]
     frozen: bool
     events: EventsQueue
     sprite_service: SpriteService
