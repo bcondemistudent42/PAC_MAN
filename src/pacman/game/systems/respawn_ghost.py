@@ -34,6 +34,7 @@ class RespawnGhostSystem(System):
                 sub.get_component(Scared).end_scared = False
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Dead).dead = False
+                self.resources.score += self.resources.data_score.point_per_ghosts
 
                 sub.get_component(Position).x = sub.get_component(Respawn).x
                 sub.get_component(Position).y = sub.get_component(Respawn).y
