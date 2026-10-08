@@ -19,22 +19,15 @@ class GameScene(Scene):
         sprite_service: SpriteService,
         game_data: Parser,
         level: int = 1,
-        *,
-        runtime_data: Parser | None = None,
     ):
         self.settings = settings
         self.level = level
         self.sprite_service = sprite_service
-        self.game_config = game_data
-        self.data_score = (
-            runtime_data
-            if runtime_data is not None
-            else game_data.model_copy(deep=True)
-        )
+        self.game_data = game_data
 
     def enter(self, engine: GameEngine) -> None:
         self.map_service = PacmanMap(
-            engine, self.settings, seed=self.game_config.seed
+            engine, self.settings, seed=self.game_data.seed
         )
         
         navigation_service = PacmanNavigationService(
@@ -43,13 +36,13 @@ class GameScene(Scene):
 
         self.resources = PacmanResources(
             events=engine.events,
-            data_score=self.data_score,
+            data_score=self.game_data,
             scale=self.settings.scale,
             matrix=self.map_service.get_map_matrix(),
             sprite_service=self.sprite_service,
             navigation_service=navigation_service,
             pacgum_count=0,
-            level_max_time=self.data_score.level_max_time,
+            level_max_time=self.game_data.level_max_time,
         )
 
         SystemFactory(self.resources, engine, self.settings).create_all()
@@ -73,7 +66,7 @@ class GameScene(Scene):
                 self.settings,
                 event.score,
                 MenuScene(
-                    self.settings, self.sprite_service, self.game_config
+                    self.settings, self.sprite_service, self.game_data
                 ),
                 self.sprite_service
             )
@@ -85,9 +78,8 @@ class GameScene(Scene):
             return GameScene(
                 self.settings,
                 self.sprite_service,
-                self.game_config,
+                self.game_data,
                 level=self.level + 1,
-                runtime_data=self.data_score,
             )
         return None
 
