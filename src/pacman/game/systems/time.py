@@ -2,12 +2,15 @@ import time
 
 import pyray as pr
 
+from pacman.game.components.time import Time
+
 from ...engine.resources import Resources
 from ...engine.systems.system import System
 
 
 class TimeSystem(System):
     def __init__(self, ressources: Resources):
+        self.subscribers = []
         self.start_time = time.time()
         self.time_left = 0
         self.ressources = ressources

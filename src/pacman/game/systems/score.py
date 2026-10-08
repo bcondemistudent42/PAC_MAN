@@ -10,6 +10,7 @@ from pacman.game.services.death import DeathSprites
 
 class ScoreSystem(System):
     def __init__(self, resources: PacmanResources):
+        self.subscribers = []
         self.resources = resources
         self.events = resources.events
         self.required_components = None

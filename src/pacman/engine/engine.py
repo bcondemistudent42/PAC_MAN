@@ -8,11 +8,12 @@ from .systems import System
 
 class GameEngine:
     def __enter__(self):
-        self.scene.enter()
+        self.scene.enter(self)
 
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.scene.exit(self)
         pr.close_window()
 
     def __init__(self, scene: Scene, window_width: int, window_height: int):
@@ -60,12 +61,12 @@ class GameEngine:
 
     def run(self):
         while not pr.window_should_close():
-            new_scene = self.scene.update()
+            new_scene = self.scene.update(self)
 
             if new_scene:
-                self.scene.exit()
+                self.scene.exit(self)
                 self.scene = new_scene
-                self.scene.enter()
+                self.scene.enter(self)
 
             pr.begin_drawing()
             pr.clear_background(pr.BLACK)
@@ -74,4 +75,8 @@ class GameEngine:
 
             pr.end_drawing()
 
-            self.events.drain()
+    def clear(self) -> None:
+        self.entities.clear()
+        for system in self.systems:
+            system.subscribers.clear()
+        self.events.drain()

@@ -26,7 +26,7 @@ class ScoreScene(Scene):
         self.settings = settings
         self.scores: list[ScoreEntry] = []
 
-    def enter(self):
+    def enter(self, engine: GameEngine) -> None:
         try:
             with open("storage/scores.json", "r") as f:
                 raw_data = f.read()
@@ -34,7 +34,7 @@ class ScoreScene(Scene):
         except FileNotFoundError, ValueError:
             self.scores = []
 
-    def update(self) -> Scene | None:
+    def update(self, engine: GameEngine) -> Scene | None:
         if pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
             return self.menu
         return None
@@ -96,16 +96,17 @@ class ScoreScene(Scene):
                     pr.YELLOW,
                 )
 
-        footer = "PRESS ENTER"
+        footer = "PRESS ENTER TO RETURN"
         footer_size = self.settings.window_height // 32
         footer_width = pr.measure_text(footer, footer_size)
-        pr.draw_text(
-            footer,
-            (self.settings.window_width - footer_width) // 2,
-            self.settings.window_height - (self.settings.window_height // 8),
-            footer_size,
-            pr.GRAY,
-        )
+        if int(pr.get_time() * 2) % 2 == 0:
+            pr.draw_text(
+                footer,
+                (self.settings.window_width - footer_width) // 2,
+                self.settings.window_height - (self.settings.window_height // 8),
+                footer_size,
+                pr.GRAY,
+            )
 
-    def exit(self):
+    def exit(self, engine: GameEngine) -> None:
         pass

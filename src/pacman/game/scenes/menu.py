@@ -27,12 +27,12 @@ class MenuState(Enum):
 
 
 class MenuScene(Scene):
-    def __init__(self, settings: GameSettings):
+    def __init__(self, settings: GameSettings, sprite_service: SpriteService):
         self.settings = settings
         self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
         self.texture = None
-        self.sprite_service: SpriteService | None = None
+        self.sprite_service = sprite_service
 
         self.toggle_down = {
             MenuChoice.SCORES: MenuChoice.PLAY,
@@ -57,7 +57,7 @@ class MenuScene(Scene):
         ]
         self.dead_frames = [f"pacman-dead-{i}" for i in range(1, 12)]
 
-    def enter(self):
+    def enter(self, engine: GameEngine) -> None:
         pil_img = Image.open("sprites/logo.png").convert("RGBA")
 
         target_width = self.settings.window_width // 2
@@ -82,7 +82,7 @@ class MenuScene(Scene):
             self.texture, pr.TextureFilter.TEXTURE_FILTER_BILINEAR
         )
 
-    def update(self) -> Scene | None:
+    def update(self, engine: GameEngine) -> Scene | None:
         self.anim_timer += pr.get_frame_time()
 
         if self.state == MenuState.SELECTING:
@@ -106,9 +106,8 @@ class MenuScene(Scene):
 
                 if self.anim_index >= len(self.dead_frames):
                     if self.status == MenuChoice.PLAY:
-                        return GameScene(self.settings)
+                        return GameScene(self.settings, self.sprite_service)
                     elif self.status == MenuChoice.QUIT:
-                        self.exit()
                         sys.exit(0)
                     else:
                         self.state = MenuState.SELECTING
@@ -119,7 +118,7 @@ class MenuScene(Scene):
         return None
 
     def render(self, engine: GameEngine) -> None:
-        if not self.texture or not self.sprite_service:
+        if not self.texture:
             return
 
         if not hasattr(self, "stars"):
@@ -181,6 +180,6 @@ class MenuScene(Scene):
                 key.value, int(final_x), int(final_y), font_size, color
             )
 
-    def exit(self):
+    def exit(self, engine: GameEngine) -> None:
         if self.texture:
             pr.unload_texture(self.texture)
