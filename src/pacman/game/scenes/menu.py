@@ -137,11 +137,11 @@ class MenuScene(Scene):
             for _ in range(200):
                 x = random.randint(0, self.settings.window_width)
                 y = random.randint(0, self.settings.window_height)
-                radius = random.choice([1.5, 2, 2.5])  # Légères variations de taille
+                radius = random.choice([2, 2.5, 3])
                 self.stars.append((x, y, radius))
 
         for x, y, radius in self.stars:
-            pr.draw_circle(int(x), int(y), radius, pr.LIGHTGRAY)
+            pr.draw_circle(int(x), int(y), radius, pr.Color(222, 161, 133, 255))
 
         choices_colors = {
             MenuChoice.SCORES: pr.WHITE,
