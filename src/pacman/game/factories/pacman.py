@@ -59,7 +59,12 @@ class PacmanFactory:
             )
         )
         pacman.add_component(
-            Hitbox(8 * self.settings.scale, 8 * self.settings.scale)
+            Hitbox(
+                4 * self.settings.scale,
+                4 * self.settings.scale,
+                6,
+                6
+            )
         )
         pacman.add_component(Collision("pacman"))
         pacman.add_component(
