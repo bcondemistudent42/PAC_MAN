@@ -8,10 +8,10 @@ from pacman.game.settings import GameSettings
 from pacman.game.systems.death import DeathSystem
 from pacman.game.systems.direction_sprite import DirectionSpriteSystem
 from pacman.game.systems.pacgum import PacgumSystem
-from pacman.game.systems.pacman_intention import PacmanIntentionSystem
+from pacman.game.systems.intention import PacmanIntentionSystem
 from pacman.game.systems.respawn_ghost import RespawnGhostSystem
 from pacman.game.systems.score import ScoreSystem
-from pacman.game.systems.super_pacgum_system import SuperPacugumSystem
+from pacman.game.systems.super_pacgum import SuperPacugumSystem
 from pacman.game.systems.target import TargetSystem
 from pacman.game.systems.time import TimeSystem
 

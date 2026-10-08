@@ -112,9 +112,6 @@ class TargetSystem(System):
                 each_subscriber.get_component(Position).x = respawn_comp.x
                 each_subscriber.get_component(Position).y = respawn_comp.y
 
-                #1  handle the case colision vent priority t ghost and not pacgum, return if dead
-                # 2 faire le truc abounoua // 2 vitesse
-                # slow down ghot when cared
 
     def change_direction(
         self,
