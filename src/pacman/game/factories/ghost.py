@@ -123,10 +123,10 @@ class GhostFactory:
                 Collision("ghost"),
                 Sprites([f"{sprite_name}-right-1"], 0.1),
                 Hitbox(
-                    6 * self.settings.scale,
-                    6 * self.settings.scale,
-                    5,
-                    5
+                    4 * self.settings.scale,
+                    4 * self.settings.scale,
+                    6,
+                    6
                 ),
                 Respawn(resp_x, resp_y, self.settings.scale),
             ]

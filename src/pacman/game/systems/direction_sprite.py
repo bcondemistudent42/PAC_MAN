@@ -28,6 +28,7 @@ class DirectionSpriteSystem(System):
                     sub.get_component(Sprites).sprites = sub.get_component(
                         Dead
                     ).sprites[sub.get_component(Direction).direction]
+
                     if sub.id != "pac_man":
                         sub.get_component(Velocity).speed = 13
             elif (
