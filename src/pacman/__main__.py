@@ -10,16 +10,12 @@ pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
 
 def main():
     settings = GameSettings.from_window(
-        window_width=1440,
+        window_width=2440,
         window_height=1440,
     )
 
     scene = MenuScene(settings)
     pr.init_window(settings.window_width, settings.window_height, "PACMAN")
-    moni = pr.get_current_monitor()
-    h = pr.get_monitor_height(moni)
-    w = pr.get_monitor_width(moni)
-    pr.set_window_position(w // 8, h // 8)
     pr.set_target_fps(60)
 
     with GameEngine(scene, settings.window_width, settings.window_height) as engine:

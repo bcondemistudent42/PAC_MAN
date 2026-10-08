@@ -16,7 +16,7 @@ class ScoreSystem(System):
 
     def run(self):
 
-        pr.draw_text(f"Score: {self.score}", 1700, 250, 100, pr.WHITE)
+        pr.draw_text(f"Score: {self.score}", 1600, 100, 50, pr.WHITE)
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
@@ -24,10 +24,16 @@ class ScoreSystem(System):
                 pacman = event.entities["pacman"]
                 if (
                     pacman.get_component(Sprites).sprites
-                    != DeathSprites().PACMAN
+                    == DeathSprites().PACMAN
                 ):
                     return
+                self.score += self.resources.data_score.point_per_ghosts
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):
                 self.score += self.resources.data_score.point_per_pacgum
+
+            elif isinstance(event, CollisionEvent) and all(
+                e in event.entities for e in ["pacman", "super_pacgum"]
+            ):
+                self.score += self.resources.data_score.points_per_super_pacgum
