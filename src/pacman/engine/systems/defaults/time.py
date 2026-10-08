@@ -20,7 +20,7 @@ class TimeSystem(System):
             2,
         )
         pr.draw_text(
-            f"Time remaining: {self.time_left}", 1700, 550, 100, pr.WHITE
+            f"Time remaining: {self.time_left}", 1600, 200, 50, pr.WHITE
         )
         if self.time_left < 0:
             raise TimeoutError("The level time limit has expired.")
