@@ -66,7 +66,7 @@ class GameScene(Scene):
                 self.settings,
                 event.score,
                 MenuScene(
-                    self.settings, self.sprite_service, self.game_data
+                    self.settings, self.sprite_service
                 ),
                 self.sprite_service
             )

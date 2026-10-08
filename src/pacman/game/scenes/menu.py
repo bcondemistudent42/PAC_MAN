@@ -12,7 +12,7 @@ from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.scenes.game import GameScene
 from pacman.game.scenes.score import ScoreScene
-from pacman.game.services.parser import Parser
+from pacman.game.services.parser import Parser, parse
 from pacman.game.settings import GameSettings
 
 
@@ -32,10 +32,10 @@ class MenuScene(Scene):
         self,
         settings: GameSettings,
         sprite_service: SpriteService,
-        game_data: Parser,
     ):
         self.settings = settings
-        self.game_data = game_data
+        self.game_data = parse()
+
         self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
         self.texture = None

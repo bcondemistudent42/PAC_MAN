@@ -15,7 +15,6 @@ def main():
         window_width=2440,
         window_height=1440,
     )
-    game_data = parse()
 
     pr.init_window(settings.window_width, settings.window_height, "PACMAN")
     pr.set_target_fps(60)
@@ -23,7 +22,7 @@ def main():
     main_sprites, map_sprites = SpriteFactory().create()
     sprite_service = SpriteService("sprites/spritesheet.png", main_sprites)
     sprite_service.add_spritesheet("sprites/creeper.png", map_sprites)
-    scene = MenuScene(settings, sprite_service, game_data)
+    scene = MenuScene(settings, sprite_service)
 
     with GameEngine(
         scene,
