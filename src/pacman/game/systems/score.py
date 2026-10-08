@@ -15,7 +15,7 @@ class ScoreSystem(System):
         self.required_components = None
 
     def run(self):
-        pr.draw_text(f"Score: {self.resources.score}", 1600, 100, 50, pr.WHITE)
+        pr.draw_text(f"Score: {self.resources.score}", 1600, 100, 60, pr.WHITE)
         for event in self.events.events:
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
