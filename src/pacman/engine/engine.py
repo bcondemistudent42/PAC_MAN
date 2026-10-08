@@ -79,4 +79,5 @@ class GameEngine:
         self.entities.clear()
         for system in self.systems:
             system.subscribers.clear()
+        self.systems.clear()
         self.events.drain()

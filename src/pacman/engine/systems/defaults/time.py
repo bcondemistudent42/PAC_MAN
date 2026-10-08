@@ -2,6 +2,8 @@ import time
 
 import pyray as pr
 
+from pacman.game.systems.death import GameOverEvent
+
 from ...engine.resources import Resources
 from ...engine.systems.system import System
 
@@ -29,4 +31,4 @@ class TimeSystem(System):
             f"Time remaining: {self.time_left}", 1600, 200, 50, pr.WHITE
         )
         if self.time_left < 0:
-            raise TimeoutError("The level time limit has expired.")
+            self.events.push(GameOverEvent(self.resources.score))

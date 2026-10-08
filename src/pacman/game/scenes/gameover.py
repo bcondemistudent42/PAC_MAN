@@ -56,9 +56,7 @@ class GameOverScene(Scene):
             
             if self.ghost_x > self.settings.window_width + 160:
                 self.chasing_right = False
-                
                 self.ghost_x = float(self.settings.window_width + 50)
-                
                 self.pacman_x = self.ghost_x + 250.0
         else:
             self.pacman_x -= self.speed * dt

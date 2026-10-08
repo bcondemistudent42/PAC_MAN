@@ -19,11 +19,13 @@ class PacmanCell(Enum):
 
 
 class PacmanMap:
-    def __init__(self, engine: GameEngine, settings: GameSettings) -> None:
+    def __init__(
+        self, engine: GameEngine, settings: GameSettings, seed: int
+    ) -> None:
         self.generator = MazeGenerator(
             size=(settings.map_width, settings.map_height),
             perfect=True,
-            seed=48515,
+            seed=seed,
         )
 
         self.TILE_SIZE = 8 * settings.scale
@@ -34,6 +36,8 @@ class PacmanMap:
 
         self.sprite_matrix = []
         self.logic_matrix = []
+
+        self.pacgum_count = 0 
 
     def break_dead_ends(self, maze: list[list[int]]) -> list[list[int]]:
         height = len(maze)
@@ -424,6 +428,7 @@ class PacmanMap:
                     self.engine.add_single_entity(wall)
 
                 elif cell_type == PacmanCell.PACGUM:
+                    self.pacgum_count += 1
                     pacgum = Entity(f"pacgum_{x}_{y}")
                     pacgum.add_component(Position(base_x, base_y))
 

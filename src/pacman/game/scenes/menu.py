@@ -12,6 +12,7 @@ from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.scenes.game import GameScene
 from pacman.game.scenes.score import ScoreScene
+from pacman.game.services.parser import Parser
 from pacman.game.settings import GameSettings
 
 
@@ -27,8 +28,14 @@ class MenuState(Enum):
 
 
 class MenuScene(Scene):
-    def __init__(self, settings: GameSettings, sprite_service: SpriteService):
+    def __init__(
+        self,
+        settings: GameSettings,
+        sprite_service: SpriteService,
+        game_data: Parser,
+    ):
         self.settings = settings
+        self.game_data = game_data
         self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
         self.texture = None
@@ -106,7 +113,11 @@ class MenuScene(Scene):
 
                 if self.anim_index >= len(self.dead_frames):
                     if self.status == MenuChoice.PLAY:
-                        return GameScene(self.settings, self.sprite_service)
+                        return GameScene(
+                            self.settings,
+                            self.sprite_service,
+                            self.game_data,
+                        )
                     elif self.status == MenuChoice.QUIT:
                         sys.exit(0)
                     else:

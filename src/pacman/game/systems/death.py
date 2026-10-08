@@ -29,13 +29,12 @@ class DeathSystem(System):
         )
         self.resources = resources
         self.events = self.resources.events
-        self.lives = resources.data_score.lives
         self.pacman: Entity | None = None
         self.is_dying = False
 
     def run(self) -> None:
         if self.resources.sprite_service:
-            for i in range(self.lives):
+            for i in range(self.resources.data_score.lives):
                 pr.draw_texture_ex(
                     self.resources.sprite_service.get_sprite("pacman-right-2"),
                     pr.Vector2(1600 + 100 * i, 400),
@@ -53,7 +52,7 @@ class DeathSystem(System):
                 return
 
             self.pacman.get_component(Dead).dead = False
-            if self.lives <= 0:
+            if self.resources.data_score.lives <= 0:
                 self.events.push(GameOverEvent(self.resources.score))
 
             sprites_comp.sprite_index = 0
@@ -71,7 +70,7 @@ class DeathSystem(System):
                     entt.get_component(Position).y = respawn.y
                     entt.get_component(Sprites).display = True
 
-            self.lives -= 1
+            self.resources.data_score.lives -= 1
             self.is_dying = False
             return
 

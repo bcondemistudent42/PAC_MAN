@@ -20,6 +20,7 @@ class PacgumSystem(System):
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):
+                self.resources.pacgum_count -= 1
                 cell = event.entities["pacgum"]
                 cell.get_component(Sprites).sprites = ["no-pacgum-cell"]
                 cell.components.pop(Collision, None)
@@ -30,6 +31,8 @@ class PacgumSystem(System):
                 all(e in event.entities for e in ["pacman", "super_pacgum"]) and
                 not event.entities["pacman"].get_component(Dead).dead
             ):
+                self.resources.pacgum_count -= 1
+
                 pacman = event.entities["pacman"]
                 if pacman.get_component(Dead).dead or pacman.get_component(Position).x == pacman.get_component(Respawn).x or pacman.get_component(Position).y == pacman.get_component(Respawn).y:
                     return
