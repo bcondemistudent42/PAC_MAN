@@ -5,6 +5,7 @@ from pacman.engine.components.defaults.sprites import Sprites
 from pacman.engine.components.defaults.velocity import Velocity
 from pacman.engine.systems.system import System
 from pacman.game.components.dead import Dead
+from pacman.game.components.ghost_score import GhostScore
 from pacman.game.components.respawn import Respawn
 from pacman.game.components.scared import Scared
 from pacman.game.resources import PacmanResources
@@ -39,6 +40,8 @@ class RespawnGhostSystem(System):
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Dead).dead = False
                 sub.get_component(Dead).eaten = False
+                sub.get_component(Sprites).display = True
+                sub.get_component(GhostScore).display = False
 
                 sub.get_component(Position).x = sub.get_component(Respawn).x
                 sub.get_component(Position).y = sub.get_component(Respawn).y
