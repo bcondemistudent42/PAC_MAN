@@ -3,6 +3,7 @@ from pacman.engine.components.defaults.intention import Intention
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
 from pacman.game.services.ghosts_behavior.behavior import Behavior
+from pacman.game.systems.target import GhostState
 
 
 # when a lot of pacgum is eaten, passing a thresholds to add velocity to the ghost
@@ -23,9 +24,11 @@ class InkyBehavior(Behavior):
         self.blinky = blinky
         # to use for scared behavior to se implementation later
 
-    def find_pacman(self, scared: bool = False) -> list | None:
-        if scared:
+    def find_pacman(self, state: GhostState) -> list | None:
+        if state is GhostState.AFRAID:
             return self.scared_behavior()
+        elif state is GhostState.SCATTER:
+            return self.scatered_behavior() #to add better function to make random later
 
         preshot_dist = 2
         pacman_intention = self.pacman.get_component(Intention).direction

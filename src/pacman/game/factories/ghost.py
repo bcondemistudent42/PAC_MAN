@@ -106,7 +106,7 @@ class GhostFactory:
             [
                 Scared(self.scared_ghost_spr),
                 position,
-                Velocity(self.settings.scale),
+                Velocity(self.settings.scale * 0.8),
                 Direction(Dir.DOWN, direction_sprites),
                 Intention(Dir.DOWN),
                 Collision("ghost"),

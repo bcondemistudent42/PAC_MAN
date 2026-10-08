@@ -1,6 +1,7 @@
 from pacman.engine.components.defaults.position import Position
 from pacman.engine.components.entity import Entity
 from pacman.game.services.ghosts_behavior.behavior import Behavior
+from pacman.game.systems.target import GhostState
 
 
 # when a lot of pacgum is eaten, passing a thresholds to add velocity to the ghost
@@ -16,9 +17,11 @@ class BlinkyBehavior(Behavior):
 
         super().__init__(ghost, pacman, cell_size, maze_size, maze, (0, 0))
 
-    def find_pacman(self, scared: bool = False) -> list | None:
-        if scared:
+    def find_pacman(self, state: GhostState) -> list | None:
+        if state is GhostState.AFRAID:
             return self.scared_behavior()
+        elif state is GhostState.SCATTER:
+            return self.scatered_behavior() #to add better function to make random later
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(

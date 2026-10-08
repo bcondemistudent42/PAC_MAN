@@ -1,4 +1,5 @@
 import time
+from enum import Enum
 
 from pacman.engine.components.defaults.direction import Dir, Direction
 from pacman.engine.components.defaults.intention import Intention
@@ -13,24 +14,42 @@ from pacman.game.components.target import Target
 from pacman.game.resources import resources
 
 
+class GhostState(Enum):
+    CHASE = 1
+    SCATTER = 2
+    AFRAID = 3
+
+
 class TargetSystem(System):
     def __init__(self, resources: resources):
         super().__init__([Target, Position, Intention, Direction, Scared])
         self.resources = resources
         self.start = time.time()
+        self.behavior = GhostState.CHASE
+        self.changed_behavior = time.time()
+        self.cooldown = 5
 
     def run(self):
+
+
+        if self.behavior == GhostState.CHASE and time.time() - self.changed_behavior >= self.cooldown:
+            self.behavior = GhostState.SCATTER
+            self.changed_behavior = time.time()
+        elif self.behavior == GhostState.SCATTER and time.time() - self.changed_behavior >= self.cooldown:
+            self.behavior = GhostState.CHASE
+            self.changed_behavior = time.time()
+
         for each_subscriber in self.subscribers:
             actualy_scared = each_subscriber.get_component(Scared).scared
             actualy_ending_scared = each_subscriber.get_component(
                 Scared
             ).end_scared
             actualy_dead = each_subscriber.get_component(Dead).dead
-            check = False
+
             if actualy_scared or actualy_dead or actualy_ending_scared:
-                check = True
+                self.behavior = GhostState.AFRAID
             behavior = each_subscriber.get_component(Target).behavior
-            road = behavior.find_pacman(check)
+            road = behavior.find_pacman(self.behavior)
             self.change_direction(each_subscriber, road, behavior.ghost_coord)
             if behavior.ghost_coord == behavior.corner and actualy_dead and each_subscriber.get_component(Velocity).speed != 0:
                 each_subscriber.get_component(Velocity).speed = 0

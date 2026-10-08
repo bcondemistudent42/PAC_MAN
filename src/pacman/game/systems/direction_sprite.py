@@ -25,7 +25,7 @@ class DirectionSpriteSystem(System):
                         Dead
                     ).sprites[sub.get_component(Direction).direction]
                     if sub.id != "pac_man":
-                        sub.get_component(Velocity).speed = 10
+                        sub.get_component(Velocity).speed = 13
             elif (
                 sub.check_component(Scared)
                 and sub.get_component(Scared).end_scared
