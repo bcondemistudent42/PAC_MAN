@@ -70,7 +70,6 @@ class GameScene(Scene):
         return None
 
     def render(self, engine: GameEngine) -> None:
-        pr.draw_fps(1600, 700)
         for system in engine.systems:
             system.run()
 

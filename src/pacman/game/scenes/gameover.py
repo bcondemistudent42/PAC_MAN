@@ -30,10 +30,8 @@ class GameOverScene(Scene):
         self.anim_index = 0
         
         self.chasing_right = True
-        self.pacman_x = -50.0
-        self.ghost_x = -130.0
         self.y_pos = self.settings.window_height * 0.75
-        self.speed = 200.0
+        self.speed = 350.0
         
         self.pacman_right_frames = ["pacman-right-1", "pacman-right-2", "pacman-right-3", "pacman-right-2"]
         self.pacman_left_frames = ["pacman-left-1", "pacman-left-2", "pacman-left-3", "pacman-left-2"]
@@ -42,8 +40,8 @@ class GameOverScene(Scene):
 
     def enter(self, engine: GameEngine) -> None:
         self.chasing_right = True
-        self.pacman_x = -50.0
-        self.ghost_x = -130.0
+        self.pacman_x = -30.0
+        self.ghost_x = -250.0
 
     def update(self, engine: GameEngine) -> Scene | None:
         dt = pr.get_frame_time()
@@ -52,21 +50,25 @@ class GameOverScene(Scene):
         if self.anim_timer > 0.1:
             self.anim_index += 1
             self.anim_timer = 0.0
-
         if self.chasing_right:
             self.pacman_x += self.speed * dt
             self.ghost_x += self.speed * dt
-            if self.ghost_x > self.settings.window_width + 50:
+            
+            if self.ghost_x > self.settings.window_width + 160:
                 self.chasing_right = False
-                self.ghost_x = self.settings.window_width + 50
-                self.pacman_x = self.settings.window_width + 130
+                
+                self.ghost_x = float(self.settings.window_width + 50)
+                
+                self.pacman_x = self.ghost_x + 250.0
         else:
             self.pacman_x -= self.speed * dt
             self.ghost_x -= self.speed * dt
-            if self.pacman_x < -50:
+            
+
+            if self.pacman_x < -160:
                 self.chasing_right = True
-                self.pacman_x = -50.0
-                self.ghost_x = -130.0
+                self.pacman_x = -30.0
+                self.ghost_x = -250.0
 
         if pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
             return self.menu_scene
@@ -77,7 +79,7 @@ class GameOverScene(Scene):
         title = "GAME OVER"
         title_size = self.settings.window_height // 8
         title_width = pr.measure_text(title, title_size)
-        
+
         pr.draw_text(
             title,
             (self.settings.window_width - title_width) // 2,
@@ -122,7 +124,7 @@ class GameOverScene(Scene):
             pacman_sprite = self.sprite_service.get_sprite(pac_frame)
             ghost_sprite = self.sprite_service.get_sprite(ghost_frame)
 
-            scale = 3.0  
+            scale = 10  
             
             pr.draw_texture_ex(
                 pacman_sprite,
