@@ -4,7 +4,6 @@ from pacman.engine.engine import GameEngine
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.factories.sprites import SpriteFactory
 from pacman.game.scenes.menu import MenuScene
-from pacman.game.services.parser import parse
 from pacman.game.settings import GameSettings
 
 pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
@@ -12,8 +11,8 @@ pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
 
 def main():
     settings = GameSettings.from_window(
-        window_width=2440,
-        window_height=1440,
+        window_width=1200,
+        window_height=800,
     )
 
     pr.init_window(settings.window_width, settings.window_height, "PACMAN")

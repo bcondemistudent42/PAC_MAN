@@ -52,5 +52,9 @@ class ClydeBehavior(Behavior):
             target = self.corner
 
         output = self.solver.find_road((x_ghost_graph, y_ghost_graph), target)
+        if output and (output[0] == (x_ghost_graph, y_ghost_graph -1) or output[0] == (x_ghost_graph - 1, y_ghost_graph)):
+            return None
+        if output and (output[0] == (x_ghost_graph, y_ghost_graph +1) or output[0] == (x_ghost_graph + 1, y_ghost_graph)):
+            return None
 
         return output
