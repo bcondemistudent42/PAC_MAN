@@ -24,7 +24,7 @@ class PinkyBehavior(Behavior):
         if state is GhostState.AFRAID:
             return self.scared_behavior()
 
-        preshot_dist = 4
+        preshot_dist = int(self.maze_size[0] * 0.25)
         pacman_intention = self.pacman.get_component(Intention).direction
 
         x_ghost = self.ghost.get_component(Position).x

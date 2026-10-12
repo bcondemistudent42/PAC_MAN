@@ -23,7 +23,7 @@ class ClydeBehavior(Behavior):
             maze,
             (maze_size[0] - 1, maze_size[1] - 1),
         )
-        self.margin = 3
+        self.margin = int(maze_size[0] * 0.25)
 
     def find_pacman(self, state: GhostState) -> list | None:
         if state is GhostState.AFRAID:
@@ -43,18 +43,19 @@ class ClydeBehavior(Behavior):
             (x_pacman, y_pacman), self.cell_size
         )
 
+
         target = (x_pacman_graph, y_pacman_graph)
         if (
             abs(x_ghost_graph - x_pacman_graph)
             + abs(y_ghost_graph - y_pacman_graph)
             <= self.margin
         ):
-            target = self.corner
+            if self.last_pacman_coord == (target):
+                target = (x_ghost_graph, y_ghost_graph)
+            else:
+                target = self.corner
 
         output = self.solver.find_road((x_ghost_graph, y_ghost_graph), target)
-        if output and (output[0] == (x_ghost_graph, y_ghost_graph -1) or output[0] == (x_ghost_graph - 1, y_ghost_graph)):
-            return None
-        if output and (output[0] == (x_ghost_graph, y_ghost_graph +1) or output[0] == (x_ghost_graph + 1, y_ghost_graph)):
-            return None
+        self.last_pacman_coord = (x_pacman_graph, y_pacman_graph)
 
         return output
