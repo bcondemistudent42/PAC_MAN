@@ -23,14 +23,24 @@ class HUDSystem(System):
         score_y = window_height // 16
         time_y = score_y + font_size + margin
         lives_y = time_y + font_size + margin
-        cheat_y = time_y + lives_y + margin
+        corner_y = time_y + lives_y + margin
+        scared_y = corner_y + lives_y + margin
 
 
-        cheat_txt = "Press C to block ghosts in the corners"
+        corner_txt = "Press C :\nBlocks ghosts \nin corners"
         pr.draw_text(
-                cheat_txt,
+                corner_txt,
                 hud_x,
-                cheat_y,
+                corner_y,
+                font_size,
+                pr.WHITE,
+            )
+
+        scared_txt = "Press S:\nScares ghosts"
+        pr.draw_text(
+                scared_txt,
+                hud_x,
+                scared_y,
                 font_size,
                 pr.WHITE,
             )
