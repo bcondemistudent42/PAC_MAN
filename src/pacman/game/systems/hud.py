@@ -23,6 +23,17 @@ class HUDSystem(System):
         score_y = window_height // 16
         time_y = score_y + font_size + margin
         lives_y = time_y + font_size + margin
+        cheat_y = time_y + lives_y + margin
+
+
+        cheat_txt = "Press C to block ghosts in the corners"
+        pr.draw_text(
+                cheat_txt,
+                hud_x,
+                cheat_y,
+                font_size,
+                pr.WHITE,
+            )
 
         pr.draw_text(
             f"Score: {self.resources.score}",

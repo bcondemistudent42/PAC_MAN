@@ -5,6 +5,7 @@ from pacman.engine.systems.defaults.movement import MovementSystem
 from pacman.engine.systems.defaults.sprite import SpriteSystem
 from pacman.game.resources import PacmanResources
 from pacman.game.settings import GameSettings
+from pacman.game.systems.cheat import CheatSystem
 from pacman.game.systems.death import DeathSystem
 from pacman.game.systems.direction_sprite import DirectionSpriteSystem
 from pacman.game.systems.hud import HUDSystem
@@ -49,5 +50,6 @@ class SystemFactory:
                 ScoreSystem(self.resources),
                 SpriteSystem(self.resources),
                 HUDSystem(self.resources, self.settings),
+                CheatSystem(self.resources)
             ]
         )

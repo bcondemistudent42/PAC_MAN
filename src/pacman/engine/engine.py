@@ -78,6 +78,8 @@ class GameEngine:
     def clear(self) -> None:
         self.entities.clear()
         for system in self.systems:
+            if system.subscribers is None:
+                continue
             system.subscribers.clear()
         self.systems.clear()
         self.events.drain()

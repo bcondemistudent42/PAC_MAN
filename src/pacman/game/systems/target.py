@@ -39,6 +39,15 @@ class TargetSystem(System):
         self.paused_at: float | None = None
 
     def run(self):
+
+        if self.resources.cheat_corner:
+            for each_sub in self.subscribers:
+                target = each_sub.get_component(Target)
+                behavior = target.behavior
+                each_sub.get_component(Position).x = each_sub.get_component(Respawn).x
+                each_sub.get_component(Position).y = each_sub.get_component(Respawn).y
+            return
+
         if self.resources.frozen:
             return
 

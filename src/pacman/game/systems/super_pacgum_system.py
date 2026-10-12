@@ -18,6 +18,12 @@ class SuperPacgumSystem(System):
         self.cooldown = 6  # arbitrary value to adapt
 
     def run(self) -> None:
+
+        if self.resources.cheat_scared:
+            for entt in self.subscribers:
+                entt.get_component(Scared).scared = True
+            return
+
         if self.resources.frozen:
             return
 

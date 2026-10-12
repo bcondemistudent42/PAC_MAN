@@ -17,6 +17,8 @@ class PacmanResources(Resources):
     score: int = 0
     time_left: float = 0.0
     matrix: list[list[PacmanCell]] = field(default_factory=list)
+    cheat_scared: bool = False
+    cheat_corner: bool = False
 
     def __post_init__(self) -> None:
         self.level_max_time = self.data_score.level_max_time
