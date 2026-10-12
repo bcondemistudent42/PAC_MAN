@@ -43,7 +43,6 @@ class ClydeBehavior(Behavior):
             (x_pacman, y_pacman), self.cell_size
         )
 
-
         target = (x_pacman_graph, y_pacman_graph)
         if (
             abs(x_ghost_graph - x_pacman_graph)

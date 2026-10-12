@@ -12,7 +12,7 @@ from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.scenes.game import GameScene
 from pacman.game.scenes.score import ScoreScene
-from pacman.game.services.parser import Parser, parse
+from pacman.game.services.parser import parse
 from pacman.game.settings import GameSettings
 
 
@@ -141,7 +141,9 @@ class MenuScene(Scene):
                 self.stars.append((x, y, radius))
 
         for x, y, radius in self.stars:
-            pr.draw_circle(int(x), int(y), radius, pr.Color(222, 161, 133, 255))
+            pr.draw_circle(
+                int(x), int(y), radius, pr.Color(222, 161, 133, 255)
+            )
 
         choices_colors = {
             MenuChoice.SCORES: pr.WHITE,

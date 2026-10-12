@@ -50,6 +50,6 @@ class SystemFactory:
                 ScoreSystem(self.resources),
                 SpriteSystem(self.resources),
                 HUDSystem(self.resources, self.settings),
-                CheatSystem(self.resources)
+                CheatSystem(self.resources),
             ]
         )

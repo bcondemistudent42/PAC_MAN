@@ -1,5 +1,5 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from .events.queue import EventsQueue
 from .services.navigation import NavigationService

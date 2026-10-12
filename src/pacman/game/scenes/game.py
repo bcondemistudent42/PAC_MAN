@@ -35,7 +35,7 @@ class GameScene(Scene):
         self.map_service = PacmanMap(
             engine, self.settings, seed=self.game_data.seed
         )
-        
+
         navigation_service = PacmanNavigationService(
             self.map_service.logic_matrix, self.map_service.TILE_SIZE
         )
@@ -50,13 +50,13 @@ class GameScene(Scene):
             pacgum_count=0,
             level_max_time=self.game_data.level_max_time,
             freeze=self.freeze,
-            frozen=False
+            frozen=False,
         )
 
         SystemFactory(self.resources, engine, self.settings).create_all()
         self.map_service.generate_map()
         self.resources.pacgum_count = self.map_service.pacgum_count
-        
+
         pacman = PacmanFactory(self.settings, engine).create()
         GhostFactory(
             settings=self.settings,
@@ -67,24 +67,26 @@ class GameScene(Scene):
         ).create_all()
 
     def update(self, engine: GameEngine) -> None | Scene:
-        if (
-            self.resources.frozen
-            and (time.time() - self.frozen_at >= self.freeze_duration)
+        if self.resources.frozen and (
+            time.time() - self.frozen_at >= self.freeze_duration
         ):
             self.resources.frozen = False
             self.freeze_callback()
 
         try:
-            event = next(filter(lambda e: isinstance(e, GameOverEvent), engine.events.events))            
+            event = next(
+                filter(
+                    lambda e: isinstance(e, GameOverEvent),
+                    engine.events.events,
+                )
+            )
             from pacman.game.scenes.menu import MenuScene
 
             return GameOverScene(
                 self.settings,
                 event.score,
-                MenuScene(
-                    self.settings, self.sprite_service
-                ),
-                self.sprite_service
+                MenuScene(self.settings, self.sprite_service),
+                self.sprite_service,
             )
 
         except StopIteration:
@@ -106,11 +108,7 @@ class GameScene(Scene):
     def exit(self, engine: GameEngine) -> None:
         engine.clear()
 
-    def freeze(
-        self,
-        freeze_duration: float,
-        callback: Callable
-    ) -> None:
+    def freeze(self, freeze_duration: float, callback: Callable) -> None:
         self.resources.frozen = True
         self.freeze_duration = freeze_duration
         self.frozen_at = time.time()

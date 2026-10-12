@@ -37,7 +37,7 @@ class PacmanMap:
         self.sprite_matrix = []
         self.logic_matrix = []
 
-        self.pacgum_count = 0 
+        self.pacgum_count = 0
 
     def break_dead_ends(self, maze: list[list[int]]) -> list[list[int]]:
         height = len(maze)

@@ -28,7 +28,6 @@ class RespawnGhostSystem(System):
                 sub.get_component(Dead).ready_respawn = False
                 sub.get_component(Velocity).speed = 0
 
-
             elif (
                 time.time() - sub.get_component(Dead).dead_time
                 >= sub.get_component(Dead).dead_cooldown

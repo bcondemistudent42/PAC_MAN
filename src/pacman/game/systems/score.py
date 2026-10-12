@@ -25,7 +25,9 @@ class ScoreSystem(System):
             if isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "pacgum"]
             ):
-                self.resources.score += self.resources.data_score.point_per_pacgum
+                self.resources.score += (
+                    self.resources.data_score.point_per_pacgum
+                )
 
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "ghost"]
@@ -34,22 +36,32 @@ class ScoreSystem(System):
                     event.entities["ghost"].get_component(Dead).dead
                     and not event.entities["ghost"].get_component(Dead).eaten
                 ):
-                    self.resources.score += self.resources.data_score.point_per_ghosts
+                    self.resources.score += (
+                        self.resources.data_score.point_per_ghosts
+                    )
                     event.entities["ghost"].get_component(Dead).eaten = True
-                    event.entities["pacman"].get_component(Sprites).display = False
-                    event.entities["ghost"].get_component(Sprites).display = False
-                    event.entities["ghost"].get_component(GhostScore).display = True
+                    event.entities["pacman"].get_component(
+                        Sprites
+                    ).display = False
+                    event.entities["ghost"].get_component(
+                        Sprites
+                    ).display = False
+                    event.entities["ghost"].get_component(
+                        GhostScore
+                    ).display = True
                     eaten_ghosts.append(
                         (event.entities["pacman"], event.entities["ghost"])
                     )
 
-
             elif isinstance(event, CollisionEvent) and all(
                 e in event.entities for e in ["pacman", "super_pacgum"]
             ):
-                self.resources.score += self.resources.data_score.points_per_super_pacgum
+                self.resources.score += (
+                    self.resources.data_score.points_per_super_pacgum
+                )
 
         if eaten_ghosts:
+
             def on_unfreeze() -> None:
                 for pacman, ghost in eaten_ghosts:
                     pacman.get_component(Sprites).display = True
@@ -57,4 +69,3 @@ class ScoreSystem(System):
                     ghost.get_component(GhostScore).display = False
 
             self.resources.freeze(1, on_unfreeze)
-

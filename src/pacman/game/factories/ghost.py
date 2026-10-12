@@ -1,4 +1,3 @@
-
 from random import randint
 
 from pacman.engine.components.defaults.collision import Collision
@@ -122,12 +121,7 @@ class GhostFactory:
                 Intention(Dir.DOWN),
                 Collision("ghost"),
                 Sprites([f"{sprite_name}-right-1"], 0.1),
-                Hitbox(
-                    4 * self.settings.scale,
-                    4 * self.settings.scale,
-                    6,
-                    6
-                ),
+                Hitbox(4 * self.settings.scale, 4 * self.settings.scale, 6, 6),
                 Respawn(resp_x, resp_y, self.settings.scale),
             ]
         )
@@ -186,4 +180,4 @@ class GhostFactory:
         return self.tile_size + 8 * self.settings.scale
 
     def get_scale(self):
-            return self.settings.scale
+        return self.settings.scale

@@ -1,3 +1,4 @@
+import random
 from typing import TYPE_CHECKING
 
 import pyray as pr
@@ -6,7 +7,6 @@ from pydantic import BaseModel, TypeAdapter
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.settings import GameSettings
-import random
 
 if TYPE_CHECKING:
     from pacman.game.scenes.menu import MenuScene
@@ -51,8 +51,9 @@ class ScoreScene(Scene):
                 self.stars.append((x, y, radius))
 
         for x, y, radius in self.stars:
-            pr.draw_circle(int(x), int(y), radius, pr.Color(222, 161, 133, 255))
-
+            pr.draw_circle(
+                int(x), int(y), radius, pr.Color(222, 161, 133, 255)
+            )
 
         title_size = self.settings.window_height // 10
         title_width = pr.measure_text(title, title_size)
@@ -103,7 +104,8 @@ class ScoreScene(Scene):
             pr.draw_text(
                 footer,
                 (self.settings.window_width - footer_width) // 2,
-                self.settings.window_height - (self.settings.window_height // 8),
+                self.settings.window_height
+                - (self.settings.window_height // 8),
                 footer_size,
                 pr.GRAY,
             )

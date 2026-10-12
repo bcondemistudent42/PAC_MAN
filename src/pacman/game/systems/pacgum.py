@@ -30,14 +30,22 @@ class PacgumSystem(System):
                 cell.components.pop(Hitbox, None)
 
             elif (
-                isinstance(event, CollisionEvent) and
-                all(e in event.entities for e in ["pacman", "super_pacgum"]) and
-                not event.entities["pacman"].get_component(Dead).dead
+                isinstance(event, CollisionEvent)
+                and all(
+                    e in event.entities for e in ["pacman", "super_pacgum"]
+                )
+                and not event.entities["pacman"].get_component(Dead).dead
             ):
                 self.resources.pacgum_count -= 1
 
                 pacman = event.entities["pacman"]
-                if pacman.get_component(Dead).dead or pacman.get_component(Position).x == pacman.get_component(Respawn).x or pacman.get_component(Position).y == pacman.get_component(Respawn).y:
+                if (
+                    pacman.get_component(Dead).dead
+                    or pacman.get_component(Position).x
+                    == pacman.get_component(Respawn).x
+                    or pacman.get_component(Position).y
+                    == pacman.get_component(Respawn).y
+                ):
                     return
                 cell = event.entities["super_pacgum"]
                 cell.get_component(Sprites).sprite_index = 0

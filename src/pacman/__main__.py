@@ -24,9 +24,7 @@ def main():
     scene = MenuScene(settings, sprite_service)
 
     with GameEngine(
-        scene,
-        settings.window_width,
-        settings.window_height
+        scene, settings.window_width, settings.window_height
     ) as engine:
         try:
             engine.run()

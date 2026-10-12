@@ -60,4 +60,3 @@ class Behavior(ABC):
         return self.solver.find_road(
             (x_ghost_graph, y_ghost_graph), scatter_point
         )
-

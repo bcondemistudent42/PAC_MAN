@@ -26,24 +26,23 @@ class HUDSystem(System):
         corner_y = time_y + lives_y + margin
         scared_y = corner_y + lives_y + margin
 
-
         corner_txt = "Press C :\nBlocks ghosts \nin corners"
         pr.draw_text(
-                corner_txt,
-                hud_x,
-                corner_y,
-                font_size,
-                pr.WHITE,
-            )
+            corner_txt,
+            hud_x,
+            corner_y,
+            font_size,
+            pr.WHITE,
+        )
 
         scared_txt = "Press S:\nScares ghosts"
         pr.draw_text(
-                scared_txt,
-                hud_x,
-                scared_y,
-                font_size,
-                pr.WHITE,
-            )
+            scared_txt,
+            hud_x,
+            scared_y,
+            font_size,
+            pr.WHITE,
+        )
 
         pr.draw_text(
             f"Score: {self.resources.score}",
@@ -89,5 +88,5 @@ class HUDSystem(System):
                     int(score.position.x),
                     int(score.position.y),
                     40,
-                    pr.Color(0, 225, 225, 255)
+                    pr.Color(0, 225, 225, 255),
                 )

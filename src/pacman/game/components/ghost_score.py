@@ -1,5 +1,3 @@
-
-
 from pacman.engine.components.component import Component
 from pacman.engine.components.defaults.position import Position
 

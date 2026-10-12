@@ -44,8 +44,12 @@ class TargetSystem(System):
             for each_sub in self.subscribers:
                 target = each_sub.get_component(Target)
                 behavior = target.behavior
-                each_sub.get_component(Position).x = each_sub.get_component(Respawn).x
-                each_sub.get_component(Position).y = each_sub.get_component(Respawn).y
+                each_sub.get_component(Position).x = each_sub.get_component(
+                    Respawn
+                ).x
+                each_sub.get_component(Position).y = each_sub.get_component(
+                    Respawn
+                ).y
             return
 
         if self.resources.frozen:
@@ -117,13 +121,16 @@ class TargetSystem(System):
             else:
                 road = behavior.find_pacman(ghost_state)
             self.change_direction(each_subscriber, road, behavior.ghost_coord)
-            if behavior.ghost_coord == behavior.corner and actualy_dead and each_subscriber.get_component(Velocity).speed != 0:
+            if (
+                behavior.ghost_coord == behavior.corner
+                and actualy_dead
+                and each_subscriber.get_component(Velocity).speed != 0
+            ):
                 each_subscriber.get_component(Velocity).speed = 0
                 each_subscriber.get_component(Dead).ready_respawn = True
                 respawn_comp = each_subscriber.get_component(Respawn)
                 each_subscriber.get_component(Position).x = respawn_comp.x
                 each_subscriber.get_component(Position).y = respawn_comp.y
-
 
     def change_direction(
         self,

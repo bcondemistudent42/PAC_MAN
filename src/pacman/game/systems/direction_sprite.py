@@ -40,7 +40,9 @@ class DirectionSpriteSystem(System):
                     != sub.get_component(Scared).sprites
                 ):
                     sub.get_component(Sprites).sprite_index = 0
-                    sub.get_component(Velocity).speed = sub.get_component(Velocity).base_speed * 0.70
+                    sub.get_component(Velocity).speed = (
+                        sub.get_component(Velocity).base_speed * 0.70
+                    )
                     sub.get_component(Sprites).sprites = sub.get_component(
                         Scared
                     ).sprites
@@ -53,7 +55,9 @@ class DirectionSpriteSystem(System):
                     != sub.get_component(Scared).sprites[0:2]
                 ):
                     sub.get_component(Sprites).sprite_index = 0
-                    sub.get_component(Velocity).speed = sub.get_component(Velocity).base_speed * 0.70
+                    sub.get_component(Velocity).speed = (
+                        sub.get_component(Velocity).base_speed * 0.70
+                    )
                     sub.get_component(Sprites).sprites = sub.get_component(
                         Scared
                     ).sprites[0:2]
@@ -65,7 +69,9 @@ class DirectionSpriteSystem(System):
                     ]
                 ):
                     sub.get_component(Sprites).sprite_index = 0
-                    sub.get_component(Velocity).speed = sub.get_component(Velocity).base_speed
+                    sub.get_component(Velocity).speed = sub.get_component(
+                        Velocity
+                    ).base_speed
                     sub.get_component(Sprites).sprites = sub.get_component(
                         Direction
                     ).sprite_map[sub.get_component(Direction).direction]

@@ -73,7 +73,9 @@ class MovementSystem(System):
                 position.y = target_y
 
                 intent_dx, intent_dy = self.direction_map[intention.direction]
-                if self.navigation.is_walkable(cell_x + intent_dx, cell_y + intent_dy):
+                if self.navigation.is_walkable(
+                    cell_x + intent_dx, cell_y + intent_dy
+                ):
                     if direction.direction != intention.direction:
                         sprites = subscriber.get_component(Sprites)
                         sprites.sprite_index = 0
