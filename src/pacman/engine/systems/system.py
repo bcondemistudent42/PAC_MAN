@@ -20,7 +20,8 @@ class System(ABC):
             missing = ", ".join(missing_components)
             raise ValueError(
                 f"Cannot subscribe entity {entity.id!r} to "
-                f"{type(self).__name__}: missing required component(s): {missing}."
+                f"{type(self).__name__}: "
+                f"missing required component(s): {missing}."
             )
 
         self.subscribers.append(entity)

@@ -80,9 +80,9 @@ class GhostFactory:
             ),
         }
         if name not in ghost_data:
-            supported_ghosts = ", ".join(ghost_data)
+            supported_ghost = ", ".join(ghost_data)
             raise ValueError(
-                f"Unknown ghost {name!r}. Supported ghosts: {supported_ghosts}."
+                f"Unknown ghost {name!r}. Supported ghosts: {supported_ghost}."
             )
         if name == "inky" and self.blinky is None:
             raise RuntimeError("Cannot create Inky before Blinky.")

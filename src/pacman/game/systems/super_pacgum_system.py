@@ -54,8 +54,3 @@ class SuperPacgumSystem(System):
                 if entt.get_component(Scared).scared:
                     entt.get_component(Scared).end_scared = True
                     entt.get_component(Scared).scared = False
-
-
-# bug when a ghost have been eaten right after scared, he still gets the end sacred
-
-# entt.get_component(Dead).dead or entt.get_component(Scared).scared or

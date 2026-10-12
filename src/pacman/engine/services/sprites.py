@@ -32,8 +32,8 @@ class SpriteService:
 
         for sprite_name, position in sprite_config.items():
             sprite_image = image_array[
-                position.y : position.y + position.height,
-                position.x : position.x + position.width,
+                position.y: position.y + position.height,
+                position.x: position.x + position.width,
             ].copy()
             mask = (sprite_image[:, :, :3] == [0, 0, 0]).all(axis=-1)
             sprite_image[mask, 3] = 0

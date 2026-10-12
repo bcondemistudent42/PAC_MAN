@@ -4,7 +4,6 @@ from pacman.game.services.ghosts_behavior.behavior import Behavior
 from pacman.game.systems.target import GhostState
 
 
-# when a lot of pacgum is eaten, passing a thresholds to add velocity to the ghost
 class BlinkyBehavior(Behavior):
     def __init__(
         self,

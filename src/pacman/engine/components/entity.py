@@ -17,8 +17,10 @@ class Entity:
             return
 
         if not isinstance(component, Component):
+            err = "Expected a Component instance",
+            "or a list of Component instances, "
             raise TypeError(
-                "Expected a Component instance or a list of Component instances, "
+                err,
                 f"got {type(component).__name__}."
             )
 

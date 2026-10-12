@@ -146,7 +146,8 @@ class PacmanMap:
         return maze
 
     def get_map_matrix(self) -> list[list[PacmanCell]]:
-        """Retourne la matrice logique du niveau pour le système de mouvement."""
+        """Retourne la matrice
+        logique du niveau pour le système de mouvement."""
         return self.logic_matrix
 
     def maze_to_matrix(self) -> None:
@@ -246,7 +247,8 @@ class PacmanMap:
                     elif self.map[y - 1][x - 1] & (1 << 1):
                         self.sprite_matrix[y * 3][x * 3] = "wall-top"
                     else:
-                        # On met le mur NORD jusqu'au bout, on décale le coin dans la case voisine
+                        # On met le mur NORD
+                        # jusqu'au bout, on décale le coin dans la case voisine
                         self.sprite_matrix[y * 3][x * 3] = "wall-top"
                         self.sprite_matrix[y * 3][x * 3 - 1] = (
                             "corner-bottom-left"
