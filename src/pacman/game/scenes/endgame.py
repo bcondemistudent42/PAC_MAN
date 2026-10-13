@@ -64,8 +64,8 @@ class EndGameScene(Scene):
         self.blinky_right_frames = ["blinky-right-1", "blinky-right-2"]
         self.scared_ghost_frames = ["blue-ghost-1", "blue-ghost-2"]
 
-        input_width = 250
-        input_height = 40
+        input_width = 750
+        input_height = 120
         self.name_input = TextInput(
             x=(self.settings.window_width - input_width) // 2,
             y=self.settings.window_height // 2 + 30,
@@ -144,12 +144,12 @@ class EndGameScene(Scene):
         )
 
         prompt_text = "ENTER YOUR NAME:"
-        prompt_size = 20
+        prompt_size = 50
         prompt_width = pr.measure_text(prompt_text, prompt_size)
         pr.draw_text(
             prompt_text,
             (self.settings.window_width - prompt_width) // 2,
-            self.settings.window_height // 2,
+            self.settings.window_height // 2 - 60,
             prompt_size,
             pr.YELLOW
         )
@@ -226,6 +226,7 @@ class EndGameScene(Scene):
 
         scores = sorted(scores, key=lambda s: s.score, reverse=True)[:5]
 
-        with open(file_path, "wb") as score_file:
-            json_bytes = user_list_adapter.dump_json(scores, indent=4)
-            score_file.write(json_bytes)
+        if self.name.strip():
+            with open(file_path, "wb") as score_file:
+                    json_bytes = user_list_adapter.dump_json(scores, indent=4)
+                    score_file.write(json_bytes)

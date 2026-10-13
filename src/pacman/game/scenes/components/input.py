@@ -26,7 +26,7 @@ class TextInput:
         self.width = width
         self.height = height
         self.max_length = max_length
-        self.font_size = 20
+        self.font_size = 60
 
         self.text = ""
 
