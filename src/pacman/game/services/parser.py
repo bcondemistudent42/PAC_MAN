@@ -25,7 +25,5 @@ def parse() -> Parser:
             data = Parser.model_validate(cleaned_data)
             return data
     except FileNotFoundError:
-        fallback = {}
+        fallback: dict = {}
         return Parser.model_validate(fallback)
-
-

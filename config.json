@@ -1,6 +1,6 @@
 {
     "seed": 20,
-    "lives": 15,
+    "lives": 3,
     "level_max_time": 90,
     "point_per_pacgum": 10,
     "point_per_ghosts": 200,
