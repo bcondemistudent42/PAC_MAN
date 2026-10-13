@@ -10,8 +10,8 @@ from pacman.game.settings import GameSettings
 def main() -> None:
     """Initialize resources and run the Pac-Man application."""
     settings = GameSettings.from_window(
-        window_width=1200,
-        window_height=800,
+        window_width=2200,
+        window_height=1440,
     )
 
     pr.init_window(settings.window_width, settings.window_height, "PACMAN")
