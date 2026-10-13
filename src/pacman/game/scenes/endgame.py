@@ -71,7 +71,7 @@ class EndGameScene(Scene):
             y=self.settings.window_height // 2 + 30,
             width=input_width,
             height=input_height,
-            max_length=12
+            max_length=10
         )
 
     def enter(self, engine: GameEngine) -> None:
