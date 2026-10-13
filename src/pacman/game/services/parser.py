@@ -31,6 +31,6 @@ def parse() -> Parser:
             cleaned_data = json.loads(second_clean)
             data = Parser.model_validate(cleaned_data)
             return data
-    except FileNotFoundError:
+    except Exception:
         fallback: dict = {}
         return Parser.model_validate(fallback)

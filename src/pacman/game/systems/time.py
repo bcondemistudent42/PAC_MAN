@@ -2,6 +2,7 @@ import time
 
 from pacman.game.resources import PacmanResources
 from pacman.game.systems.death import GameOverEvent
+import pyray as pr
 
 from ...engine.systems.system import System
 
@@ -12,9 +13,8 @@ class TimeSystem(System):
     def __init__(self, resources: PacmanResources) -> None:
         """Create a level timer system."""
         self.subscribers = []
-        self.start_time = time.time()
-        self.time_left: float = 0
         self.resources = resources
+        self.time_left: float = resources.level_max_time
         self.required_components = None
         self.events = self.resources.events
 
@@ -30,10 +30,7 @@ class TimeSystem(System):
                 "running TimeSystem."
             )
 
-        self.time_left = round(
-            level_max_time - abs(self.start_time - time.time()),
-            2,
-        )
+        self.time_left -= pr.get_frame_time()
         self.resources.time_left = self.time_left
         if self.time_left < 0:
             self.events.push(GameOverEvent(self.resources.score))

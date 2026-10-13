@@ -35,7 +35,7 @@ def main() -> None:
             finally:
                 sprite_service.exit_sprites()
     except Exception as e:
-        logger.exception(
+        logger.error(
             f"Unexpected error while running Pac-Man: {str(e)}",
         )
 
