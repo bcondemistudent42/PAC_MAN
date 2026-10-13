@@ -11,6 +11,7 @@ from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.scenes.game import GameScene
+from pacman.game.scenes.instructions import InstructionsScene
 from pacman.game.scenes.score import ScoreScene
 from pacman.game.services.parser import parse
 from pacman.game.settings import GameSettings
@@ -21,6 +22,7 @@ class MenuChoice(Enum):
 
     SCORES = "SCORES"
     PLAY = "PLAY"
+    INSTRUCTIONS = "INSTRUCTIONS"
     QUIT = "QUIT"
 
 
@@ -48,19 +50,20 @@ class MenuScene(Scene):
         self.settings = settings
         self.game_data = parse()
 
-        self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
         self.texture: pr.Texture | None = None
         self.sprite_service = sprite_service
 
         self.toggle_down = {
             MenuChoice.SCORES: MenuChoice.PLAY,
-            MenuChoice.PLAY: MenuChoice.QUIT,
+            MenuChoice.PLAY: MenuChoice.INSTRUCTIONS,
+            MenuChoice.INSTRUCTIONS: MenuChoice.QUIT,
             MenuChoice.QUIT: MenuChoice.SCORES,
         }
         self.toggle_up = {
             MenuChoice.SCORES: MenuChoice.QUIT,
-            MenuChoice.QUIT: MenuChoice.PLAY,
+            MenuChoice.QUIT: MenuChoice.INSTRUCTIONS,
+            MenuChoice.INSTRUCTIONS: MenuChoice.PLAY,
             MenuChoice.PLAY: MenuChoice.SCORES,
         }
 
@@ -135,11 +138,16 @@ class MenuScene(Scene):
                         )
                     elif self.status == MenuChoice.QUIT:
                         sys.exit(0)
-                    else:
+                    elif self.status == MenuChoice.SCORES:
                         self.state = MenuState.SELECTING
                         self.anim_index = 0
                         self.anim_timer = 0.0
                         return ScoreScene(self.settings, self)
+                    else:
+                        self.state = MenuState.SELECTING
+                        self.anim_index = 0
+                        self.anim_timer = 0.0
+                        return InstructionsScene(self.settings, self)
 
         return None
 
@@ -164,6 +172,7 @@ class MenuScene(Scene):
         choices_colors = {
             MenuChoice.SCORES: pr.WHITE,
             MenuChoice.PLAY: pr.WHITE,
+            MenuChoice.INSTRUCTIONS: pr.WHITE,
             MenuChoice.QUIT: pr.WHITE,
         }
 
