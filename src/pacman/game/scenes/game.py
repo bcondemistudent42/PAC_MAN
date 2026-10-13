@@ -12,6 +12,7 @@ from pacman.game.factories.pacman import PacmanFactory
 from pacman.game.factories.system import SystemFactory
 from pacman.game.resources import PacmanResources
 from pacman.game.scenes.gameover import GameOverScene
+from pacman.game.scenes.win import WinScene
 from pacman.game.services.maps import PacmanMap
 from pacman.game.services.navigation import PacmanNavigationService
 from pacman.game.services.parser import Parser
@@ -41,7 +42,7 @@ class GameScene(Scene):
         self.level = level
         self.sprite_service = sprite_service
         self.game_data = game_data
-        self.freeze_condition: float | list[pr.KeyboardKey] = 0
+        self.freeze_condition: float | list[int] = 0
         self.frozen_at = time.time()
 
     def enter(self, engine: GameEngine) -> None:
@@ -121,6 +122,15 @@ class GameScene(Scene):
             engine.events.drain()
 
         if self.resources.pacgum_count == 0:
+            if self.level == 2:
+                from pacman.game.scenes.menu import MenuScene
+
+                return WinScene(
+                    self.settings,
+                    self.resources.score,
+                    MenuScene(self.settings, self.sprite_service),
+                    self.sprite_service,
+                )
             return GameScene(
                 self.settings,
                 self.sprite_service,
@@ -140,7 +150,7 @@ class GameScene(Scene):
 
     def freeze(
         self,
-        freeze_condition: float | list[pr.KeyboardKey],
+        freeze_condition: float | list[int],
         callback: Callable[[], None],
     ) -> None:
         """Freeze level updates until a key is pressed or time elapses.

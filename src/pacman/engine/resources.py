@@ -1,8 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
-import pyray as pr
-
 from .events.queue import EventsQueue
 from .services.navigation import NavigationService
 from .services.sprites import SpriteService
@@ -13,7 +11,7 @@ class Resources:
     """Shared runtime services and state used by engine systems."""
 
     freeze: Callable[
-        [float | list[pr.KeyboardKey], Callable[[], None]], None
+        [float | list[int], Callable[[], None]], None
     ]
     frozen: bool
     events: EventsQueue
