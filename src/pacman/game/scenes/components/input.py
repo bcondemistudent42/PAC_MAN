@@ -1,7 +1,15 @@
 import pyray as pr
 
+
 class TextInput:
-    def __init__(self, x: int, y: int, width: int, height: int, max_length: int = 15):
+    def __init__(
+            self,
+            x: int,
+            y: int,
+            width: int,
+            height: int,
+            max_length: int = 15
+            ) -> None:
         self.x = x
         self.y = y
         self.width = width
@@ -15,7 +23,7 @@ class TextInput:
         self.cursor_timer = 0.0
         self.blink_rate = 0.5
 
-    def update(self, dt: float):
+    def update(self, dt: float) -> None:
         char_pressed = pr.get_char_pressed()
 
         while char_pressed > 0:
@@ -32,9 +40,11 @@ class TextInput:
             self.cursor_visible = not self.cursor_visible
             self.cursor_timer = 0.0
 
-    def render(self):
+    def render(self) -> None:
         pr.draw_rectangle(self.x, self.y, self.width, self.height, pr.BLACK)
-        pr.draw_rectangle_lines(self.x, self.y, self.width, self.height, pr.WHITE)
+        pr.draw_rectangle_lines(
+            self.x, self.y, self.width, self.height, pr.WHITE
+        )
 
         text_x = self.x + 10
         text_y = self.y + (self.height - self.font_size) // 2

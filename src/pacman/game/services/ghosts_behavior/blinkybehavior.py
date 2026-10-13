@@ -12,11 +12,13 @@ class BlinkyBehavior(Behavior):
         cell_size: float,
         maze_size: tuple[int, int],
         maze: list[list[int]],
-    ):
+    ) -> None:
 
         super().__init__(ghost, pacman, cell_size, maze_size, maze, (0, 0))
 
-    def find_pacman(self, state: GhostState) -> list | None:
+    def find_pacman(
+        self, state: GhostState
+    ) -> list[tuple[int, int]] | None:
         if state is GhostState.AFRAID:
             return self.scared_behavior()
         x_ghost = self.ghost.get_component(Position).x

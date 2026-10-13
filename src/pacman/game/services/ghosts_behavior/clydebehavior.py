@@ -12,7 +12,7 @@ class ClydeBehavior(Behavior):
         cell_size: float,
         maze_size: tuple[int, int],
         maze: list[list[int]],
-    ):
+    ) -> None:
 
         super().__init__(
             ghost,
@@ -23,8 +23,11 @@ class ClydeBehavior(Behavior):
             (maze_size[0] - 1, maze_size[1] - 1),
         )
         self.margin = int(maze_size[0] * 0.25)
+        self.last_pacman_coord: tuple[int, int] | None = None
 
-    def find_pacman(self, state: GhostState) -> list | None:
+    def find_pacman(
+        self, state: GhostState
+    ) -> list[tuple[int, int]] | None:
         if state is GhostState.AFRAID:
             return self.scared_behavior()
 

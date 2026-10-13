@@ -31,11 +31,11 @@ class PacmanMap:
         self.TILE_SIZE = 8 * settings.scale
         self.scale = settings.scale
         self.engine = engine
-        self.map = []
+        self.map: list[list[int]] = []
         self.settings = settings
 
-        self.sprite_matrix = []
-        self.logic_matrix = []
+        self.sprite_matrix: list[list[str]] = []
+        self.logic_matrix: list[list[PacmanCell]] = []
 
         self.pacgum_count = 0
 

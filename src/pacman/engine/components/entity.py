@@ -6,11 +6,11 @@ T = TypeVar("T", bound=Component)
 
 
 class Entity:
-    def __init__(self, id: str):
+    def __init__(self, id: str) -> None:
         self.id = id
         self.components: dict[type[Component], Component] = {}
 
-    def add_component(self, component: Component | list[Component]):
+    def add_component(self, component: Component | list[Component]) -> None:
         if isinstance(component, list):
             for each_comp in component:
                 self.add_component(each_comp)

@@ -8,7 +8,7 @@ class System(ABC):
         self.subscribers: list[Entity] = []
         self.required_components: list[type[Component]] | None = components
 
-    def subscribe(self, entity: Entity):
+    def subscribe(self, entity: Entity) -> None:
         if not self.required_components:
             return
         missing_components = [
@@ -26,7 +26,7 @@ class System(ABC):
 
         self.subscribers.append(entity)
 
-    def unsubscribe(self, entity: Entity):
+    def unsubscribe(self, entity: Entity) -> None:
         self.subscribers.remove(entity)
 
     @abstractmethod

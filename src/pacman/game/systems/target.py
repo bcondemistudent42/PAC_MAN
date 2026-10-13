@@ -38,7 +38,7 @@ class TargetSystem(System):
         self.scatter_duration = scatter_duration
         self.paused_at: float | None = None
 
-    def run(self):
+    def run(self) -> None:
 
         if self.resources.cheat_corner:
             for each_sub in self.subscribers:
@@ -135,9 +135,9 @@ class TargetSystem(System):
     def change_direction(
         self,
         entity: Entity,
-        right_way: list | None,
+        right_way: list[tuple[int, int]] | None,
         ghost_coord: tuple[int, int],
-    ):
+    ) -> None:
         if not right_way:
             return
 

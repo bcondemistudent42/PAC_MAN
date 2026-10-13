@@ -15,7 +15,7 @@ class InkyBehavior(Behavior):
         cell_size: float,
         maze_size: tuple[int, int],
         maze: list[list[int]],
-    ):
+    ) -> None:
 
         super().__init__(
             ghost, pacman, cell_size, maze_size, maze, (0, maze_size[1] - 1)
@@ -23,7 +23,9 @@ class InkyBehavior(Behavior):
         self.blinky = blinky
         # to use for scared behavior to se implementation later
 
-    def find_pacman(self, state: GhostState) -> list | None:
+    def find_pacman(
+        self, state: GhostState
+    ) -> list[tuple[int, int]] | None:
         if state is GhostState.AFRAID:
             return self.scared_behavior()
 

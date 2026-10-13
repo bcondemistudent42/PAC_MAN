@@ -8,11 +8,11 @@ from pacman.game.resources import PacmanResources
 
 
 class PacmanIntentionSystem(System):
-    def __init__(self, resources: PacmanResources):
+    def __init__(self, resources: PacmanResources) -> None:
         super().__init__([Intention, KeyHook])
         self.resources = resources
 
-    def subscribe(self, entity: Entity):
+    def subscribe(self, entity: Entity) -> None:
         if entity.check_component(KeyHook):
             self.subscribers.append(entity)
 

@@ -14,7 +14,7 @@ class SuperPacgumSystem(System):
         super().__init__([Scared])
         self.resources = resources
         self.events = self.resources.events
-        self.last_time_eaten = 0
+        self.last_time_eaten: float = 0
         self.cooldown = 6  # arbitrary value to adapt
 
     def run(self) -> None:

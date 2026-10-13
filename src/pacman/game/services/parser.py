@@ -15,7 +15,7 @@ class Parser(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-def parse():
+def parse() -> Parser:
     with open("config.json") as f:
         raw_data = f.read()
         first_clean = re.sub(r"//.*", "", raw_data)

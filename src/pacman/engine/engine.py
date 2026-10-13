@@ -1,3 +1,5 @@
+from types import TracebackType
+
 import pyray as pr
 
 from .components import Entity
@@ -7,16 +9,23 @@ from .systems import System
 
 
 class GameEngine:
-    def __enter__(self):
+    def __enter__(self) -> "GameEngine":
         self.scene.enter(self)
 
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
         self.scene.exit(self)
         pr.close_window()
 
-    def __init__(self, scene: Scene, window_width: int, window_height: int):
+    def __init__(
+        self, scene: Scene, window_width: int, window_height: int
+    ) -> None:
         self.entities: list[Entity] = []
         self.systems: list[System] = []
         self.events = EventsQueue()
@@ -59,7 +68,7 @@ class GameEngine:
             ):
                 system.subscribe(entity)
 
-    def run(self):
+    def run(self) -> None:
         while not pr.window_should_close():
             new_scene = self.scene.update(self)
 

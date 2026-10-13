@@ -15,7 +15,7 @@ class ScoreSystem(System):
         self.events = resources.events
         self.required_components = None
 
-    def run(self):
+    def run(self) -> None:
         if self.resources.frozen:
             return
 

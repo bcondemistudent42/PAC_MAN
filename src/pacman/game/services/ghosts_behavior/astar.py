@@ -4,13 +4,13 @@ from dataclasses import dataclass
 
 @dataclass
 class Node:
-    parent: tuple[int, int] | None | str
-    heuristic: int | None
-    cost: int | None
-    total_cost_est: int | None
+    parent: tuple["Node", tuple[int, int]] | None
+    heuristic: int
+    cost: int
+    total_cost_est: int
     coord: tuple[int, int]
 
-    def __lt__(self, other: Node):
+    def __lt__(self, other: Node) -> bool:
         if not self.total_cost_est or not other.total_cost_est:
             return False
         return self.total_cost_est < other.total_cost_est
@@ -21,12 +21,12 @@ class Astar:
         self,
         maze_size: tuple[int, int],
         maze: list[list[int]],
-    ):
+    ) -> None:
         self.maze_size = maze_size
         self.maze = maze
 
     @staticmethod
-    def heuristic(start: tuple[int, int], end: tuple[int, int]):
+    def heuristic(start: tuple[int, int], end: tuple[int, int]) -> int:
         return abs(start[0] - end[0]) + abs(start[1] - end[1])
 
     # to pass ghost cord and pacman cord directly in parameter
@@ -37,10 +37,10 @@ class Astar:
         self,
         ghost_coord: tuple[int, int],
         pacman_coord: tuple[int, int],
-    ) -> list | None:
+    ) -> list[tuple[int, int]] | None:
 
-        visited = set()
-        not_visited = []
+        visited: set[tuple[int, int]] = set()
+        not_visited: list[Node] = []
         hp.heapify(not_visited)
 
         start_node = Node(
@@ -72,23 +72,27 @@ class Astar:
             )
             if actual_node.coord == pacman_coord:
                 return self.get_way(actual_node)
+        return None
 
-    def get_way(self, actual_node: Node):
-        output = []
-        actual_node = (actual_node, actual_node.coord)
-        while actual_node[0].parent:
-            output.append(actual_node[1])
-            actual_node = actual_node[0].parent
+    def get_way(self, actual_node: Node) -> list[tuple[int, int]]:
+        output: list[tuple[int, int]] = []
+        node_path: tuple[Node, tuple[int, int]] = (
+            actual_node,
+            actual_node.coord,
+        )
+        while node_path[0].parent:
+            output.append(node_path[1])
+            node_path = node_path[0].parent
         return output
 
     def add_neighbours(
         self,
-        queu: hp.heapq,
+        queu: list[Node],
         actual_node: Node,
-        goal: (int, int),
-        visited: set(int),
-        matrix_size: (int, int),
-    ):
+        goal: tuple[int, int],
+        visited: set[tuple[int, int]],
+        matrix_size: tuple[int, int],
+    ) -> None:
 
         actual_x, actual_y = actual_node.coord
 

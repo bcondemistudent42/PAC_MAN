@@ -6,5 +6,5 @@ class Position(Component):
         self.x = x
         self.y = y
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"({self.x}, {self.y})"

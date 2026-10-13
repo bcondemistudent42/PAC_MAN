@@ -24,7 +24,7 @@ class MovementSystem(System):
             )
         self.navigation = resources.navigation_service
 
-    def run(self):
+    def run(self) -> None:
         if self.resources.frozen:
             return
 

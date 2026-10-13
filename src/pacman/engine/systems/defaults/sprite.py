@@ -6,11 +6,11 @@ from ..system import System
 
 
 class SpriteSystem(System):
-    def __init__(self, resources: Resources):
+    def __init__(self, resources: Resources) -> None:
         super().__init__([Position, Sprites])
         self.resources = resources
 
-    def run(self):
+    def run(self) -> None:
         sprite_service = self.resources.sprite_service
         if sprite_service is None:
             raise RuntimeError(

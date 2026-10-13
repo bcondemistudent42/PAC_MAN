@@ -9,7 +9,7 @@ from pacman.game.settings import GameSettings
 pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
 
 
-def main():
+def main() -> None:
     settings = GameSettings.from_window(
         window_width=1200,
         window_height=800,

@@ -145,11 +145,12 @@ class GameOverScene(Scene):
         footer_size = self.settings.window_height // 32
         footer_width = pr.measure_text(footer, footer_size)
 
-        if int(pr.get_time() * 2) % 2 == 0 and len(self.name_input.text.strip()) > 0:
+        check = int(pr.get_time() * 2) % 2 == 0
+        if check and len(self.name_input.text.strip()) > 0:
             pr.draw_text(
                 footer,
                 (self.settings.window_width - footer_width) // 2,
-                self.settings.window_height - (self.settings.window_height // 8),
+                self.settings.window_height-(self.settings.window_height // 8),
                 footer_size,
                 pr.GRAY,
             )

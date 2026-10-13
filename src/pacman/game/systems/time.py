@@ -10,7 +10,7 @@ class TimeSystem(System):
     def __init__(self, resources: PacmanResources):
         self.subscribers = []
         self.start_time = time.time()
-        self.time_left = 0
+        self.time_left: float = 0
         self.resources = resources
         self.required_components = None
         self.events = self.resources.events

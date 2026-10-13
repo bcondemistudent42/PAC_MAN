@@ -3,7 +3,9 @@ from pacman.game.services.maps import PacmanCell
 
 
 class PacmanNavigationService(NavigationService):
-    def __init__(self, matrix, tile_size):
+    def __init__(
+        self, matrix: list[list[PacmanCell]], tile_size: float
+    ) -> None:
         self.matrix = matrix
         self.tile_size = tile_size
 

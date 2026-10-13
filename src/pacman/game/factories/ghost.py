@@ -176,8 +176,8 @@ class GhostFactory:
             self.blinky = ghost
         return ghost
 
-    def get_formula(self):
+    def get_formula(self) -> float:
         return self.tile_size + 8 * self.settings.scale
 
-    def get_scale(self):
+    def get_scale(self) -> float:
         return self.settings.scale

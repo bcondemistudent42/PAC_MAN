@@ -25,7 +25,9 @@ class Behavior(ABC):
         self.solver = Astar(self.maze_size, self.maze)
 
     @abstractmethod
-    def find_pacman(self, state: GhostState) -> list | None:
+    def find_pacman(
+        self, state: GhostState
+    ) -> list[tuple[int, int]] | None:
         pass
 
     @staticmethod
@@ -35,7 +37,7 @@ class Behavior(ABC):
         x, y = coord
         return (int(x // cell_size), int(y // cell_size))
 
-    def scared_behavior(self):
+    def scared_behavior(self) -> list[tuple[int, int]] | None:
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
@@ -48,7 +50,9 @@ class Behavior(ABC):
             (x_ghost_graph, y_ghost_graph), self.corner
         )
 
-    def find_scatter(self, scatter_point: tuple[int, int]) -> list | None:
+    def find_scatter(
+        self, scatter_point: tuple[int, int]
+    ) -> list[tuple[int, int]] | None:
         x_ghost = self.ghost.get_component(Position).x
         y_ghost = self.ghost.get_component(Position).y
         x_ghost_graph, y_ghost_graph = self.pixel_to_matrix(
