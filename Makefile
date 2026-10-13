@@ -21,13 +21,13 @@ install:
 
 .PHONY: run
 run: install
-	@echo "$(BLUE)[ ᕕ( ᐛ )ᕗ ] Launching the generation engine...$(RESET)"
+	@echo "$(BLUE)[ ᕕ( ᐛ )ᕗ ] Launching the Pacman game...$(RESET)"
 	@$(UV) run python -m $(NAME)
 
 .PHONY: debug
 debug:
 	@echo "$(YELLOW)[ ಠ_ಠ ] Entering debug mode (pdb)...$(RESET)"
-	@$(UV) run python -m pdb -m $(SRC_DIR)
+	@$(UV) run python -m pdb -m $(NAME)
 
 .PHONY: clean
 clean:
