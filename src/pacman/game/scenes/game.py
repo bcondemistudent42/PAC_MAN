@@ -63,6 +63,7 @@ class GameScene(Scene):
             sprite_service=self.sprite_service,
             navigation_service=navigation_service,
             pacgum_count=0,
+            level=self.level,
             level_max_time=self.game_data.level_max_time,
             freeze=self.freeze,
             frozen=False,
@@ -83,6 +84,11 @@ class GameScene(Scene):
 
     def update(self, engine: GameEngine) -> None | Scene:
         """Advance the level and return a replacement scene when needed."""
+        self.resources.display_cheat = (
+            pr.is_key_down(pr.KeyboardKey.KEY_LEFT_CONTROL)
+            or pr.is_key_down(pr.KeyboardKey.KEY_RIGHT_CONTROL)
+        )
+
         if self.resources.frozen:
             if isinstance(self.freeze_condition, list):
                 should_unfreeze = any(
@@ -122,7 +128,7 @@ class GameScene(Scene):
             engine.events.drain()
 
         if self.resources.pacgum_count == 0:
-            if self.level == 10:
+            if self.resources.level == 10:
                 from pacman.game.scenes.menu import MenuScene
 
                 return WinScene(
@@ -135,7 +141,7 @@ class GameScene(Scene):
                 self.settings,
                 self.sprite_service,
                 self.game_data,
-                level=self.level + 1,
+                level=self.resources.level + 1,
             )
         return None
 

@@ -31,39 +31,48 @@ class HUDSystem(System):
 
         score_y = window_height // 16
         time_y = score_y + font_size + margin
-        lives_y = time_y + font_size + margin
-        corner_y = time_y + lives_y + margin
-        scared_y = corner_y + lives_y + margin
+        level_y = time_y + font_size + margin
+        lives_y = level_y + font_size + margin
+        corner_y = time_y + lives_y + margin * 5
+        scared_y = corner_y + lives_y
 
-        corner_txt = "Press C :\nBlocks ghosts \nin corners"
-        pr.draw_text(
-            corner_txt,
-            hud_x,
-            corner_y,
-            font_size,
-            pr.WHITE,
-        )
+        if self.resources.display_cheat:
+            corner_txt = "Press C :\nBlocks ghosts \nin corners"
+            pr.draw_text(
+                corner_txt,
+                hud_x,
+                corner_y + margin // 2,
+                font_size,
+                pr.WHITE,
+            )
 
-        scared_txt = "Press S:\nScares ghosts"
-        pr.draw_text(
-            scared_txt,
-            hud_x,
-            scared_y,
-            font_size,
-            pr.WHITE,
-        )
+            scared_txt = "Press S:\nScares ghosts"
+            pr.draw_text(
+                scared_txt,
+                hud_x,
+                scared_y,
+                font_size,
+                pr.WHITE,
+            )
 
         pr.draw_text(
             f"Score: {self.resources.score}",
             hud_x,
             score_y,
             font_size,
-            pr.WHITE,
+            pr.YELLOW,
         )
         pr.draw_text(
             f"Time remaining: {self.resources.time_left:.2f}",
             hud_x,
             time_y,
+            font_size,
+            pr.WHITE,
+        )
+        pr.draw_text(
+            f"Level: {self.resources.level}",
+            hud_x,
+            level_y,
             font_size,
             pr.WHITE,
         )

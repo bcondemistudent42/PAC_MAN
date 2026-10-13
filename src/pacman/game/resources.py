@@ -18,7 +18,9 @@ class PacmanResources(Resources):
     pacgum_count: int = 0
     score: int = 0
     time_left: float = 0.0
+    level: int = 1
     matrix: list[list[PacmanCell]] = field(default_factory=list)
+    display_cheat: bool = False
     cheat_scared: bool = False
     cheat_corner: bool = False
 
