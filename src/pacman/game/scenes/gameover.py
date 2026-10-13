@@ -6,11 +6,9 @@ import pyray as pr
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
-from pacman.game.settings import GameSettings
-from pacman.game.services.score import ScoreEntry, user_list_adapter
-
-# Import de ton nouveau composant
 from pacman.game.scenes.components.input import TextInput
+from pacman.game.services.score import ScoreEntry, user_list_adapter
+from pacman.game.settings import GameSettings
 
 if TYPE_CHECKING:
     from pacman.game.scenes.menu import MenuScene

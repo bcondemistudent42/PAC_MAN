@@ -21,7 +21,6 @@ class InkyBehavior(Behavior):
             ghost, pacman, cell_size, maze_size, maze, (0, maze_size[1] - 1)
         )
         self.blinky = blinky
-        # to use for scared behavior to se implementation later
 
     def find_pacman(
         self, state: GhostState

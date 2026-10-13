@@ -15,7 +15,7 @@ class SuperPacgumSystem(System):
         self.resources = resources
         self.events = self.resources.events
         self.last_time_eaten: float = 0
-        self.cooldown = 6  # arbitrary value to adapt
+        self.cooldown = 6
 
     def run(self) -> None:
 

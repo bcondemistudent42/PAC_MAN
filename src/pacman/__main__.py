@@ -6,8 +6,6 @@ from pacman.game.factories.sprites import SpriteFactory
 from pacman.game.scenes.menu import MenuScene
 from pacman.game.settings import GameSettings
 
-pr.set_trace_log_level(pr.LOG_NONE)  # type: ignore
-
 
 def main() -> None:
     settings = GameSettings.from_window(
