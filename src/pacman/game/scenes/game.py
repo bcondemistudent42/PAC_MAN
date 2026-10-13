@@ -1,5 +1,6 @@
 import time
 from collections.abc import Callable
+from typing import cast
 
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
@@ -28,7 +29,7 @@ class GameScene(Scene):
         self.level = level
         self.sprite_service = sprite_service
         self.game_data = game_data
-        self.freeze_duration = 0
+        self.freeze_duration: float = 0
         self.frozen_at = time.time()
 
     def enter(self, engine: GameEngine) -> None:
@@ -74,11 +75,14 @@ class GameScene(Scene):
             self.freeze_callback()
 
         try:
-            event = next(
-                filter(
-                    lambda e: isinstance(e, GameOverEvent),
-                    engine.events.events,
-                )
+            event = cast(
+                GameOverEvent,
+                next(
+                    filter(
+                        lambda e: isinstance(e, GameOverEvent),
+                        engine.events.events,
+                    )
+                ),
             )
             from pacman.game.scenes.menu import MenuScene
 
@@ -108,7 +112,9 @@ class GameScene(Scene):
     def exit(self, engine: GameEngine) -> None:
         engine.clear()
 
-    def freeze(self, freeze_duration: float, callback: Callable) -> None:
+    def freeze(
+        self, freeze_duration: float, callback: Callable[[], None]
+    ) -> None:
         self.resources.frozen = True
         self.freeze_duration = freeze_duration
         self.frozen_at = time.time()

@@ -38,7 +38,7 @@ class MenuScene(Scene):
 
         self.choices = ["SCORES", "PLAY", "QUIT"]
         self.status = MenuChoice.PLAY
-        self.texture = None
+        self.texture: pr.Texture | None = None
         self.sprite_service = sprite_service
 
         self.toggle_down = {
@@ -82,11 +82,12 @@ class MenuScene(Scene):
         img = pr.load_image_from_memory(
             ".png", cast(str, raw_img), len(raw_img)
         )
-        self.texture = pr.load_texture_from_image(img)
+        texture: pr.Texture = pr.load_texture_from_image(img)
+        self.texture = texture
         pr.unload_image(img)
 
         pr.set_texture_filter(
-            self.texture, pr.TextureFilter.TEXTURE_FILTER_BILINEAR
+            texture, pr.TextureFilter.TEXTURE_FILTER_BILINEAR
         )
 
     def update(self, engine: GameEngine) -> Scene | None:
