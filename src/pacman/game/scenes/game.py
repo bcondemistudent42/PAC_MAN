@@ -89,6 +89,13 @@ class GameScene(Scene):
             or pr.is_key_down(pr.KeyboardKey.KEY_RIGHT_CONTROL)
         )
 
+        if (
+            pr.is_key_pressed(pr.KeyboardKey.KEY_BACKSPACE)
+        ):
+            from pacman.game.scenes.menu import MenuScene
+
+            return MenuScene(self.settings, self.sprite_service)
+
         if self.resources.frozen:
             if isinstance(self.freeze_condition, list):
                 should_unfreeze = any(
