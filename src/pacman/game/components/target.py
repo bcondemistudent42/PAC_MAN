@@ -10,6 +10,8 @@ if TYPE_CHECKING:
 
 
 class Target(Component):
+    """Store a ghost behavior and its current scatter target."""
+
     def __init__(
         self,
         target: Entity,
@@ -18,6 +20,15 @@ class Target(Component):
         behavior: Behavior,
         scatter_point: tuple[int, int],
     ) -> None:
+        """Create a targeting component.
+
+        Args:
+            target: Entity targeted by the behavior.
+            maze_size: Maze dimensions in cells.
+            maze: Maze wall representation.
+            behavior: Strategy used to calculate a route.
+            scatter_point: Current scatter destination.
+        """
         self.behavior = behavior
         self.target = target
         self.maze_size = maze_size

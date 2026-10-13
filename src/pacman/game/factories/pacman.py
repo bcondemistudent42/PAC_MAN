@@ -16,11 +16,20 @@ from pacman.game.settings import GameSettings
 
 
 class PacmanFactory:
+    """Construct the Pac-Man player entity and its components."""
+
     def __init__(self, settings: GameSettings, engine: GameEngine) -> None:
+        """Create a Pac-Man factory.
+
+        Args:
+            settings: Game and rendering settings.
+            engine: Engine receiving the player entity.
+        """
         self.settings = settings
         self.engine = engine
 
     def create(self) -> Entity:
+        """Create, register, and return the Pac-Man entity."""
         tile_size = 8 * self.settings.scale
         pacman = Entity("pac_man")
         death_sprites = [

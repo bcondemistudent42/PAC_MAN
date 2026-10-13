@@ -23,6 +23,8 @@ from pacman.game.settings import GameSettings
 
 
 class GhostFactory:
+    """Construct ghost entities and their behavior components."""
+
     def __init__(
         self,
         settings: GameSettings,
@@ -31,6 +33,15 @@ class GhostFactory:
         engine: GameEngine,
         resources: PacmanResources,
     ) -> None:
+        """Create a ghost factory for a maze and Pac-Man entity.
+
+        Args:
+            settings: Game and rendering settings.
+            maze: Maze wall representation.
+            pacman: Pac-Man entity targeted by ghosts.
+            engine: Engine receiving created ghosts.
+            resources: Shared Pac-Man runtime resources.
+        """
         self.settings = settings
         self.maze = maze
         self.maze_size = (settings.map_width, settings.map_height)
@@ -57,6 +68,15 @@ class GhostFactory:
         ]
 
     def create(self, name: str) -> Entity:
+        """Create, register, and return a named ghost.
+
+        Args:
+            name: Ghost name, one of Blinky, Inky, Clyde, or Pinky.
+
+        Raises:
+            ValueError: If ``name`` is not a supported ghost.
+            RuntimeError: If Inky is created before Blinky.
+        """
         ghost_data = {
             "blinky": (
                 (0, 0),
@@ -177,7 +197,9 @@ class GhostFactory:
         return ghost
 
     def get_formula(self) -> float:
+        """Return the scaled ghost position formula."""
         return self.tile_size + 8 * self.settings.scale
 
     def get_scale(self) -> float:
+        """Return the configured rendering scale."""
         return self.settings.scale

@@ -8,16 +8,30 @@ from ..system import System
 
 
 class KeyPressEvent(Event):
+    """Represent a keyboard key pressed during the current frame."""
+
     def __init__(self, key: pr.KeyboardKey) -> None:
+        """Create a key press event.
+
+        Args:
+            key: Keyboard key that was pressed.
+        """
         self.key = key
 
 
 class KeySystem(System):
+    """Translate configured keyboard hooks into key press events."""
+
     def __init__(self, resources: Resources):
+        """Create a keyboard polling system."""
         super().__init__([KeyHook, Sprites])
         self.resources = resources
 
     def run(self) -> None:
+        """Poll hooked keys and enqueue events for newly pressed keys.
+
+        Only keys mapped by a subscriber's ``KeyHook`` component are checked.
+        """
         if self.resources.frozen:
             return
 

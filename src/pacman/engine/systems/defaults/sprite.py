@@ -6,11 +6,15 @@ from ..system import System
 
 
 class SpriteSystem(System):
+    """Advance and draw the active sprite animation for each entity."""
+
     def __init__(self, resources: Resources) -> None:
+        """Create a sprite system using shared rendering resources."""
         super().__init__([Position, Sprites])
         self.resources = resources
 
     def run(self) -> None:
+        """Update animation frames and draw visible sprites."""
         sprite_service = self.resources.sprite_service
         if sprite_service is None:
             raise RuntimeError(

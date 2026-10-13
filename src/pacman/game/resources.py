@@ -12,6 +12,8 @@ if TYPE_CHECKING:
 
 @dataclass
 class PacmanResources(Resources):
+    """Extend engine resources with Pac-Man game state."""
+
     data_score: Parser
     pacgum_count: int = 0
     score: int = 0
@@ -21,4 +23,5 @@ class PacmanResources(Resources):
     cheat_corner: bool = False
 
     def __post_init__(self) -> None:
+        """Synchronize the engine time limit with parsed game data."""
         self.level_max_time = self.data_score.level_max_time

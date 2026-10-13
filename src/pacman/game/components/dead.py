@@ -3,7 +3,14 @@ from pacman.engine.components.defaults.direction import Dir
 
 
 class Dead(Component):
+    """Track an entity's death animation and respawn state."""
+
     def __init__(self, sprites: dict[Dir, list[str]]) -> None:
+        """Create a death-state component.
+
+        Args:
+            sprites: Death or eye sprites grouped by direction.
+        """
         self.dead = False
         self.ready_respawn = False
         self.dead_time = 0.0

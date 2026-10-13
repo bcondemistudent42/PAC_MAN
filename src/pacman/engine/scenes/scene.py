@@ -6,14 +6,24 @@ if TYPE_CHECKING:
 
 
 class Scene(ABC):
-    @abstractmethod
-    def update(self, engine: GameEngine) -> None | Scene: ...
+    """Define the lifecycle contract for an engine scene."""
 
     @abstractmethod
-    def enter(self, engine: GameEngine) -> None: ...
+    def update(self, engine: GameEngine) -> None | Scene:
+        """Advance the scene and optionally return its replacement."""
+        ...
 
     @abstractmethod
-    def exit(self, engine: GameEngine) -> None: ...
+    def enter(self, engine: GameEngine) -> None:
+        """Initialize scene state when it becomes active."""
+        ...
 
     @abstractmethod
-    def render(self, engine: GameEngine) -> None: ...
+    def exit(self, engine: GameEngine) -> None:
+        """Release scene state when it stops being active."""
+        ...
+
+    @abstractmethod
+    def render(self, engine: GameEngine) -> None:
+        """Render the current scene state."""
+        ...

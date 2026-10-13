@@ -8,15 +8,20 @@ from pacman.game.resources import PacmanResources
 
 
 class PacmanIntentionSystem(System):
+    """Translate player key events into movement intentions."""
+
     def __init__(self, resources: PacmanResources) -> None:
+        """Create a player intention system."""
         super().__init__([Intention, KeyHook])
         self.resources = resources
 
     def subscribe(self, entity: Entity) -> None:
+        """Subscribe entities that expose a keyboard hook."""
         if entity.check_component(KeyHook):
             self.subscribers.append(entity)
 
     def run(self) -> None:
+        """Apply queued key events to living controllable entities."""
         if self.resources.frozen:
             return
 

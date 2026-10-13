@@ -7,6 +7,8 @@ from pacman.game.systems.target import GhostState
 
 
 class PinkyBehavior(Behavior):
+    """Target a position several cells ahead of Pac-Man."""
+
     def __init__(
         self,
         ghost: Entity,
@@ -15,6 +17,7 @@ class PinkyBehavior(Behavior):
         maze_size: tuple[int, int],
         maze: list[list[int]],
     ) -> None:
+        """Create Pinky's targeting strategy."""
 
         super().__init__(
             ghost, pacman, cell_size, maze_size, maze, (maze_size[0] - 1, 0)
@@ -23,6 +26,7 @@ class PinkyBehavior(Behavior):
     def find_pacman(
         self, state: GhostState
     ) -> list[tuple[int, int]] | None:
+        """Return Pinky's projected route for the current ghost state."""
         if state is GhostState.AFRAID:
             return self.scared_behavior()
 

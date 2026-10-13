@@ -10,12 +10,16 @@ from pacman.game.resources import PacmanResources
 
 
 class PacgumSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Consume regular and super pellets when Pac-Man collides with them."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a pellet consumption system."""
         super().__init__([Collision, Hitbox])
         self.resources = resources
         self.events = self.resources.events
 
     def run(self) -> None:
+        """Process pellet collision events for the current frame."""
         if self.resources.frozen:
             return
 

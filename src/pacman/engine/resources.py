@@ -8,6 +8,8 @@ from .services.sprites import SpriteService
 
 @dataclass
 class Resources:
+    """Shared runtime services and state used by engine systems."""
+
     freeze: Callable[[float, Callable], None]
     frozen: bool
     events: EventsQueue

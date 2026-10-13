@@ -17,12 +17,22 @@ from pacman.game.resources import PacmanResources
 
 
 class GameOverEvent(Event):
+    """Event emitted when the player has no lives remaining."""
+
     def __init__(self, score: int) -> None:
+        """Create a game-over event.
+
+        Args:
+            score: Final score to display.
+        """
         self.score = score
 
 
 class DeathSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Handle player deaths, ghost eating, animations, and respawning."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a death system using shared Pac-Man resources."""
         super().__init__(
             [Collision, Hitbox, Dead, Respawn, Position, Velocity, Sprites]
         )
@@ -32,6 +42,7 @@ class DeathSystem(System):
         self.is_dying = False
 
     def run(self) -> None:
+        """Process collision events that cause deaths or ghost defeats."""
         if self.resources.frozen:
             return
 

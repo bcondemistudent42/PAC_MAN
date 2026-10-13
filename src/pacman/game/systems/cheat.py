@@ -6,11 +6,15 @@ from pacman.game.resources import PacmanResources
 
 
 class CheatSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Toggle gameplay cheats controlled by keyboard shortcuts."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a cheat system using shared Pac-Man resources."""
         super().__init__([Scared])
         self.resources = resources
 
     def run(self) -> None:
+        """Toggle cheats when their keyboard shortcuts are pressed."""
         if self.resources.cheat_corner and pr.is_key_pressed(
             pr.KeyboardKey.KEY_C
         ):

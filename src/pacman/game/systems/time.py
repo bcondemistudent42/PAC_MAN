@@ -7,7 +7,10 @@ from ...engine.systems.system import System
 
 
 class TimeSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Track the level timer and emit game-over events when it expires."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a level timer system."""
         self.subscribers = []
         self.start_time = time.time()
         self.time_left: float = 0
@@ -16,6 +19,7 @@ class TimeSystem(System):
         self.events = self.resources.events
 
     def run(self) -> None:
+        """Update the remaining time and emit a timeout event if needed."""
         if self.resources.frozen:
             return
 

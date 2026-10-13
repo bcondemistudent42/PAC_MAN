@@ -2,6 +2,8 @@ from pydantic import BaseModel, TypeAdapter
 
 
 class ScoreEntry(BaseModel):
+    """Represent one persisted leaderboard entry."""
+
     pseudo: str
     score: int
 

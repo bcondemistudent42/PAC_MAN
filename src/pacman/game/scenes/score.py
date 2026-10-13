@@ -2,9 +2,10 @@ import random
 from typing import TYPE_CHECKING
 
 import pyray as pr
-from pacman.game.services.score import ScoreEntry, user_list_adapter
+
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
+from pacman.game.services.score import ScoreEntry, user_list_adapter
 from pacman.game.settings import GameSettings
 
 if TYPE_CHECKING:
@@ -12,12 +13,21 @@ if TYPE_CHECKING:
 
 
 class ScoreScene(Scene):
+    """Display the persisted leaderboard."""
+
     def __init__(self, settings: GameSettings, menu: MenuScene):
+        """Create a leaderboard scene.
+
+        Args:
+            settings: Window and rendering settings.
+            menu: Menu scene returned to when the user presses Enter.
+        """
         self.menu = menu
         self.settings = settings
         self.scores: list[ScoreEntry] = []
 
     def enter(self, engine: GameEngine) -> None:
+        """Load leaderboard entries from persistent storage."""
         try:
             with open("storage/scores.json", "r") as f:
                 raw_data = f.read()
@@ -26,11 +36,13 @@ class ScoreScene(Scene):
             self.scores = []
 
     def update(self, engine: GameEngine) -> Scene | None:
+        """Return to the menu when the user presses Enter."""
         if pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
             return self.menu
         return None
 
     def render(self, engine: GameEngine) -> None:
+        """Draw the leaderboard and animated background."""
         title = "LEADERBOARD"
 
         if not hasattr(self, "stars"):
@@ -102,4 +114,5 @@ class ScoreScene(Scene):
             )
 
     def exit(self, engine: GameEngine) -> None:
+        """Perform leaderboard scene cleanup."""
         pass

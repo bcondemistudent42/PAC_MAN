@@ -12,11 +12,15 @@ from pacman.game.resources import PacmanResources
 
 
 class RespawnGhostSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Restore defeated ghosts after their respawn cooldown."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a ghost respawn system."""
         super().__init__([Respawn, Dead, Position, Velocity, Sprites])
         self.resources = resources
 
     def run(self) -> None:
+        """Advance ghost respawn timers and restore ready ghosts."""
         if self.resources.frozen:
             return
 

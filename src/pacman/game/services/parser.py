@@ -5,6 +5,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class Parser(BaseModel):
+    """Validate configurable game rules and scoring values."""
+
     seed: int = Field(default=42, ge=0, le=1000)
     lives: int = Field(default=3, ge=1, le=100000)
     level_max_time: int = Field(default=200, ge=30, le=100000)
@@ -16,6 +18,11 @@ class Parser(BaseModel):
 
 
 def parse() -> Parser:
+    """Load and validate ``config.json`` or return default settings.
+
+    Returns:
+        Validated game configuration.
+    """
     try:
         with open("config.json") as f:
             raw_data = f.read()

@@ -13,15 +13,26 @@ from pacman.game.settings import GameSettings
 
 
 class PacmanCell(Enum):
+    """Logical cell types used by the Pac-Man map."""
+
     EMPTY = 0
     WALL = 1
     PACGUM = 2
 
 
 class PacmanMap:
+    """Generate a maze and populate its visual and logical entities."""
+
     def __init__(
         self, engine: GameEngine, settings: GameSettings, seed: int
     ) -> None:
+        """Create a map generator.
+
+        Args:
+            engine: Engine receiving generated wall and pellet entities.
+            settings: Map dimensions and rendering configuration.
+            seed: Seed passed to the maze generator.
+        """
         self.generator = MazeGenerator(
             size=(settings.map_width, settings.map_height),
             perfect=True,
@@ -40,12 +51,21 @@ class PacmanMap:
         self.pacgum_count = 0
 
     def break_dead_ends(self, maze: list[list[int]]) -> list[list[int]]:
+        """Open selected walls to reduce dead ends in a generated maze.
+
+        Args:
+            maze: Mutable maze wall representation.
+
+        Returns:
+            The modified maze representation.
+        """
         height = len(maze)
         if height == 0:
             return maze
         width = len(maze[0])
 
         def count_2x2_walls(r: int, c: int) -> int:
+            """Count walls around a two-by-two maze area."""
             count = 0
             if maze[r][c] & 2:
                 count += 1
@@ -58,6 +78,7 @@ class PacmanMap:
             return count
 
         def can_break_h(y: int, x: int, min_walls: int = 1) -> bool:
+            """Return whether a horizontal wall can be removed."""
             if maze[y][x] == 15 or maze[y][x + 1] == 15:
                 return False
             if not (maze[y][x] & 2):
@@ -76,6 +97,7 @@ class PacmanMap:
             )
 
         def can_break_v(y: int, x: int, min_walls: int = 1) -> bool:
+            """Return whether a vertical wall can be removed."""
             if maze[y][x] == 15 or maze[y + 1][x] == 15:
                 return False
             if not (maze[y][x] & 4):
@@ -146,12 +168,11 @@ class PacmanMap:
         return maze
 
     def get_map_matrix(self) -> list[list[PacmanCell]]:
-        """Retourne la matrice
-        logique du niveau pour le système de mouvement."""
+        """Return the logical level matrix used by movement systems."""
         return self.logic_matrix
 
     def maze_to_matrix(self) -> None:
-        """Génère la matrice visuelle et la matrice logique dans l'instance."""
+        """Convert maze walls into sprite and logical cell matrices."""
         self.sprite_matrix = [
             ["" for _ in range(len(self.map[0]) * 3)]
             for _ in range(len(self.map) * 3)
@@ -410,6 +431,7 @@ class PacmanMap:
             self.logic_matrix.append(logic_row)
 
     def generate_map(self, seed: int = 0) -> None:
+        """Generate the maze and add its walls and pellets to the engine."""
         self.generator.generate()
         self.map = self.generator.maze
         self.break_dead_ends(self.map)
@@ -460,5 +482,13 @@ class PacmanMap:
                     self.engine.add_single_entity(pacgum)
 
     def get_maze_cell_by_position(self, position: Position) -> tuple[int, int]:
+        """Convert a pixel position into a logical maze coordinate.
+
+        Args:
+            position: Pixel position to convert.
+
+        Returns:
+            The corresponding ``(x, y)`` maze coordinate.
+        """
         tile_size = 8 * self.settings.scale
         return (round(position.x / tile_size), round(position.y / tile_size))

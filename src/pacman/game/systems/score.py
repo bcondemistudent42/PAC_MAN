@@ -9,13 +9,17 @@ from pacman.game.resources import PacmanResources
 
 
 class ScoreSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Update the score from pellet and ghost collision events."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a score system."""
         super().__init__([Velocity])
         self.resources = resources
         self.events = resources.events
         self.required_components = None
 
     def run(self) -> None:
+        """Apply score changes and briefly freeze after eating ghosts."""
         if self.resources.frozen:
             return
 
@@ -63,6 +67,7 @@ class ScoreSystem(System):
         if eaten_ghosts:
 
             def on_unfreeze() -> None:
+                """Restore sprites hidden while the score is displayed."""
                 for pacman, ghost in eaten_ghosts:
                     pacman.get_component(Sprites).display = True
                     ghost.get_component(Sprites).display = True

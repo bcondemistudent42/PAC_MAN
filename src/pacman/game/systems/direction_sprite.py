@@ -8,11 +8,15 @@ from pacman.game.resources import PacmanResources
 
 
 class DirectionSpriteSystem(System):
+    """Select sprites for direction, death, and scared states."""
+
     def __init__(self, resources: PacmanResources) -> None:
+        """Create a directional sprite system."""
         super().__init__([Sprites, Direction])
         self.resources = resources
 
     def run(self) -> None:
+        """Update each subscriber's sprite set for its current state."""
         if self.resources.frozen:
             return
 

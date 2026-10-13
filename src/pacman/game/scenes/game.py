@@ -18,6 +18,8 @@ from pacman.game.systems.death import GameOverEvent
 
 
 class GameScene(Scene):
+    """Run one playable Pac-Man level."""
+
     def __init__(
         self,
         settings: GameSettings,
@@ -25,6 +27,14 @@ class GameScene(Scene):
         game_data: Parser,
         level: int = 1,
     ):
+        """Create a level scene.
+
+        Args:
+            settings: Window, map, and timing settings.
+            sprite_service: Service used to load and draw sprites.
+            game_data: Validated game configuration.
+            level: One-based level number.
+        """
         self.settings = settings
         self.level = level
         self.sprite_service = sprite_service
@@ -33,6 +43,7 @@ class GameScene(Scene):
         self.frozen_at = time.time()
 
     def enter(self, engine: GameEngine) -> None:
+        """Build the map, resources, entities, and systems for the level."""
         self.map_service = PacmanMap(
             engine, self.settings, seed=self.game_data.seed
         )
@@ -68,6 +79,7 @@ class GameScene(Scene):
         ).create_all()
 
     def update(self, engine: GameEngine) -> None | Scene:
+        """Advance the level and return a replacement scene when needed."""
         if self.resources.frozen and (
             time.time() - self.frozen_at >= self.freeze_duration
         ):
@@ -106,15 +118,23 @@ class GameScene(Scene):
         return None
 
     def render(self, engine: GameEngine) -> None:
+        """Run all registered systems for the current frame."""
         for system in engine.systems:
             system.run()
 
     def exit(self, engine: GameEngine) -> None:
+        """Clear the engine state when leaving the level."""
         engine.clear()
 
     def freeze(
         self, freeze_duration: float, callback: Callable[[], None]
     ) -> None:
+        """Freeze level updates temporarily and register a callback.
+
+        Args:
+            freeze_duration: Freeze duration in seconds.
+            callback: Function called when the freeze ends.
+        """
         self.resources.frozen = True
         self.freeze_duration = freeze_duration
         self.frozen_at = time.time()

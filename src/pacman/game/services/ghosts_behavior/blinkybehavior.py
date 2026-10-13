@@ -5,6 +5,8 @@ from pacman.game.systems.target import GhostState
 
 
 class BlinkyBehavior(Behavior):
+    """Target Pac-Man's current position directly."""
+
     def __init__(
         self,
         ghost: Entity,
@@ -13,12 +15,14 @@ class BlinkyBehavior(Behavior):
         maze_size: tuple[int, int],
         maze: list[list[int]],
     ) -> None:
+        """Create Blinky's targeting strategy."""
 
         super().__init__(ghost, pacman, cell_size, maze_size, maze, (0, 0))
 
     def find_pacman(
         self, state: GhostState
     ) -> list[tuple[int, int]] | None:
+        """Return a route from Blinky to Pac-Man."""
         if state is GhostState.AFRAID:
             return self.scared_behavior()
         x_ghost = self.ghost.get_component(Position).x

@@ -7,14 +7,23 @@ from pacman.game.settings import GameSettings
 
 
 class HUDSystem(System):
+    """Render score, timer, lives, controls, and ghost score popups."""
+
     def __init__(
         self, resources: PacmanResources, settings: GameSettings
     ) -> None:
+        """Create a HUD system.
+
+        Args:
+            resources: Shared Pac-Man runtime resources.
+            settings: Window and rendering settings.
+        """
         super().__init__([GhostScore])
         self.resources = resources
         self.settings = settings
 
     def run(self) -> None:
+        """Draw the current heads-up display."""
         window_height = self.settings.window_height
         hud_x = int(self.settings.window_width * 2 / 3)
         margin = max(16, window_height // 40)

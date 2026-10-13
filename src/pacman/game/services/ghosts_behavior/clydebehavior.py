@@ -5,6 +5,8 @@ from pacman.game.systems.target import GhostState
 
 
 class ClydeBehavior(Behavior):
+    """Alternate between chasing Pac-Man and retreating to a corner."""
+
     def __init__(
         self,
         ghost: Entity,
@@ -13,6 +15,7 @@ class ClydeBehavior(Behavior):
         maze_size: tuple[int, int],
         maze: list[list[int]],
     ) -> None:
+        """Create Clyde's targeting strategy."""
 
         super().__init__(
             ghost,
@@ -28,6 +31,7 @@ class ClydeBehavior(Behavior):
     def find_pacman(
         self, state: GhostState
     ) -> list[tuple[int, int]] | None:
+        """Return Clyde's route for the current ghost state."""
         if state is GhostState.AFRAID:
             return self.scared_behavior()
 

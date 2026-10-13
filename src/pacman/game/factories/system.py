@@ -19,17 +19,27 @@ from pacman.game.systems.time import TimeSystem
 
 
 class SystemFactory:
+    """Build and register the systems used by a Pac-Man level."""
+
     def __init__(
         self,
         resources: PacmanResources,
         engine: GameEngine,
         settings: GameSettings,
     ) -> None:
+        """Create a system factory.
+
+        Args:
+            resources: Shared Pac-Man runtime resources.
+            engine: Engine receiving the created systems.
+            settings: Game timing and map settings.
+        """
         self.resources = resources
         self.engine = engine
         self.settings = settings
 
     def create_all(self) -> None:
+        """Create and register all gameplay and rendering systems."""
         self.engine.add_system(
             [
                 CollisionSystem(self.resources),

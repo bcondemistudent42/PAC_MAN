@@ -15,6 +15,8 @@ if TYPE_CHECKING:
 
 
 class GameOverScene(Scene):
+    """Display the final score and collect the player's name."""
+
     def __init__(
         self,
         settings: GameSettings,
@@ -22,6 +24,14 @@ class GameOverScene(Scene):
         menu_scene: MenuScene,
         sprite_service: SpriteService,
     ):
+        """Create a game-over scene.
+
+        Args:
+            settings: Window and rendering settings.
+            final_score: Score achieved in the completed game.
+            menu_scene: Scene returned to after name submission.
+            sprite_service: Service used for the chase animation.
+        """
         self.settings = settings
         self.final_score = final_score
         self.menu_scene = menu_scene
@@ -62,12 +72,14 @@ class GameOverScene(Scene):
         )
 
     def enter(self, engine: GameEngine) -> None:
+        """Reset the chase animation and player name input."""
         self.chasing_right = True
         self.pacman_x = -30.0
         self.ghost_x = -250.0
         self.name_input.text = ""
 
     def update(self, engine: GameEngine) -> Scene | None:
+        """Update animation and return to the menu after name submission."""
         dt = pr.get_frame_time()
 
         self.name_input.update(dt)
@@ -103,6 +115,7 @@ class GameOverScene(Scene):
         return None
 
     def render(self, engine: GameEngine) -> None:
+        """Draw the final score, name prompt, and chase animation."""
         title = "GAME OVER"
         title_size = self.settings.window_height // 8
         title_width = pr.measure_text(title, title_size)
@@ -191,6 +204,7 @@ class GameOverScene(Scene):
             )
 
     def exit(self, engine: GameEngine) -> None:
+        """Persist the submitted score in the leaderboard file."""
         scores = []
         file_path = "storage/scores.json"
 

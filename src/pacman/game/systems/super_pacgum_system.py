@@ -10,7 +10,10 @@ from pacman.game.resources import PacmanResources
 
 
 class SuperPacgumSystem(System):
-    def __init__(self, resources: PacmanResources):
+    """Manage the frightened state triggered by super pellets."""
+
+    def __init__(self, resources: PacmanResources) -> None:
+        """Create a super-pellet state system."""
         super().__init__([Scared])
         self.resources = resources
         self.events = self.resources.events
@@ -18,6 +21,7 @@ class SuperPacgumSystem(System):
         self.cooldown = 6
 
     def run(self) -> None:
+        """Activate, animate, and expire the frightened ghost state."""
 
         if self.resources.cheat_scared:
             for entt in self.subscribers:

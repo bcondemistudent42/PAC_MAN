@@ -17,22 +17,34 @@ from pacman.game.settings import GameSettings
 
 
 class MenuChoice(Enum):
+    """Choices available in the main menu."""
+
     SCORES = "SCORES"
     PLAY = "PLAY"
     QUIT = "QUIT"
 
 
 class MenuState(Enum):
+    """Animation states used by the main menu."""
+
     SELECTING = "SELECTING"
     EXPLODING = "EXPLODING"
 
 
 class MenuScene(Scene):
+    """Display the main menu and route the player to other scenes."""
+
     def __init__(
         self,
         settings: GameSettings,
         sprite_service: SpriteService,
     ):
+        """Create a menu scene.
+
+        Args:
+            settings: Window and rendering settings.
+            sprite_service: Service used for menu artwork.
+        """
         self.settings = settings
         self.game_data = parse()
 
@@ -65,6 +77,7 @@ class MenuScene(Scene):
         self.dead_frames = [f"pacman-dead-{i}" for i in range(1, 12)]
 
     def enter(self, engine: GameEngine) -> None:
+        """Load and prepare the menu logo texture."""
         pil_img = Image.open("sprites/logo.png").convert("RGBA")
 
         target_width = self.settings.window_width // 2
@@ -91,6 +104,7 @@ class MenuScene(Scene):
         )
 
     def update(self, engine: GameEngine) -> Scene | None:
+        """Process menu input and return a selected replacement scene."""
         self.anim_timer += pr.get_frame_time()
 
         if self.state == MenuState.SELECTING:
@@ -130,6 +144,7 @@ class MenuScene(Scene):
         return None
 
     def render(self, engine: GameEngine) -> None:
+        """Draw the logo, animated Pac-Man, menu choices, and background."""
         if not self.texture:
             return
 
@@ -195,5 +210,6 @@ class MenuScene(Scene):
             )
 
     def exit(self, engine: GameEngine) -> None:
+        """Unload the menu logo texture."""
         if self.texture:
             pr.unload_texture(self.texture)

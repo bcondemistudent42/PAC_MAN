@@ -7,6 +7,8 @@ from pacman.game.systems.target import GhostState
 
 
 class InkyBehavior(Behavior):
+    """Target a position projected from Pac-Man and Blinky positions."""
+
     def __init__(
         self,
         ghost: Entity,
@@ -16,6 +18,11 @@ class InkyBehavior(Behavior):
         maze_size: tuple[int, int],
         maze: list[list[int]],
     ) -> None:
+        """Create Inky's targeting strategy.
+
+        Args:
+            blinky: Blinky entity used for the projection calculation.
+        """
 
         super().__init__(
             ghost, pacman, cell_size, maze_size, maze, (0, maze_size[1] - 1)
@@ -25,6 +32,7 @@ class InkyBehavior(Behavior):
     def find_pacman(
         self, state: GhostState
     ) -> list[tuple[int, int]] | None:
+        """Return Inky's projected route for the current ghost state."""
         if state is GhostState.AFRAID:
             return self.scared_behavior()
 

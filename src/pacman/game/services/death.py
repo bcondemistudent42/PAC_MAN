@@ -1,5 +1,8 @@
 class DeathSprites:
+    """Provide sprite sequences used by death animations."""
+
     def __init__(self) -> None:
+        """Initialize the ghost and Pac-Man death sprite sequences."""
         self.GHOSTS = [
             "blue-ghost-1",
             "blue-ghost-2",

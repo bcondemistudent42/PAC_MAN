@@ -9,17 +9,28 @@ from ..system import System
 
 
 class CollisionEvent(Event):
-    def __init__(self, entities: dict[str, Entity]):
+    """Describe entities that collided, indexed by collision tag."""
+
+    def __init__(self, entities: dict[str, Entity]) -> None:
+        """Create a collision event.
+
+        Args:
+            entities: Entities involved in the collision by tag.
+        """
         self.entities = entities
 
 
 class CollisionSystem(System):
+    """Detect overlaps between moving and static entities."""
+
     def __init__(self, resources: Resources):
+        """Create a collision system using shared engine resources."""
         super().__init__([Position, Collision, Hitbox])
         self.resources = resources
         self.events = self.resources.events
 
     def run(self) -> None:
+        """Detect overlaps and enqueue collision events for this frame."""
         if self.resources.frozen:
             return
 

@@ -3,6 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class GameSettings:
+    """Store window, map, scale, and ghost timing configuration."""
+
     window_width: int
     window_height: int
     tile_size: float
@@ -24,6 +26,19 @@ class GameSettings:
         cell_width_px: int = 24,
         cell_height_px: int = 24,
     ) -> GameSettings:
+        """Build settings scaled to fit a window.
+
+        Args:
+            window_width: Available window width in pixels.
+            window_height: Available window height in pixels.
+            map_width: Number of map cells horizontally.
+            map_height: Number of map cells vertically.
+            cell_width_px: Unscaled cell width in pixels.
+            cell_height_px: Unscaled cell height in pixels.
+
+        Returns:
+            Settings with a scale that fits the requested window.
+        """
         map_pixel_width = map_width * cell_width_px
         map_pixel_height = map_height * cell_height_px
         scale = min(

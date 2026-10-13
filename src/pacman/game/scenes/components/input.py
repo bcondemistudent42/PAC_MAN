@@ -2,6 +2,8 @@ import pyray as pr
 
 
 class TextInput:
+    """Render and edit a single-line keyboard text input."""
+
     def __init__(
             self,
             x: int,
@@ -9,7 +11,16 @@ class TextInput:
             width: int,
             height: int,
             max_length: int = 15
-            ) -> None:
+    ) -> None:
+        """Create a text input control.
+
+        Args:
+            x: Horizontal position in pixels.
+            y: Vertical position in pixels.
+            width: Control width in pixels.
+            height: Control height in pixels.
+            max_length: Maximum number of input characters.
+        """
         self.x = x
         self.y = y
         self.width = width
@@ -24,6 +35,7 @@ class TextInput:
         self.blink_rate = 0.5
 
     def update(self, dt: float) -> None:
+        """Read keyboard input and update the cursor blink state."""
         char_pressed = pr.get_char_pressed()
 
         while char_pressed > 0:
@@ -41,6 +53,7 @@ class TextInput:
             self.cursor_timer = 0.0
 
     def render(self) -> None:
+        """Draw the input box, entered text, and cursor."""
         pr.draw_rectangle(self.x, self.y, self.width, self.height, pr.BLACK)
         pr.draw_rectangle_lines(
             self.x, self.y, self.width, self.height, pr.WHITE

@@ -8,7 +8,10 @@ from ..system import System
 
 
 class MovementSystem(System):
+    """Move entities while respecting intentions and map walkability."""
+
     def __init__(self, resources: Resources):
+        """Create a movement system with navigation resources."""
         super().__init__([Position, Velocity, Direction, Intention])
         self.resources = resources
         self.direction_map = {
@@ -25,6 +28,7 @@ class MovementSystem(System):
         self.navigation = resources.navigation_service
 
     def run(self) -> None:
+        """Advance subscribed entities by one movement update."""
         if self.resources.frozen:
             return
 

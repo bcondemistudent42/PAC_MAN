@@ -8,6 +8,7 @@ from pacman.game.settings import GameSettings
 
 
 def main() -> None:
+    """Initialize resources and run the Pac-Man application."""
     settings = GameSettings.from_window(
         window_width=1200,
         window_height=800,

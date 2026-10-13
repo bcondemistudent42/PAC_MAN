@@ -16,18 +16,32 @@ from pacman.game.resources import PacmanResources
 
 
 class GhostState(Enum):
+    """High-level state used to select ghost targeting behavior."""
+
     CHASE = 1
     SCATTER = 2
     AFRAID = 3
 
 
 class TargetSystem(System):
+    """Switch ghost modes and update each ghost's movement intention."""
+
     def __init__(
         self,
         resources: PacmanResources,
         chase_duration: float = 20.0,
         scatter_duration: float = 7.0,
     ):
+        """Create a target system with chase and scatter durations.
+
+        Args:
+            resources: Shared Pac-Man runtime resources.
+            chase_duration: Seconds spent in chase mode.
+            scatter_duration: Seconds spent in scatter mode.
+
+        Raises:
+            ValueError: If either duration is not positive.
+        """
         super().__init__([Target, Position, Intention, Direction, Scared])
         if chase_duration <= 0 or scatter_duration <= 0:
             raise ValueError("Chase and scatter durations must be positive.")
@@ -39,6 +53,7 @@ class TargetSystem(System):
         self.paused_at: float | None = None
 
     def run(self) -> None:
+        """Update ghost states, routes, and respawn transitions."""
 
         if self.resources.cheat_corner:
             for each_sub in self.subscribers:
@@ -138,6 +153,7 @@ class TargetSystem(System):
         right_way: list[tuple[int, int]] | None,
         ghost_coord: tuple[int, int],
     ) -> None:
+        """Set an entity's intention from the next route coordinate."""
         if not right_way:
             return
 

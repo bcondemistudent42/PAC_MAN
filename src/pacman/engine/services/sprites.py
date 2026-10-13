@@ -9,6 +9,8 @@ from PIL import Image
 
 @dataclass
 class SpriteSheetPos:
+    """Describe a rectangular sprite-sheet region."""
+
     x: int
     y: int
     height: int
@@ -21,12 +23,24 @@ class SpriteService:
     def __init__(
         self, spritesheet: str, sprite_config: dict[str, SpriteSheetPos]
     ) -> None:
+        """Load the initial sprite sheet.
+
+        Args:
+            spritesheet: Path to the sprite-sheet image.
+            sprite_config: Named regions to extract from the image.
+        """
         self.map: dict[str, pr.Texture] = {}
         self.add_spritesheet(spritesheet, sprite_config)
 
     def add_spritesheet(
         self, spritesheet: str, sprite_config: dict[str, SpriteSheetPos]
     ) -> None:
+        """Extract named textures from a sprite sheet.
+
+        Args:
+            spritesheet: Path to the sprite-sheet image.
+            sprite_config: Named regions to extract from the image.
+        """
         image = Image.open(spritesheet).convert("RGBA")
         image_array = np.array(image)
 
@@ -48,9 +62,18 @@ class SpriteService:
             pr.unload_image(loaded_image)
 
     def get_sprite(self, sprite: str) -> pr.Texture:
+        """Return the texture registered under a sprite name.
+
+        Args:
+            sprite: Registered sprite name.
+
+        Returns:
+            The loaded texture for ``sprite``.
+        """
         return self.map[sprite]
 
     def exit_sprites(self) -> None:
+        """Unload all textures managed by the service."""
         for texture in self.map.values():
             pr.unload_texture(texture)
         self.map.clear()

@@ -107,10 +107,13 @@ config_spritesheet_2 = {
 
 
 class SpriteFactory:
+    """Provide the sprite-sheet configurations used by the game."""
+
     def create(
         self,
     ) -> tuple[
         dict[str, SpriteSheetPos],
         dict[str, SpriteSheetPos],
     ]:
+        """Return the main and maze sprite configurations."""
         return config, config_spritesheet_2
