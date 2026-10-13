@@ -68,7 +68,7 @@ class ScoreScene(Scene):
             pr.YELLOW,
         )
 
-        font_size = self.settings.window_height // 16
+        font_size = self.settings.window_height // 30
         start_y = self.settings.window_height // 3
         spacing_y = int(font_size * 1.5)
         center_x = self.settings.window_width // 2
