@@ -2,6 +2,8 @@ import time
 from collections.abc import Callable
 from typing import cast
 
+import pyray as pr
+
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
@@ -39,7 +41,7 @@ class GameScene(Scene):
         self.level = level
         self.sprite_service = sprite_service
         self.game_data = game_data
-        self.freeze_duration: float = 0
+        self.freeze_condition: float | list[pr.KeyboardKey] = 0
         self.frozen_at = time.time()
 
     def enter(self, engine: GameEngine) -> None:
@@ -80,11 +82,21 @@ class GameScene(Scene):
 
     def update(self, engine: GameEngine) -> None | Scene:
         """Advance the level and return a replacement scene when needed."""
-        if self.resources.frozen and (
-            time.time() - self.frozen_at >= self.freeze_duration
-        ):
-            self.resources.frozen = False
-            self.freeze_callback()
+        if self.resources.frozen:
+            if isinstance(self.freeze_condition, list):
+                should_unfreeze = any(
+                    pr.is_key_pressed(key) for key in self.freeze_condition
+                )
+            else:
+                should_unfreeze = (
+                    time.time() - self.frozen_at >= self.freeze_condition
+                )
+
+            if should_unfreeze:
+                self.resources.frozen = False
+                self.freeze_callback()
+        elif pr.is_key_pressed(pr.KeyboardKey.KEY_SPACE):
+            self.freeze([pr.KeyboardKey.KEY_SPACE], lambda: None)
 
         try:
             event = cast(
@@ -127,15 +139,18 @@ class GameScene(Scene):
         engine.clear()
 
     def freeze(
-        self, freeze_duration: float, callback: Callable[[], None]
+        self,
+        freeze_condition: float | list[pr.KeyboardKey],
+        callback: Callable[[], None],
     ) -> None:
-        """Freeze level updates temporarily and register a callback.
+        """Freeze level updates until a key is pressed or time elapses.
 
         Args:
-            freeze_duration: Freeze duration in seconds.
+            freeze_condition: Duration in seconds, or keys that unfreeze the
+                level when pressed.
             callback: Function called when the freeze ends.
         """
         self.resources.frozen = True
-        self.freeze_duration = freeze_duration
+        self.freeze_condition = freeze_condition
         self.frozen_at = time.time()
         self.freeze_callback = callback
