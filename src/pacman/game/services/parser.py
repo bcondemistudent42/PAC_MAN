@@ -32,5 +32,5 @@ def parse() -> Parser:
             data = Parser.model_validate(cleaned_data)
             return data
     except Exception:
-        fallback: dict = {}
+        fallback: dict[str, str] = {}
         return Parser.model_validate(fallback)
