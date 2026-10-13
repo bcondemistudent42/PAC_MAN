@@ -60,7 +60,6 @@ The `GameEngine` acts as the orchestrator. It manages an `EventsQueue` and deleg
 * `ScoreScene`: The leaderboard display.
 * `WinScene` / `GameOverScene`: End-game screens handling player name input.
 
-### 3. Clean code
 ### 3. Clean Code & Best Practices
 
 The codebase was designed with a strong emphasis on maintainability, readability, and software engineering best practices:
