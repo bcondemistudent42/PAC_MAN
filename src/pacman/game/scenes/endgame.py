@@ -224,7 +224,7 @@ class EndGameScene(Scene):
             score=self.final_score
         ))
 
-        scores = sorted(scores, key=lambda s: s.score, reverse=True)
+        scores = sorted(scores, key=lambda s: s.score, reverse=True)[:5]
 
         with open(file_path, "wb") as score_file:
             json_bytes = user_list_adapter.dump_json(scores, indent=4)
