@@ -1,3 +1,5 @@
+import logging
+
 import pyray as pr
 
 from pacman.engine.engine import GameEngine
@@ -6,29 +8,36 @@ from pacman.game.factories.sprites import SpriteFactory
 from pacman.game.scenes.menu import MenuScene
 from pacman.game.settings import GameSettings
 
+logger = logging.getLogger(__name__)
+
 
 def main() -> None:
     """Initialize resources and run the Pac-Man application."""
-    settings = GameSettings.from_window(
-        window_width=2200,
-        window_height=1440,
-    )
+    try:
+        settings = GameSettings.from_window(
+            window_width=2200,
+            window_height=1440,
+        )
 
-    pr.init_window(settings.window_width, settings.window_height, "PACMAN")
-    pr.set_target_fps(60)
+        pr.init_window(settings.window_width, settings.window_height, "PACMAN")
+        pr.set_target_fps(60)
 
-    main_sprites, map_sprites = SpriteFactory().create()
-    sprite_service = SpriteService("sprites/spritesheet.png", main_sprites)
-    sprite_service.add_spritesheet("sprites/creeper.png", map_sprites)
-    scene = MenuScene(settings, sprite_service)
+        main_sprites, map_sprites = SpriteFactory().create()
+        sprite_service = SpriteService("sprites/spritesheet.png", main_sprites)
+        sprite_service.add_spritesheet("sprites/creeper.png", map_sprites)
+        scene = MenuScene(settings, sprite_service)
 
-    with GameEngine(
-        scene, settings.window_width, settings.window_height
-    ) as engine:
-        try:
-            engine.run()
-        finally:
-            sprite_service.exit_sprites()
+        with GameEngine(
+            scene, settings.window_width, settings.window_height
+        ) as engine:
+            try:
+                engine.run()
+            finally:
+                sprite_service.exit_sprites()
+    except Exception as e:
+        logger.exception(
+            f"Unexpected error while running Pac-Man: {str(e)}",
+        )
 
 
 if __name__ == "__main__":
