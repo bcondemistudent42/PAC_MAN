@@ -122,7 +122,7 @@ class GameScene(Scene):
             engine.events.drain()
 
         if self.resources.pacgum_count == 0:
-            if self.level == 2:
+            if self.level == 10:
                 from pacman.game.scenes.menu import MenuScene
 
                 return WinScene(
