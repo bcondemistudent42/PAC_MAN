@@ -16,11 +16,16 @@ class Parser(BaseModel):
 
 
 def parse() -> Parser:
-    with open("config.json") as f:
-        raw_data = f.read()
-        first_clean = re.sub(r"//.*", "", raw_data)
-        second_clean = re.sub(r"#.*", "", first_clean)
+    try:
+        with open("config.json") as f:
+            raw_data = f.read()
+            first_clean = re.sub(r"//.*", "", raw_data)
+            second_clean = re.sub(r"#.*", "", first_clean)
+            cleaned_data = json.loads(second_clean)
+            data = Parser.model_validate(cleaned_data)
+            return data
+    except FileNotFoundError:
+        fallback = {}
+        return Parser.model_validate(fallback)
 
-    cleaned_data = json.loads(second_clean)
-    data = Parser.model_validate(cleaned_data)
-    return data
+
