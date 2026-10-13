@@ -1,5 +1,18 @@
 [
-    {"pseudo": "AAA", "score": 5000},
-    {"pseudo": "BOB", "score": 3200},
-    {"pseudo": "JON", "score": 1500}
+    {
+        "pseudo": "AAA",
+        "score": 5000
+    },
+    {
+        "pseudo": "BOB",
+        "score": 3200
+    },
+    {
+        "pseudo": "JON",
+        "score": 1500
+    },
+    {
+        "pseudo": "ANSELME",
+        "score": 22
+    }
 ]

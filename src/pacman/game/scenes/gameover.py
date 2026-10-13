@@ -1,3 +1,4 @@
+import os
 from typing import TYPE_CHECKING
 
 import pyray as pr
@@ -6,6 +7,10 @@ from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.engine.services.sprites import SpriteService
 from pacman.game.settings import GameSettings
+from pacman.game.services.score import ScoreEntry, user_list_adapter
+
+# Import de ton nouveau composant
+from pacman.game.scenes.components.input import TextInput
 
 if TYPE_CHECKING:
     from pacman.game.scenes.menu import MenuScene
@@ -22,6 +27,7 @@ class GameOverScene(Scene):
         self.settings = settings
         self.final_score = final_score
         self.menu_scene = menu_scene
+        self.name = ""
 
         self.sprite_service = sprite_service
 
@@ -47,18 +53,32 @@ class GameOverScene(Scene):
         self.blinky_right_frames = ["blinky-right-1", "blinky-right-2"]
         self.scared_ghost_frames = ["blue-ghost-1", "blue-ghost-2"]
 
+        input_width = 250
+        input_height = 40
+        self.name_input = TextInput(
+            x=(self.settings.window_width - input_width) // 2,
+            y=self.settings.window_height // 2 + 30,
+            width=input_width,
+            height=input_height,
+            max_length=12
+        )
+
     def enter(self, engine: GameEngine) -> None:
         self.chasing_right = True
         self.pacman_x = -30.0
         self.ghost_x = -250.0
+        self.name_input.text = ""
 
     def update(self, engine: GameEngine) -> Scene | None:
         dt = pr.get_frame_time()
+
+        self.name_input.update(dt)
 
         self.anim_timer += dt
         if self.anim_timer > 0.1:
             self.anim_index += 1
             self.anim_timer = 0.0
+
         if self.chasing_right:
             self.pacman_x += self.speed * dt
             self.ghost_x += self.speed * dt
@@ -77,7 +97,10 @@ class GameOverScene(Scene):
                 self.ghost_x = -250.0
 
         if pr.is_key_pressed(pr.KeyboardKey.KEY_ENTER):
-            return self.menu_scene
+            clean_name = self.name_input.text.strip()
+            if len(clean_name) > 0:
+                self.name = clean_name
+                return self.menu_scene
 
         return None
 
@@ -89,7 +112,7 @@ class GameOverScene(Scene):
         pr.draw_text(
             title,
             (self.settings.window_width - title_width) // 2,
-            self.settings.window_height // 4,
+            self.settings.window_height // 6,
             title_size,
             pr.RED,
         )
@@ -101,21 +124,32 @@ class GameOverScene(Scene):
         pr.draw_text(
             score_text,
             (self.settings.window_width - score_width) // 2,
-            self.settings.window_height // 4 + title_size + 20,
+            self.settings.window_height // 6 + title_size + 20,
             score_size,
             pr.WHITE,
         )
+
+        prompt_text = "ENTER YOUR NAME:"
+        prompt_size = 20
+        prompt_width = pr.measure_text(prompt_text, prompt_size)
+        pr.draw_text(
+            prompt_text,
+            (self.settings.window_width - prompt_width) // 2,
+            self.settings.window_height // 2,
+            prompt_size,
+            pr.YELLOW
+        )
+        self.name_input.render()
 
         footer = "PRESS ENTER TO CONTINUE"
         footer_size = self.settings.window_height // 32
         footer_width = pr.measure_text(footer, footer_size)
 
-        if int(pr.get_time() * 2) % 2 == 0:
+        if int(pr.get_time() * 2) % 2 == 0 and len(self.name_input.text.strip()) > 0:
             pr.draw_text(
                 footer,
                 (self.settings.window_width - footer_width) // 2,
-                self.settings.window_height
-                - (self.settings.window_height // 8),
+                self.settings.window_height - (self.settings.window_height // 8),
                 footer_size,
                 pr.GRAY,
             )
@@ -158,4 +192,24 @@ class GameOverScene(Scene):
             )
 
     def exit(self, engine: GameEngine) -> None:
-        pass
+        scores = []
+        file_path = "storage/scores.json"
+
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        if os.path.exists(file_path):
+            with open(file_path, "r") as score_file:
+                raw_data = score_file.read()
+                if raw_data.strip():
+                    scores = user_list_adapter.validate_json(raw_data)
+
+        scores.append(ScoreEntry(
+            pseudo=self.name,
+            score=self.final_score
+        ))
+
+        scores = sorted(scores, key=lambda s: s.score, reverse=True)
+
+        with open(file_path, "wb") as score_file:
+            json_bytes = user_list_adapter.dump_json(scores, indent=4)
+            score_file.write(json_bytes)

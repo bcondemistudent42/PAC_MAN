@@ -2,22 +2,13 @@ import random
 from typing import TYPE_CHECKING
 
 import pyray as pr
-from pydantic import BaseModel, TypeAdapter
-
+from pacman.game.services.score import ScoreEntry, user_list_adapter
 from pacman.engine.engine import GameEngine
 from pacman.engine.scenes.scene import Scene
 from pacman.game.settings import GameSettings
 
 if TYPE_CHECKING:
     from pacman.game.scenes.menu import MenuScene
-
-
-class ScoreEntry(BaseModel):
-    pseudo: str
-    score: int
-
-
-user_list_adapter = TypeAdapter(list[ScoreEntry])
 
 
 class ScoreScene(Scene):
