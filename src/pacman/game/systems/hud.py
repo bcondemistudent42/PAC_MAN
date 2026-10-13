@@ -96,6 +96,6 @@ class HUDSystem(System):
                     f"{score.text}",
                     int(score.position.x),
                     int(score.position.y),
-                    40,
+                    60,
                     pr.Color(0, 225, 225, 255),
                 )
