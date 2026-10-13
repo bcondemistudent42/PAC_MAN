@@ -228,5 +228,5 @@ class EndGameScene(Scene):
 
         if self.name.strip():
             with open(file_path, "wb") as score_file:
-                    json_bytes = user_list_adapter.dump_json(scores, indent=4)
-                    score_file.write(json_bytes)
+                json_bytes = user_list_adapter.dump_json(scores, indent=4)
+                score_file.write(json_bytes)

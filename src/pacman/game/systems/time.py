@@ -1,5 +1,3 @@
-import time
-
 from pacman.game.resources import PacmanResources
 from pacman.game.systems.death import GameOverEvent
 import pyray as pr
