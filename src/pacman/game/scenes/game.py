@@ -48,7 +48,7 @@ class GameScene(Scene):
     def enter(self, engine: GameEngine) -> None:
         """Build the map, resources, entities, and systems for the level."""
         self.map_service = PacmanMap(
-            engine, self.settings, seed=self.game_data.seed
+            engine, self.settings, seed=self.game_data.seed if self.level == 1 else None
         )
 
         navigation_service = PacmanNavigationService(

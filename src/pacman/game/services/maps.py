@@ -1,4 +1,4 @@
-import random
+from random import Random
 from enum import Enum
 
 from mazegenerator import MazeGenerator
@@ -24,7 +24,7 @@ class PacmanMap:
     """Generate a maze and populate its visual and logical entities."""
 
     def __init__(
-        self, engine: GameEngine, settings: GameSettings, seed: int
+        self, engine: GameEngine, settings: GameSettings, seed: int | None
     ) -> None:
         """Create a map generator.
 
@@ -33,17 +33,25 @@ class PacmanMap:
             settings: Map dimensions and rendering configuration.
             seed: Seed passed to the maze generator.
         """
-        self.generator = MazeGenerator(
-            size=(settings.map_width, settings.map_height),
-            perfect=True,
-            seed=seed,
-        )
+        if seed is not None:
+            self.generator = MazeGenerator(
+                size=(settings.map_width, settings.map_height),
+                perfect=True,
+                seed=seed,
+            )
+            print(f"SEED mise {seed}")
+        else:
+            self.generator = MazeGenerator(
+                size=(settings.map_width, settings.map_height),
+                perfect=True,
+            )
 
         self.TILE_SIZE = 8 * settings.scale
         self.scale = settings.scale
         self.engine = engine
         self.map: list[list[int]] = []
         self.settings = settings
+        self.seed = seed
 
         self.sprite_matrix: list[list[str]] = []
         self.logic_matrix: list[list[PacmanCell]] = []
@@ -63,6 +71,8 @@ class PacmanMap:
         if height == 0:
             return maze
         width = len(maze[0])
+
+        rdm = Random(self.seed)
 
         def count_2x2_walls(r: int, c: int) -> int:
             """Count walls around a two-by-two maze area."""
@@ -122,7 +132,7 @@ class PacmanMap:
             lines.append(("V", x))
 
         for i in range(len(lines) - 1, 0, -1):
-            j = random.randint(0, i)
+            j = rdm.randint(0, i)
             lines[i], lines[j] = lines[j], lines[i]
 
         for line_type, idx in lines:
@@ -150,14 +160,14 @@ class PacmanMap:
                     remaining_walls.append(("V", y, x))
 
         for i in range(len(remaining_walls) - 1, 0, -1):
-            j = random.randint(0, i)
+            j = rdm.randint(0, i)
             remaining_walls[i], remaining_walls[j] = (
                 remaining_walls[j],
                 remaining_walls[i],
             )
 
         for wtype, y, x in remaining_walls:
-            if random.random() < 0.30:
+            if rdm.random() < 0.30:
                 if wtype == "H" and can_break_h(y, x, min_walls=1):
                     maze[y][x] &= ~2
                     maze[y][x + 1] &= ~8
@@ -430,9 +440,9 @@ class PacmanMap:
                     logic_row.append(PacmanCell.PACGUM)
             self.logic_matrix.append(logic_row)
 
-    def generate_map(self, seed: int = 0) -> None:
+    def generate_map(self) -> None:
         """Generate the maze and add its walls and pellets to the engine."""
-        self.generator.generate()
+        self.generator.generate(**({"seed": self.seed} if self.seed is not None else {}))
         self.map = self.generator.maze
         self.break_dead_ends(self.map)
 
